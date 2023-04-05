@@ -5,23 +5,32 @@
     },
     "activeFile": "untitled.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "Decors.tsx": {
-            "scaleInDock": 45,
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+        },
+        "bench.tsx": {
+            "scaleInDock": 5.5,
             "scaleInEditor": 1
         },
         "bird.tsx": {
-            "scaleInDock": 4,
+            "scaleInDock": 5.5,
             "scaleInEditor": 1
         },
         "fish.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 5.5,
             "scaleInEditor": 8
         },
         "images.tsx": {
             "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "pink_bench.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -31,16 +40,16 @@
         },
         "tilemap_packed.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 45,
+            "scaleInDock": 5.5,
             "scaleInEditor": 3
         },
         "tileset_forest.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 45,
+            "scaleInDock": 5.5,
             "scaleInEditor": 1
         },
         "tree.tsx": {
-            "scaleInDock": 45,
+            "scaleInDock": 5.5,
             "scaleInEditor": 1
         },
         "trees.tsx": {
@@ -48,25 +57,29 @@
             "scaleInEditor": 1
         },
         "untitled.tmx": {
-            "scale": 3,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1497.5,
-                "y": 216.83333333333331
+                "x": 1659.6666666666665,
+                "y": 286.99999999999994
             }
         },
+        "water.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 1
+        },
         "water_a_8frames.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 5.5,
             "scaleInEditor": 8
         },
         "water_b_5 frames.tsx": {
-            "scaleInDock": 45,
+            "scaleInDock": 5.5,
             "scaleInEditor": 1
         }
     },
     "frame.defaultDuration": 100,
     "last.externalTilesetPath": "C:/Users/Quirk/Downloads/kenney_roguelike-rpg-pack/Spritesheet",
-    "last.imagePath": "C:/Users/Quirk/Downloads/Rocky Roads/Enemies",
+    "last.imagePath": "C:/Users/Quirk/Documents/Last Semester/CSE380/CSE380_Final_Project/benchmark2/dist/hw4_assets/tilemaps",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -79,10 +92,17 @@
         "Decors.tsx",
         "water_b_5 frames.tsx",
         "fish.tsx",
-        "bird.tsx"
+        "bird.tsx",
+        "water.tsx",
+        "bench.tsx",
+        "pink_bench.tsx",
+        "pink_bench.tsx"
     ],
     "project": "level_1.tiled-project",
     "recentFiles": [
+        "pink_bench.tsx",
+        "bench.tsx",
+        "water.tsx",
         "bird.tsx",
         "fish.tsx",
         "water_b_5 frames.tsx",
@@ -91,10 +111,7 @@
         "tilemap_packed.tsx",
         "untitled.tmx",
         "images.tsx",
-        "roguelikeSheet_transparent.tsx",
-        "trees.tsx",
-        "tileset_forest.tsx",
-        "water_a_8frames.tsx"
+        "roguelikeSheet_transparent.tsx"
     ],
     "tileset.lastUsedFilter": "All Files (*)",
     "tileset.lastUsedFormat": "tsx",
