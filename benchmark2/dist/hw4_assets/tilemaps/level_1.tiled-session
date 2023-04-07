@@ -1,13 +1,8 @@
 {
-    "Map/SizeTest": {
-        "height": 4300,
-        "width": 2
-    },
     "activeFile": "untitled.tmx",
     "expandedProjectPaths": [
         "."
     ],
-    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "Decors.tsx": {
             "scaleInDock": 1.5,
@@ -57,11 +52,11 @@
             "scaleInEditor": 1
         },
         "untitled.tmx": {
-            "scale": 2,
-            "selectedLayer": 3,
+            "scale": 0.75,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 288.5,
-                "y": 138.75
+                "x": 169.33333333333331,
+                "y": 299.33333333333326
             }
         },
         "water.tsx": {
@@ -77,21 +72,12 @@
             "scaleInEditor": 3
         }
     },
-    "frame.defaultDuration": 100,
     "last.exportedFilePath": "C:/Users/Quirk/Documents/Last Semester/CSE380/CSE380_Final_Project/benchmark2/dist/hw4_assets/tilemaps",
-    "last.externalTilesetPath": "C:/Users/Quirk/Downloads/kenney_roguelike-rpg-pack/Spritesheet",
-    "last.imagePath": "C:/Users/Quirk/Documents/Last Semester/CSE380/CSE380_Final_Project/benchmark2/dist/hw4_assets/tilemaps",
-    "map.height": 30,
-    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
-    "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 16,
-    "map.tileWidth": 16,
-    "map.width": 60,
+    "map.lastUsedExportFilter": "All Files (*)",
     "openFiles": [
         "untitled.tmx"
     ],
     "project": "level_1.tiled-project",
-    "property.type": "bool",
     "recentFiles": [
         "untitled.tmx",
         "Decors.tsx",
@@ -105,13 +91,5 @@
         "bird.tsx",
         "tree.tsx",
         "images.tsx"
-    ],
-    "tileset.lastUsedFilter": "All Files (*)",
-    "tileset.lastUsedFormat": "tsx",
-    "tileset.margin": 0,
-    "tileset.tileSize": {
-        "height": 16,
-        "width": 16
-    },
-    "tileset.type": 0
+    ]
 }
