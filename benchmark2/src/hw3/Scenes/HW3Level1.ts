@@ -16,7 +16,7 @@ export default class Level1 extends HW3Level {
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Hero.json";
 
     public static readonly TILEMAP_KEY = "LEVEL1";
-    public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-1.json";
+    public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/First-Level.json";
 
     public static readonly TILEMAP_SCALE = new Vec2(1, 1);
     public static readonly DESTRUCTIBLE_LAYER_KEY = "Destructable";
