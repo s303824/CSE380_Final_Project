@@ -7,7 +7,12 @@ export default class Walk extends PlayerState {
 
 	onEnter(options: Record<string, any>): void {
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(PlayerAnimations.WALK);
+        let dir = this.parent.inputDir;
+        if(dir.x < 0){
+        this.owner.animation.playIfNotAlready(PlayerAnimations.WALK_LEFT);
+        }else{
+            this.owner.animation.playIfNotAlready(PlayerAnimations.WALK);
+        }
 	}
 
 	update(deltaT: number): void {
@@ -25,6 +30,7 @@ export default class Walk extends PlayerState {
         else if (Input.isJustPressed(HW3Controls.JUMP)) {
             this.finished(PlayerStates.JUMP);
         } 
+    
         // If the player is not on the ground, transition to the fall state
         else if (!this.owner.onGround && this.parent.velocity.y !== 0) {
             this.finished(PlayerStates.FALL);

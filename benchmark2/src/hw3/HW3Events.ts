@@ -16,6 +16,8 @@ export const HW3Events = {
      * Has data: { curhp: number, maxhp: number }
      */
     HEALTH_CHANGE: "HEALTH_CHANGE",
+    
+    PLAYER_GOOSE_HIT: "PLAYER_GOOSE_HIT",
 
     // The event sent when a particle hits a tile in the destructible tilemap layer
     PARTICLE_HIT_DESTRUCTIBLE: "PARTICLE_HIT_DESTRUCTIBLE",
