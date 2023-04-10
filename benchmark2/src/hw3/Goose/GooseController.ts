@@ -6,7 +6,7 @@ import Idle from "./GooseStates/Idle";
 import Attack from "./GooseStates/Attack";
 import Walk from "./GooseStates/Walk";
 
-
+import PlayerController from "../Player/PlayerController";
 import Input from "../../Wolfie2D/Input/Input";
 
 import { HW3Controls } from "../HW3Controls";
@@ -37,6 +37,7 @@ export const GooseStates = {
     IDLE: "IDLE",
     ATTACK: "ATTACK",
     WALK: "WALK",
+ 
 
 } as const
 
@@ -45,7 +46,7 @@ export const GooseStates = {
  */
 export default class GooseController extends StateMachineAI {
     public readonly MAX_SPEED: number = 200;
-    public readonly MIN_SPEED: number = 100;
+    public readonly MIN_SPEED: number = 75;
 
     /** Health and max health for the player */
     /*
@@ -59,6 +60,9 @@ export default class GooseController extends StateMachineAI {
 	protected _speed: number;
 
     protected tilemap: OrthogonalTilemap;
+
+    protected player: HW3AnimatedSprite;
+    public playerVec: Vec2;
     // protected cannon: Sprite;
 
 
@@ -69,20 +73,17 @@ export default class GooseController extends StateMachineAI {
 
 
         this.tilemap = this.owner.getScene().getTilemap(options.tilemap) as OrthogonalTilemap;
-        this.speed = 400;
+        this.speed = this.MIN_SPEED;
         this.velocity = Vec2.ZERO;
-
+        this.player = options.player;
+        this.playerVec = this.player.position;
 
 
         // Add the different states the player can be in to the PlayerController 
 		this.addState(GooseStates.IDLE, new Idle(this, this.owner));
 		this.addState(GooseStates.ATTACK, new Attack(this, this.owner));
         this.addState(GooseStates.WALK, new Walk(this, this.owner));
-    
-       
 
-        
-        // Start the player in the Idle state
         this.initialize(GooseStates.IDLE);
     }
 
@@ -100,32 +101,25 @@ export default class GooseController extends StateMachineAI {
 
     public update(deltaT: number): void {
 		super.update(deltaT);
-
-        // Update the rotation to apply the particles velocity vector
-       // this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.faceDir) + Math.PI;
-
-        // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
-       /*
-        if (Input.isPressed(HW3Controls.ATTACK) && !this.weapon.isSystemRunning()) {
-            // Update the rotation to apply the particles velocity vector
-            this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.faceDir) + Math.PI;
-            // Start the particle system at the player's current position
-            this.weapon.startSystem(500, 0, this.owner.position);
+       
+        if((Math.abs(this.owner.position.x - this.playerVec.x) < 100) &&(Math.abs(this.owner.position.y - this.playerVec.y) < 10)){
+            this.handleGooseWalk();
+        }else{
+            this.changeState(GooseStates.IDLE);
         }
-*/
-        /*
-            This if-statement will place a tile wherever the user clicks on the screen. I have
-            left this here to make traversing the map a little easier, incase you accidently
-            destroy everything with the player's weapon.
-        */
-       /*
-        if (Input.isMousePressed()) {
-            this.tilemap.setTileAtRowCol(this.tilemap.getColRowAt(Input.getGlobalMousePosition()),5);
+        
+        if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
+            this.handlePlayerGooseCollision();
+            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
         }
-        */
-
+        
 	}
-    protected handlePlayerGooseCollision(event: GameEvent): void {
+    protected handleGooseWalk(): void {
+        this.changeState(GooseStates.WALK);
+    }
+   
+    protected handlePlayerGooseCollision(): void {
+        this.changeState(GooseStates.ATTACK);
        
     }
     public get velocity(): Vec2 { return this._velocity; }
@@ -146,4 +140,5 @@ export default class GooseController extends StateMachineAI {
         if (this.health === 0) { this.changeState(GooseStates.DEAD); }
     }
     */
+  
 }

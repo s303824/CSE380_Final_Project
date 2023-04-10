@@ -10,6 +10,7 @@ import Run from "./PlayerStates/Run";
 import PlayerWeapon from "./PlayerWeapon";
 import Input from "../../Wolfie2D/Input/Input";
 
+import GooseController from "../Goose/GooseController";
 import { HW3Controls } from "../HW3Controls";
 import HW3AnimatedSprite from "../Nodes/HW3AnimatedSprite";
 import MathUtils from "../../Wolfie2D/Utils/MathUtils";
@@ -63,7 +64,7 @@ export default class PlayerController extends StateMachineAI {
     protected tilemap: OrthogonalTilemap;
     // protected cannon: Sprite;
     protected weapon: PlayerWeapon;
-
+    protected goose: HW3AnimatedSprite;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -76,7 +77,7 @@ export default class PlayerController extends StateMachineAI {
 
         this.health = 10
         this.maxHealth = 10;
-
+        this.goose = options.goose;
         // Add the different states the player can be in to the PlayerController 
 		this.addState(PlayerStates.IDLE, new Idle(this, this.owner));
 		this.addState(PlayerStates.RUN, new Run(this, this.owner));
@@ -104,6 +105,12 @@ export default class PlayerController extends StateMachineAI {
 
     public update(deltaT: number): void {
 		super.update(deltaT);
+        
+        if(this.owner.collisionShape.overlaps(this.goose.collisionShape)){
+            this.changeState(PlayerStates.DEAD)
+        }
+           
+    
 	}
 
     public get velocity(): Vec2 { return this._velocity; }
@@ -121,6 +128,6 @@ export default class PlayerController extends StateMachineAI {
         // When the health changes, fire an event up to the scene.
         this.emitter.fireEvent(HW3Events.HEALTH_CHANGE, {curhp: this.health, maxhp: this.maxHealth});
         // If the health hit 0, change the state of the player
-        if (this.health === 0) { this.changeState(PlayerStates.DEAD); }
+     
     }
 }

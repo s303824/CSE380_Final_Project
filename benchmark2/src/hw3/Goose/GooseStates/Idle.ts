@@ -1,12 +1,12 @@
 import { GooseStates, GooseAnimations } from "../GooseController";
-import PlayerState from "./GooseState";
+import GooseState from "./GooseState";
 import Input from "../../../Wolfie2D/Input/Input";
 import { HW3Controls } from "../../HW3Controls";
 
-export default class Idle extends PlayerState {
+export default class Idle extends GooseState {
 
 	public onEnter(options: Record<string, any>): void {
-        this.owner.animation.play(GooseAnimations.ATTACK);
+        this.owner.animation.play(GooseAnimations.IDLE);
 		this.parent.speed = this.parent.MIN_SPEED;
 
         this.parent.velocity.x = 0;
@@ -21,12 +21,10 @@ export default class Idle extends PlayerState {
 		let dir = this.parent.inputDir;
 
         // If the player is moving along the x-axis, transition to the walking state
-		if (!dir.isZero() && dir.y === 0){
-			this.finished(GooseStates.IDLE);
+		if (Math.abs(dir.x)){
+			this.finished(GooseStates.WALK);
 		} 
-       
 
-        // Otherwise, do nothing (keep idling)
 		
 	}
 

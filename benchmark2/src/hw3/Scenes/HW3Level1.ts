@@ -33,6 +33,10 @@ export default class Level1 extends HW3Level {
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
+    public static readonly GOOSE_SPAWN = new Vec2(450, 227);
+    public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
+    public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
+
     protected levelTeleportPosition: Vec2;
     protected levelTeleportHalfSize: Vec2;
 
@@ -52,7 +56,8 @@ export default class Level1 extends HW3Level {
         this.playerSpriteKey = Level1.PLAYER_SPRITE_KEY;
         // Set the player's spawn
         this.playerSpawn = Level1.PLAYER_SPAWN;
-
+        this.gooseSpriteKey = Level1.GOOSE_SPRITE_KEY;
+        this.gooseSpawn = Level1.GOOSE_SPAWN;
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
@@ -71,6 +76,7 @@ export default class Level1 extends HW3Level {
         this.load.tilemap(this.tilemapKey, Level1.TILEMAP_PATH);
         // Load in the player's sprite
         this.load.spritesheet(this.playerSpriteKey, Level1.PLAYER_SPRITE_PATH);
+        this.load.spritesheet(this.gooseSpriteKey, Level1.GOOSE_SPRITE_PATH);
         // Audio and music
         //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
         this.load.audio(this.jumpAudioKey, Level1.JUMP_AUDIO_PATH);
@@ -81,6 +87,7 @@ export default class Level1 extends HW3Level {
      */
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
+        this.load.keepSpritesheet(this.gooseSpriteKey);
         this.load.keepAudio(this.levelMusicKey);
         this.load.keepAudio(this.jumpAudioKey);
     }

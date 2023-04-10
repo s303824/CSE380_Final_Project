@@ -18,6 +18,7 @@ export const HW3Events = {
     HEALTH_CHANGE: "HEALTH_CHANGE",
     
     PLAYER_GOOSE_HIT: "PLAYER_GOOSE_HIT",
+    GOOSE_MOVE: "GOOSE_MOVE",
 
     // The event sent when a particle hits a tile in the destructible tilemap layer
     PARTICLE_HIT_DESTRUCTIBLE: "PARTICLE_HIT_DESTRUCTIBLE",

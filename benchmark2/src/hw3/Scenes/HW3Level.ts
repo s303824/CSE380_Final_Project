@@ -19,7 +19,7 @@ import Color from "../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 import PlayerController, { PlayerTweens } from "../Player/PlayerController";
 import PlayerWeapon from "../Player/PlayerWeapon";
-
+import GooseController from "../Goose/GooseController";
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
@@ -60,8 +60,13 @@ export default abstract class HW3Level extends Scene {
     private healthLabel: Label;
 	private healthBar: Label;
 	private healthBarBg: Label;
+    private instructionLabel: Label;
+    private instructionLabel2: Label;
+    private instructionLabel3: Label;
 
-
+    protected gooseSpriteKey: string;
+    protected goose: AnimatedSprite;
+    protected gooseSpawn: Vec2;
     /** The end of level stuff */
 
     protected levelEndPosition: Vec2;
@@ -122,7 +127,10 @@ export default abstract class HW3Level extends Scene {
 
         // Initialize the player 
         this.initializePlayer(this.playerSpriteKey);
-
+        this.initializeGoose(this.gooseSpriteKey);
+        this.player.addAI(PlayerController, { goose: this.goose,
+            tilemap: "Primary" 
+        });
         // Initialize the viewport - this must come after the player has been initialized
         this.initializeViewport();
         this.subscribeToEvents();
@@ -155,8 +163,9 @@ export default abstract class HW3Level extends Scene {
         while (this.receiver.hasNextEvent()) {
             this.handleEvent(this.receiver.getNextEvent());
         }
-    }
 
+        
+    }
     /**
      * Handle game events. 
      * @param event the game event
@@ -178,6 +187,7 @@ export default abstract class HW3Level extends Scene {
                 this.sceneManager.changeToScene(this.nextLevel);
                 break;
             }
+           
             case HW3Events.HEALTH_CHANGE: {
                 this.handleHealthChange(event.data.get("curhp"), event.data.get("maxhp"));
                 break;
@@ -225,7 +235,7 @@ export default abstract class HW3Level extends Scene {
 
 		this.healthBar.backgroundColor = currentHealth < maxHealth * 1/4 ? Color.RED: currentHealth < maxHealth * 3/4 ? Color.YELLOW : Color.GREEN;
 	}
-
+    
     /* Initialization methods for everything in the scene */
 
     /**
@@ -272,20 +282,33 @@ export default abstract class HW3Level extends Scene {
      * Adds in any necessary UI to the game
      */
     protected initializeUI(): void {
+        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD "});
+        this.instructionLabel.size.set(300, 30);
+        this.instructionLabel.fontSize = 24;
+        this.instructionLabel.font = "Courier";
+        this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Press Space to Jump "});
+        this.instructionLabel2.size.set(300, 30);
+        this.instructionLabel2.fontSize = 24;
+        this.instructionLabel2.font = "Courier";
 
+        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "Press E to Interact"});
+        this.instructionLabel3.size.set(300, 30);
+        this.instructionLabel3.fontSize = 24;
+        this.instructionLabel3.font = "Courier";
         // HP Label
-		this.healthLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(205, 20), text: "HP "});
+
+		this.healthLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(400, 20), text: "HP "});
 		this.healthLabel.size.set(300, 30);
 		this.healthLabel.fontSize = 24;
 		this.healthLabel.font = "Courier";
 
         // HealthBar
-		this.healthBar = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(250, 20), text: ""});
+		this.healthBar = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(400, 20), text: ""});
 		this.healthBar.size = new Vec2(300, 25);
 		this.healthBar.backgroundColor = Color.GREEN;
 
         // HealthBar Border
-		this.healthBarBg = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(250, 20), text: ""});
+		this.healthBarBg = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(400, 20), text: ""});
 		this.healthBarBg.size = new Vec2(300, 25);
 		this.healthBarBg.borderColor = Color.BLACK;
 
@@ -372,6 +395,8 @@ export default abstract class HW3Level extends Scene {
         this.player.scale.set(0.125, 0.125);
         this.player.position.copy(this.playerSpawn);
         
+        //let playerCollider = new AABB(Vec2.ZERO, this.player.sizeWithZoom);
+        //this.player.setCollisionShape(playerCollider);
         // Give the player physics and setup collision groups and triggers for the player
         this.player.addPhysics(new AABB(this.player.position.clone(), this.player.boundary.getHalfSize().clone()));
         this.player.setGroup(HW3PhysicsGroups.PLAYER);
@@ -399,10 +424,32 @@ export default abstract class HW3Level extends Scene {
         });
 
         // Give the player it's AI
-        this.player.addAI(PlayerController, { 
-            weaponSystem: this.playerWeaponSystem, 
-            tilemap: "Destructable" 
+        /*
+        this.player.addAI(PlayerController, { goose: this.goose,
+            tilemap: "Primary" 
         });
+        */
+    }
+
+    protected initializeGoose(key: string): void {
+       
+        if (this.gooseSpawn === undefined) {
+            throw new Error("Player spawn must be set before initializing the player!");
+        }
+
+        // Add the player to the scene
+        this.goose = this.add.animatedSprite(this.gooseSpriteKey, HW3Layers.PRIMARY);
+        this.goose.scale.set(.5, .5);
+        this.goose.position.copy(this.gooseSpawn);
+        //let gooseCollider = new AABB(Vec2.ZERO, this.goose.sizeWithZoom);
+        //this.goose.setCollisionShape(gooseCollider);
+        
+        // Give the player physics and setup collision groups and triggers for the player
+        this.goose.addPhysics(new AABB(this.goose.position.clone(), this.goose.boundary.getHalfSize().clone()));
+        this.goose.setGroup(HW3PhysicsGroups.GOOSE);
+
+        // Give the player it's AI
+    this.goose.addAI(GooseController, { player: this.player, tilemap: "Primary"});
     }
     /**
      * Initializes the viewport

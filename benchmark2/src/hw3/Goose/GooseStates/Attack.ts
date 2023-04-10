@@ -1,9 +1,9 @@
 import { GooseStates, GooseAnimations } from "../GooseController";
 import Input from "../../../Wolfie2D/Input/Input";
 import { HW3Controls } from "../../HW3Controls";
-import PlayerState from "./GooseState";
+import GooseState from "./GooseState";
 
-export default class Walk extends PlayerState {
+export default class Walk extends GooseState {
 
 	onEnter(options: Record<string, any>): void {
 		this.parent.speed = this.parent.MIN_SPEED;
@@ -19,7 +19,7 @@ export default class Walk extends PlayerState {
 
         // If the player is not moving - transition to the Idle state
 		
-  
+		
 
 	}
 
