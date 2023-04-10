@@ -37,7 +37,7 @@ export default class Jump extends PlayerState {
             // Update the vertical velocity of the player
             this.parent.velocity.y += this.gravity*deltaT;
             // If we're walking right, flip the sprite
-            this.owner.invertX = this.parent.velocity.x > 0;
+            this.owner.invertX = this.parent.velocity.x <= 0;
 
             // Move the player
             this.owner.move(this.parent.velocity.scaled(deltaT));

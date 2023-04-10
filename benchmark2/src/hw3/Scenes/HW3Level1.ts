@@ -30,13 +30,13 @@ export default class Level1 extends HW3Level {
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
     public static readonly LEVEL_MUSIC_PATH = "hw4_assets/music/hw5_level_music.wav";
 
+    public static readonly PANIC_AUDIO_KEY = "PANIC_AUDIO";
+    public static readonly PANIC_AUDIO_PATH = "hw4_assets/sounds/panic.wav";
+
+
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
-    protected levelTeleportPosition: Vec2;
-    protected levelTeleportHalfSize: Vec2;
-
-    protected levelTeleportArea: Rect;
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
@@ -56,6 +56,7 @@ export default class Level1 extends HW3Level {
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
+        this.panicAudioKey = Level1.PANIC_AUDIO_KEY;
 
         // Level end size and position
         this.levelEndPosition = new Vec2(1856, 216).mult(this.tilemapScale);
@@ -74,6 +75,7 @@ export default class Level1 extends HW3Level {
         // Audio and music
         //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
         this.load.audio(this.jumpAudioKey, Level1.JUMP_AUDIO_PATH);
+        this.load.audio(this.panicAudioKey, Level1.PANIC_AUDIO_PATH);
     }
 
     /**
@@ -97,7 +99,9 @@ export default class Level1 extends HW3Level {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
         
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(736, 128).mult(this.tilemapScale), size: new Vec2(96, 32).mult(this.tilemapScale) });
+        this.levelTeleportPosition = new Vec2(736, 128).mult(this.tilemapScale)
+        this.levelTeleportHalfSize = new Vec2(96, 32).mult(this.tilemapScale)
+        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
         this.levelTeleportArea.color = new Color(255, 0, 255, .0);
@@ -115,5 +119,4 @@ export default class Level1 extends HW3Level {
         this.viewport.setBounds(0, 0, 120*16, 20*16);
 
     }
-
 }

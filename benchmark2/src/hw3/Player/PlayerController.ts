@@ -29,7 +29,9 @@ export const PlayerAnimations = {
  * Tween animations the player can player.
  */
 export const PlayerTweens = {
-    DEATH: "DEATH"
+    DEATH: "DEATH",
+    DISAPPEAR: "DISAPPEAR",
+    REAPPEAR: "REAPPEAR"
 } as const
 
 /**
