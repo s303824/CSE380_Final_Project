@@ -1,26 +1,27 @@
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import HW3Level from "./HW3Level";
+import HW3Level, { HW3Layers } from "./HW3Level";
 import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
 import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
-import HW4Level2 from "./HW3Level2";
+import MainMenu from "./MainMenu";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
+import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
+import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
+import { HW3Events } from "../HW3Events";
+import Color from "../../Wolfie2D/Utils/Color";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
  */
 export default class Level1 extends HW3Level {
 
-    public static readonly PLAYER_SPAWN = new Vec2(256, 100);
+    public static readonly PLAYER_SPAWN = new Vec2(256, 208);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
 
-    public static readonly GOOSE_SPAWN = new Vec2(280, 230);
-    public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
-    public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
-
     public static readonly TILEMAP_KEY = "LEVEL1";
-    public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level1.json";
+    public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-1.json";
 
     public static readonly TILEMAP_SCALE = new Vec2(1, 1);
     public static readonly DESTRUCTIBLE_LAYER_KEY = "Destructable";
@@ -32,6 +33,10 @@ export default class Level1 extends HW3Level {
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
+    protected levelTeleportPosition: Vec2;
+    protected levelTeleportHalfSize: Vec2;
+
+    protected levelTeleportArea: Rect;
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
@@ -48,16 +53,14 @@ export default class Level1 extends HW3Level {
         // Set the player's spawn
         this.playerSpawn = Level1.PLAYER_SPAWN;
 
-        this.gooseSpriteKey = Level1.GOOSE_SPRITE_KEY;
-        this.gooseSpawn = Level1.GOOSE_SPAWN;
-
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
-        this.levelEndPosition = new Vec2(32, 216).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(1856, 216).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
+        this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
     }
 
     /**
@@ -68,9 +71,8 @@ export default class Level1 extends HW3Level {
         this.load.tilemap(this.tilemapKey, Level1.TILEMAP_PATH);
         // Load in the player's sprite
         this.load.spritesheet(this.playerSpriteKey, Level1.PLAYER_SPRITE_PATH);
-        this.load.spritesheet(this.gooseSpriteKey, Level1.GOOSE_SPRITE_PATH);
         // Audio and music
-        this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
+        //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
         this.load.audio(this.jumpAudioKey, Level1.JUMP_AUDIO_PATH);
     }
 
@@ -79,7 +81,6 @@ export default class Level1 extends HW3Level {
      */
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
-        this.load.keepSpritesheet(this.gooseSpriteKey);
         this.load.keepAudio(this.levelMusicKey);
         this.load.keepAudio(this.jumpAudioKey);
     }
@@ -87,7 +88,20 @@ export default class Level1 extends HW3Level {
     public startScene(): void {
         super.startScene();
         // Set the next level to be Level2
-        this.nextLevel = HW4Level2;
+        this.nextLevel = MainMenu;
+        this.initializePlayerTeleport()
+    }
+
+    protected initializePlayerTeleport(): void {
+        if (!this.layers.has(HW3Layers.PRIMARY)) {
+            throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
+        }
+        
+        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(736, 128).mult(this.tilemapScale), size: new Vec2(96, 32).mult(this.tilemapScale) });
+        this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
+        this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
+        this.levelTeleportArea.color = new Color(255, 0, 255, .0);
+        
     }
 
     /**
@@ -98,7 +112,6 @@ export default class Level1 extends HW3Level {
      */
     protected initializeViewport(): void {
         super.initializeViewport();
-        //this.viewport.setBounds(16, 16, 496, 512);
         this.viewport.setBounds(0, 0, 120*16, 20*16);
 
     }

@@ -18,14 +18,13 @@ import Timer from "../../Wolfie2D/Timing/Timer";
 import Color from "../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 import PlayerController, { PlayerTweens } from "../Player/PlayerController";
-
+import PlayerWeapon from "../Player/PlayerWeapon";
 
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
 import MainMenu from "./MainMenu";
 import Particle from "../../Wolfie2D/Nodes/Graphics/Particle";
-import GooseController from "../Goose/GooseController";
 
 /**
  * A const object for the layer names
@@ -50,23 +49,18 @@ export default abstract class HW3Level extends Scene {
 
 
     /** The particle system used for the player's weapon */
-
+    protected playerWeaponSystem: PlayerWeapon
     /** The key for the player's animated sprite */
     protected playerSpriteKey: string;
     /** The animated sprite that is the player */
     protected player: AnimatedSprite;
     /** The player's spawn position */
     protected playerSpawn: Vec2;
-    
-    protected gooseSpriteKey: string;
-    protected goose: AnimatedSprite;
-    protected gooseSpawn: Vec2;
+
     private healthLabel: Label;
 	private healthBar: Label;
 	private healthBarBg: Label;
-    private instructionLabel: Label;
-    private instructionLabel2: Label;
-    private instructionLabel3: Label;
+
 
     /** The end of level stuff */
 
@@ -95,6 +89,9 @@ export default abstract class HW3Level extends Scene {
     protected jumpAudioKey: string;
     protected tileDestroyedAudioKey: string;
 
+    /** Teleporting player */
+    protected playerNewLocation: Vec2;
+
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, {...options, physics: {
             groupNames: [
@@ -121,10 +118,10 @@ export default abstract class HW3Level extends Scene {
         this.initializeTilemap();
 
         // Initialize the sprite and particle system for the players weapon 
-    
+        this.initializeWeaponSystem();
+
         // Initialize the player 
         this.initializePlayer(this.playerSpriteKey);
-        this.initializeGoose(this.gooseSpriteKey);
 
         // Initialize the viewport - this must come after the player has been initialized
         this.initializeViewport();
@@ -158,7 +155,6 @@ export default abstract class HW3Level extends Scene {
         while (this.receiver.hasNextEvent()) {
             this.handleEvent(this.receiver.getNextEvent());
         }
-      //this.handlePlayerGooseCollision();
     }
 
     /**
@@ -191,6 +187,10 @@ export default abstract class HW3Level extends Scene {
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             }
+            case HW3Events.PLAYER_TELEPORT: {
+                this.player.position.copy(this.playerNewLocation);
+                break;
+            }
             // Default: Throw an error! No unhandled events allowed.
             default: {
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
@@ -217,9 +217,6 @@ export default abstract class HW3Level extends Scene {
      * @param currentHealth the current health of the player
      * @param maxHealth the maximum health of the player
      */
-    protected handlePlayerGooseHit(): void {
-        this.emitter.fireEvent(HW3Events.PLAYER_DEAD)
-    }
     protected handleHealthChange(currentHealth: number, maxHealth: number): void {
 		let unit = this.healthBarBg.size.x / maxHealth;
         
@@ -268,6 +265,8 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.LEVEL_END);
         this.receiver.subscribe(HW3Events.HEALTH_CHANGE);
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
+        this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
+
     }
     /**
      * Adds in any necessary UI to the game
@@ -275,36 +274,20 @@ export default abstract class HW3Level extends Scene {
     protected initializeUI(): void {
 
         // HP Label
-		 // HP Label
-         this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD "});
-         this.instructionLabel.size.set(300, 30);
-         this.instructionLabel.fontSize = 24;
-         this.instructionLabel.font = "Courier";
- 
-         // HP Label
-         this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Press Space to Jump "});
-         this.instructionLabel2.size.set(300, 30);
-         this.instructionLabel2.fontSize = 24;
-         this.instructionLabel2.font = "Courier";
- 
-         this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "Press E to Interact"});
-         this.instructionLabel3.size.set(300, 30);
-         this.instructionLabel3.fontSize = 24;
-         this.instructionLabel3.font = "Courier";
- 
-         this.healthLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(500, 20), text: "HP "});
-         this.healthLabel.size.set(300, 30);
-         this.healthLabel.fontSize = 24;
-         this.healthLabel.font = "Courier";
- 
-         // HealthBar
-         this.healthBar = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(500, 20), text: ""});
-         this.healthBar.size = new Vec2(300, 25);
-         this.healthBar.backgroundColor = Color.GREEN;
- 
-         this.healthBarBg = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(400, 20), text: ""});
-         this.healthBarBg.size = new Vec2(300, 25);
-         this.healthBarBg.borderColor = Color.BLACK;
+		this.healthLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(205, 20), text: "HP "});
+		this.healthLabel.size.set(300, 30);
+		this.healthLabel.fontSize = 24;
+		this.healthLabel.font = "Courier";
+
+        // HealthBar
+		this.healthBar = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(250, 20), text: ""});
+		this.healthBar.size = new Vec2(300, 25);
+		this.healthBar.backgroundColor = Color.GREEN;
+
+        // HealthBar Border
+		this.healthBarBg = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(250, 20), text: ""});
+		this.healthBarBg.size = new Vec2(300, 25);
+		this.healthBarBg.borderColor = Color.BLACK;
 
         // End of level label (start off screen)
         this.levelEndLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, { position: new Vec2(-300, 100), text: "Level Complete" });
@@ -368,24 +351,26 @@ export default abstract class HW3Level extends Scene {
     /**
      * Initializes the particles system used by the player's weapon.
      */
-    
+    protected initializeWeaponSystem(): void {
+        this.playerWeaponSystem = new PlayerWeapon(50, Vec2.ZERO, 1000, 3, 0, 50);
+        this.playerWeaponSystem.initializePool(this, HW3Layers.PRIMARY);
+    }
     /**
      * Initializes the player, setting the player's initial position to the given position.
      * @param position the player's spawn position
      */
     protected initializePlayer(key: string): void {
-       
+        if (this.playerWeaponSystem === undefined) {
+            throw new Error("Player weapon system must be initialized before initializing the player!");
+        }
         if (this.playerSpawn === undefined) {
             throw new Error("Player spawn must be set before initializing the player!");
         }
 
         // Add the player to the scene
         this.player = this.add.animatedSprite(key, HW3Layers.PRIMARY);
-        this.player.scale.set(.25, .25);
+        this.player.scale.set(0.125, 0.125);
         this.player.position.copy(this.playerSpawn);
-        
-        let playerCollider = new AABB(Vec2.ZERO, this.player.sizeWithZoom);
-        this.player.setCollisionShape(playerCollider);
         
         // Give the player physics and setup collision groups and triggers for the player
         this.player.addPhysics(new AABB(this.player.position.clone(), this.player.boundary.getHalfSize().clone()));
@@ -415,52 +400,9 @@ export default abstract class HW3Level extends Scene {
 
         // Give the player it's AI
         this.player.addAI(PlayerController, { 
+            weaponSystem: this.playerWeaponSystem, 
             tilemap: "Destructable" 
         });
-    }
-
-    protected initializeGoose(key: string): void {
-       
-        if (this.gooseSpawn === undefined) {
-            throw new Error("Player spawn must be set before initializing the player!");
-        }
-
-        // Add the player to the scene
-        this.goose = this.add.animatedSprite(this.gooseSpriteKey, HW3Layers.PRIMARY);
-        this.goose.scale.set(.5, .5);
-        this.goose.position.copy(this.gooseSpawn);
-        let gooseCollider = new AABB(Vec2.ZERO, this.goose.sizeWithZoom);
-        this.goose.setCollisionShape(gooseCollider);
-        
-        // Give the player physics and setup collision groups and triggers for the player
-        this.goose.addPhysics(new AABB(this.goose.position.clone(), this.goose.boundary.getHalfSize().clone()));
-        //this.goose.setGroup(HW3PhysicsGroups.goose);
-
-
-        // Give the player a death animation
-       
-       /* this.goose.tweens.add(Tweens.DEATH, {
-            startDelay: 0,
-            duration: 500,
-            effects: [
-                {
-                    property: "rotation",
-                    start: 0,
-                    end: Math.PI,
-                    ease: EaseFunctionType.IN_OUT_QUAD
-                },
-                {
-                    property: "alpha",
-                    start: 1,
-                    end: 0,
-                    ease: EaseFunctionType.IN_OUT_QUAD
-                }
-            ],
-            onEnd: HW3Events.PLAYER_DEAD
-        });
-*/
-        // Give the player it's AI
-        this.goose.addAI(GooseController, { tilemap: "Primary" });
     }
     /**
      * Initializes the viewport
@@ -472,14 +414,6 @@ export default abstract class HW3Level extends Scene {
         this.viewport.follow(this.player);
         this.viewport.setZoomLevel(4);
         this.viewport.setBounds(0, 0, 512, 512);
-    }
-
-    public handlePlayerGooseCollision(): void {
-        if(this.player.collisionShape.overlaps(this.goose.collisionShape)) {
-            console.log("collison");
-            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
-        }
-
     }
     /**
      * Initializes the level end area
