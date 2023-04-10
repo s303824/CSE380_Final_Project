@@ -7,7 +7,11 @@ export default class Walk extends PlayerState {
 
 	onEnter(options: Record<string, any>): void {
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(PlayerAnimations.WALK);
+
+        // If we're walking left, flip the sprite
+        this.owner.invertX = this.parent.velocity.x < 0;
+
+        this.owner.animation.playIfNotAlready(PlayerAnimations.WALK,true);
 	}
 
 	update(deltaT: number): void {
@@ -33,7 +37,11 @@ export default class Walk extends PlayerState {
         else {
             // Update the vertical velocity of the player
             this.parent.velocity.y += this.gravity*deltaT; 
-            this.parent.velocity.x = dir.x * this.parent.speed
+            this.parent.velocity.x = dir.x * this.parent.speed;
+            
+            // If we're walking left, flip the sprite
+            this.owner.invertX = this.parent.velocity.x < 0;
+
             this.owner.move(this.parent.velocity.scaled(deltaT));
         }
 
