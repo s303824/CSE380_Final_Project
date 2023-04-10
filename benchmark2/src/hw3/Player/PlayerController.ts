@@ -29,7 +29,9 @@ export const PlayerAnimations = {
  * Tween animations the player can player.
  */
 export const PlayerTweens = {
-    DEATH: "DEATH"
+    DEATH: "DEATH",
+    DISAPPEAR: "DISAPPEAR",
+    REAPPEAR: "REAPPEAR"
 } as const
 
 /**
@@ -104,27 +106,6 @@ export default class PlayerController extends StateMachineAI {
 
     public update(deltaT: number): void {
 		super.update(deltaT);
-
-        // Update the rotation to apply the particles velocity vector
-        this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.faceDir) + Math.PI;
-
-        // If the player hits the attack button and the weapon system isn't running, restart the system and fire!
-        if (Input.isPressed(HW3Controls.ATTACK) && !this.weapon.isSystemRunning()) {
-            // Update the rotation to apply the particles velocity vector
-            this.weapon.rotation = 2*Math.PI - Vec2.UP.angleToCCW(this.faceDir) + Math.PI;
-            // Start the particle system at the player's current position
-            this.weapon.startSystem(500, 0, this.owner.position);
-        }
-
-        /*
-            This if-statement will place a tile wherever the user clicks on the screen. I have
-            left this here to make traversing the map a little easier, incase you accidently
-            destroy everything with the player's weapon.
-        */
-        if (Input.isMousePressed()) {
-            this.tilemap.setTileAtRowCol(this.tilemap.getColRowAt(Input.getGlobalMousePosition()),5);
-        }
-
 	}
 
     public get velocity(): Vec2 { return this._velocity; }

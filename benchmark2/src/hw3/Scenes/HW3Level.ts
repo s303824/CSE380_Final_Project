@@ -87,7 +87,16 @@ export default abstract class HW3Level extends Scene {
     /** Sound and music */
     protected levelMusicKey: string;
     protected jumpAudioKey: string;
+    protected panicAudioKey: string;
     protected tileDestroyedAudioKey: string;
+
+    /** Teleporting player */
+    protected playerNewLocation: Vec2;
+    protected levelTeleportPosition: Vec2;
+    protected levelTeleportHalfSize: Vec2;
+    protected levelTeleportArea: Rect;
+    protected isTeleporting: boolean;
+    protected levelTeleportVelocity: Vec2;
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, {...options, physics: {
@@ -143,6 +152,8 @@ export default abstract class HW3Level extends Scene {
 
         // Start playing the level music for the HW4 level
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
+
+        this.isTeleporting = false;
     }
 
     /* Update method for the scene */
@@ -151,6 +162,15 @@ export default abstract class HW3Level extends Scene {
         // Handle all game events
         while (this.receiver.hasNextEvent()) {
             this.handleEvent(this.receiver.getNextEvent());
+        }
+        if(this.isTeleporting){
+            this.levelTeleportVelocity = this.levelTeleportPosition.dirTo(this.playerNewLocation);
+
+            this.levelTeleportVelocity.x *= 75;
+            this.levelTeleportVelocity.y *= 75;
+
+            this.levelTeleportArea.move(this.levelTeleportVelocity.scaled(deltaT));
+            this.levelTeleportArea.finishMove();
         }
     }
 
@@ -182,6 +202,25 @@ export default abstract class HW3Level extends Scene {
             case HW3Events.PLAYER_DEAD: {
                 this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
                 this.sceneManager.changeToScene(MainMenu);
+                break;
+            }
+            case HW3Events.PLAYER_TELEPORT: {     
+                if(!this.isTeleporting){
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
+                    this.player.tweens.play(PlayerTweens.DISAPPEAR);           
+                    this.player.position.copy(this.playerNewLocation);
+                    this.viewport.follow(this.levelTeleportArea);
+                    this.isTeleporting = true;    
+                }
+                else{
+                    this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.panicAudioKey});
+                    console.log("Teleport Complete")
+                    this.player.tweens.play(PlayerTweens.REAPPEAR);      
+                    this.levelTeleportArea.position.copy(new Vec2(1, 1).mult(this.tilemapScale));     
+                    this.viewport.follow(this.player);
+                    this.isTeleporting = false;    
+
+                }
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.
@@ -258,6 +297,8 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.LEVEL_END);
         this.receiver.subscribe(HW3Events.HEALTH_CHANGE);
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
+        this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
+
     }
     /**
      * Adds in any necessary UI to the game
@@ -360,7 +401,7 @@ export default abstract class HW3Level extends Scene {
 
         // Add the player to the scene
         this.player = this.add.animatedSprite(key, HW3Layers.PRIMARY);
-        this.player.scale.set(1, 1);
+        this.player.scale.set(0.125, 0.125);
         this.player.position.copy(this.playerSpawn);
         
         // Give the player physics and setup collision groups and triggers for the player
@@ -389,10 +430,39 @@ export default abstract class HW3Level extends Scene {
             onEnd: HW3Events.PLAYER_DEAD
         });
 
+        // Give the player a disappear animation
+        this.player.tweens.add(PlayerTweens.DISAPPEAR, {
+            startDelay: 0,
+            duration: 100,
+            effects: [
+                {
+                    property: "alpha",
+                    start: 1,
+                    end: 0,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                }
+            ],
+        });
+
+        // Give the player a reappear animation
+        this.player.tweens.add(PlayerTweens.REAPPEAR, {
+            startDelay: 0,
+            duration: 100,
+            effects: [
+                {
+                    property: "alpha",
+                    start: 0,
+                    end: 1,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                }
+            ],
+        });
+        
+
         // Give the player it's AI
         this.player.addAI(PlayerController, { 
             weaponSystem: this.playerWeaponSystem, 
-            tilemap: "Destructable" 
+            tilemap: "Primary" 
         });
     }
     /**
@@ -427,4 +497,9 @@ export default abstract class HW3Level extends Scene {
     public getJumpAudioKey(): string {
         return this.jumpAudioKey
     }
+
+    public getPanicAudioKey(): string {
+        return this.panicAudioKey
+    }
+
 }

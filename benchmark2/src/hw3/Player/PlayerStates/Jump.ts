@@ -12,7 +12,6 @@ export default class Jump extends PlayerState {
         // Give the player a burst of upward momentum
         this.parent.velocity.y = -200;
 
-
         // Play the jump sound for the player
 		this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: scene.getJumpAudioKey(), loop: false, holdReference: false});
 	}
@@ -37,6 +36,9 @@ export default class Jump extends PlayerState {
             this.parent.velocity.x += dir.x * this.parent.speed/3.5 - 0.3*this.parent.velocity.x;
             // Update the vertical velocity of the player
             this.parent.velocity.y += this.gravity*deltaT;
+            // If we're walking right, flip the sprite
+            this.owner.invertX = this.parent.velocity.x <= 0;
+
             // Move the player
             this.owner.move(this.parent.velocity.scaled(deltaT));
         }

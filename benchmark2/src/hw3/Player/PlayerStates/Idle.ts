@@ -9,6 +9,9 @@ export default class Idle extends PlayerState {
         this.owner.animation.play(PlayerAnimations.IDLE);
 		this.parent.speed = this.parent.MIN_SPEED;
 
+        // If we're walking right, flip the sprite
+        this.owner.invertX = this.parent.velocity.x > 0;
+
         this.parent.velocity.x = 0;
         this.parent.velocity.y = 0;
 	}
