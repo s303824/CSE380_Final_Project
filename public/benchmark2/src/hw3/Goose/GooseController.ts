@@ -64,7 +64,7 @@ export default class GooseController extends StateMachineAI {
     protected player: HW3AnimatedSprite;
     public playerVec: Vec2;
     // protected cannon: Sprite;
-
+    protected walkFlag: boolean;
 
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
@@ -77,7 +77,7 @@ export default class GooseController extends StateMachineAI {
         this.velocity = Vec2.ZERO;
         this.player = options.player;
         this.playerVec = this.player.position;
-
+        this.walkFlag = false;
 
         // Add the different states the player can be in to the PlayerController 
 		this.addState(GooseStates.IDLE, new Idle(this, this.owner));
@@ -103,9 +103,11 @@ export default class GooseController extends StateMachineAI {
 		super.update(deltaT);
        
         if((Math.abs(this.owner.position.x - this.playerVec.x) < 100) &&(Math.abs(this.owner.position.y - this.playerVec.y) < 100)){
+            
             this.handleGooseWalk();
         }else{
             this.changeState(GooseStates.IDLE);
+            this.walkFlag = false;
         }
         
         if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
@@ -115,7 +117,10 @@ export default class GooseController extends StateMachineAI {
         
 	}
     protected handleGooseWalk(): void {
+        if(this.walkFlag == false){
         this.changeState(GooseStates.WALK);
+        this.walkFlag = true;
+        }
     }
    
     protected handlePlayerGooseCollision(): void {
