@@ -496,12 +496,13 @@ export default abstract class HW3Level extends Scene {
 
         // Add the player to the scene
         this.goose = this.add.animatedSprite(this.gooseSpriteKey, HW3Layers.PRIMARY);
-        this.goose.scale.set(1, 1);
+        this.goose.scale.set(.75,.75);
         this.goose.position.copy(this.gooseSpawn);
         //let gooseCollider = new AABB(Vec2.ZERO, this.goose.sizeWithZoom);
         //this.goose.setCollisionShape(gooseCollider);
         
         // Give the player physics and setup collision groups and triggers for the player
+       
         this.goose.addPhysics(new AABB(this.goose.position.clone(), this.goose.boundary.getHalfSize().clone()));
         this.goose.setGroup(HW3PhysicsGroups.GOOSE);
 

@@ -33,7 +33,7 @@ export default class Jump extends PlayerState {
             // Get the input direction from the player
             let dir = this.parent.inputDir;
             // Update the horizontal velocity of the player
-            this.parent.velocity.x += dir.x * this.parent.speed/3.5 - 0.3*this.parent.velocity.x;
+            this.parent.velocity.x += dir.x * this.parent.speed/2.25 - 0.3*this.parent.velocity.x;
             // Update the vertical velocity of the player
             this.parent.velocity.y += this.gravity*deltaT;
             // If we're walking right, flip the sprite
