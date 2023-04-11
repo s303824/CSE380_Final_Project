@@ -24,6 +24,8 @@ export const PlayerAnimations = {
     IDLE: "IDLE",
     WALK: "WALK",
     JUMP: "JUMP",
+    DYING: "DYING",
+    DEAD: "DEAD"
 } as const
 
 /**

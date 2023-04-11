@@ -10,7 +10,7 @@ export default class Walk extends GooseState {
 	onEnter(options: Record<string, any>): void {
 		
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(GooseAnimations.WALK);
+        this.owner.animation.playIfNotAlready(GooseAnimations.WALK, true);
 	}
 
 	update(deltaT: number): void {

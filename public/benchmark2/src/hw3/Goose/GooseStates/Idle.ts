@@ -6,7 +6,7 @@ import { HW3Controls } from "../../HW3Controls";
 export default class Idle extends GooseState {
 
 	public onEnter(options: Record<string, any>): void {
-        this.owner.animation.play(GooseAnimations.IDLE);
+        this.owner.animation.play(GooseAnimations.IDLE, true);
 		this.parent.speed = this.parent.MIN_SPEED;
 
         this.parent.velocity.x = 0;

@@ -102,7 +102,7 @@ export default class GooseController extends StateMachineAI {
     public update(deltaT: number): void {
 		super.update(deltaT);
        
-        if((Math.abs(this.owner.position.x - this.playerVec.x) < 100) &&(Math.abs(this.owner.position.y - this.playerVec.y) < 10)){
+        if((Math.abs(this.owner.position.x - this.playerVec.x) < 100) &&(Math.abs(this.owner.position.y - this.playerVec.y) < 100)){
             this.handleGooseWalk();
         }else{
             this.changeState(GooseStates.IDLE);

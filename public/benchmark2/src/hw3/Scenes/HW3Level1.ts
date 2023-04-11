@@ -33,7 +33,10 @@ export default class Level1 extends HW3Level {
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
-    public static readonly GOOSE_SPAWN = new Vec2(450, 227);
+    public static readonly PANIC_AUDIO_KEY = "PANIC_AUDIO";
+    public static readonly PANIC_AUDIO_PATH = "hw4_assets/sounds/panic.wav";
+
+    public static readonly GOOSE_SPAWN = new Vec2(600, 216);
     public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
     public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
 
@@ -61,6 +64,8 @@ export default class Level1 extends HW3Level {
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
+        this.panicAudioKey = Level1.PANIC_AUDIO_KEY;
+
 
         // Level end size and position
         this.levelEndPosition = new Vec2(1856, 216).mult(this.tilemapScale);
@@ -80,6 +85,8 @@ export default class Level1 extends HW3Level {
         // Audio and music
         //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
         this.load.audio(this.jumpAudioKey, Level1.JUMP_AUDIO_PATH);
+        this.load.audio(this.panicAudioKey, Level1.PANIC_AUDIO_PATH);
+
     }
 
     /**
@@ -104,7 +111,9 @@ export default class Level1 extends HW3Level {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
         
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(736, 128).mult(this.tilemapScale), size: new Vec2(96, 32).mult(this.tilemapScale) });
+        this.levelTeleportPosition = new Vec2(736, 128).mult(this.tilemapScale)
+        this.levelTeleportHalfSize = new Vec2(96, 32).mult(this.tilemapScale)
+        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
         this.levelTeleportArea.color = new Color(255, 0, 255, .0);
