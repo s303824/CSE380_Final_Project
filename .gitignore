@@ -64,3 +64,8 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+
+# Ignore previous benchmarks
+benchmark1
+benchmark2
