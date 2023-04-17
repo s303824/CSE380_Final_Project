@@ -1,0 +1,59 @@
+{
+    "name": "Goose",
+    "spriteSheetImage": "Goose.png",
+    "spriteWidth": 48,
+    "spriteHeight": 48,
+    "columns": 36,
+    "rows": 3,
+    "durationType": "time",
+    "animations": [
+        { 
+            "name": "IDLE",
+            "frames": [ 
+            {"index": 0, "duration": 4},
+            {"index": 1, "duration": 4},
+            {"index": 2, "duration": 4},
+            {"index": 3, "duration": 4},
+            {"index": 4, "duration": 4},
+            {"index": 5, "duration": 4},
+            {"index": 6, "duration": 4},
+            {"index": 7, "duration": 4},
+            {"index": 8, "duration": 4},
+            {"index": 9, "duration": 4},
+            {"index": 10, "duration": 4},
+            {"index": 11, "duration": 4},
+            {"index": 12, "duration": 4},
+            {"index": 13, "duration": 4},
+            {"index": 14, "duration": 4},
+            {"index": 15, "duration": 4},
+            {"index": 16, "duration": 4},
+            {"index": 17, "duration": 4},
+            {"index": 18, "duration": 4},
+            {"index": 19, "duration": 4},
+            {"index": 20, "duration": 4},
+            {"index": 21, "duration": 4},
+            {"index": 22, "duration": 4},
+            {"index": 23, "duration": 4},
+            {"index": 24, "duration": 4},
+            {"index": 25, "duration": 4},
+            {"index": 26, "duration": 4},
+            {"index": 27, "duration": 4},
+            {"index": 28, "duration": 4},
+            {"index": 29, "duration": 4},
+            {"index": 30, "duration": 4},
+            {"index": 31, "duration": 4},
+            {"index": 32, "duration": 4},
+            {"index": 33, "duration": 4},
+            {"index": 34, "duration": 4},
+            {"index": 35, "duration": 4}]
+        },
+        {
+            "name": "WALK",
+            "frames": [ {"index": 36, "duration": 4}, {"index": 37, "duration": 4}, {"index": 38, "duration": 4},{"index": 39, "duration": 4},{"index": 40, "duration": 4} ]
+        },
+        {
+            "name": "ATTACK",
+            "frames":[ {"index": 41, "duration": 4},{"index": 42, "duration": 4},{"index": 43, "duration": 4},{"index": 44, "duration": 4},{"index": 45, "duration": 4},{"index": 46, "duration": 4},{"index": 47, "duration": 4}]
+        }
+    ]
+}
