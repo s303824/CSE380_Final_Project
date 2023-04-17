@@ -67,5 +67,5 @@ node_modules/
 
 
 # Ignore previous benchmarks
-benchmark1
-benchmark2
+public/benchmark1
+public/benchmark2
