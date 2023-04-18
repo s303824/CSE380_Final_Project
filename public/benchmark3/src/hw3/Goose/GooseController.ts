@@ -110,10 +110,15 @@ export default class GooseController extends StateMachineAI {
             this.walkFlag = false;
         }
         
+        /*
+
+        GOOSE SHOULD NOT BE EMITTING THE GAME EVENT PLAYER_DEAD
+
+        
         if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
             this.handlePlayerGooseCollision();
             this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
-        }
+        }*/
         
 	}
     protected handleGooseWalk(): void {

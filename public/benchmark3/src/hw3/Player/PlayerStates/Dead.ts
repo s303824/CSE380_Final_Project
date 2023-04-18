@@ -10,7 +10,8 @@ export default class Dead extends PlayerState {
 
     // Trigger the player's death animation when we enter the dead state
     public onEnter(options: Record<string, any>): void {
-        this.owner.animation.play(PlayerAnimations.DYING,false);
+        this.owner.animation.play(PlayerAnimations.DYING,false, HW3Events.PLAYER_DEAD);
+        this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
     }
 
     // Ignore all events from the rest of the game

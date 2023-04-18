@@ -16,6 +16,7 @@ import HW3AnimatedSprite from "../Nodes/HW3AnimatedSprite";
 import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 import Dead from "./PlayerStates/Dead";
+import Timer from "../../Wolfie2D/Timing/Timer";
 
 /**
  * Animation keys for the player spritesheet
@@ -69,6 +70,9 @@ export default class PlayerController extends StateMachineAI {
     // protected cannon: Sprite;
     protected weapon: PlayerWeapon;
     protected goose: HW3AnimatedSprite;
+
+    protected isInvincible: boolean;
+    protected invincibleTimer: Timer;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -81,6 +85,13 @@ export default class PlayerController extends StateMachineAI {
 
         this.health = 10
         this.maxHealth = 10;
+        this.isInvincible = false;
+        this.invincibleTimer = new Timer(10000, () => {
+            // After the timer ends, set isInvincible to false
+            console.log("Invincibility deactivated.")
+            this.isInvincible = false;
+        });
+        
         this.goose = options.goose;
         // Add the different states the player can be in to the PlayerController 
 		this.addState(PlayerStates.IDLE, new Idle(this, this.owner));
@@ -110,12 +121,25 @@ export default class PlayerController extends StateMachineAI {
     public update(deltaT: number): void {
 		super.update(deltaT);
         
-        if(this.owner.collisionShape.overlaps(this.goose.collisionShape)){
-            this.changeState(PlayerStates.DEAD)
+        if(Input.isKeyJustPressed("i")){
+            console.log("Invincibility activated.")
+            this.handleInvincibility();
         }
-           
-    
+
+        if(this.owner.collisionShape.overlaps(this.goose.collisionShape) && !this.isInvincible){
+            this.changeState(PlayerStates.DEAD);
+        }
+
 	}
+
+    protected handleInvincibility(): void {
+        // If the timer hasn't run yet, start the end level animation
+        if (!this.invincibleTimer.hasRun() && this.invincibleTimer.isStopped()) {
+            this.invincibleTimer.start();
+            this.isInvincible = true;
+        }
+    }
+
 
     public get velocity(): Vec2 { return this._velocity; }
     public set velocity(velocity: Vec2) { this._velocity = velocity; }
