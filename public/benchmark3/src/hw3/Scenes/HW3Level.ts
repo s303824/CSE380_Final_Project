@@ -217,6 +217,8 @@ export default abstract class HW3Level extends Scene {
             }
             case HW3Events.PLAYER_TELEPORT: {     
                 if(!this.isTeleporting){
+                    Input.disableInput();
+
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
                     this.player.tweens.play(PlayerTweens.DISAPPEAR);           
                     this.player.position.copy(this.playerNewLocation);
@@ -225,7 +227,7 @@ export default abstract class HW3Level extends Scene {
                     
                     
                     // Because the code was written in a way that assumes we only have one enemy at a time i had to move the goose elsewhere
-                    this.goose.position.copy(new Vec2(1600, 216).mult(this.tilemapScale))
+                    this.goose.position.copy(new Vec2(1600, 208).mult(this.tilemapScale))
                 }
                 else{
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.panicAudioKey});
@@ -233,7 +235,9 @@ export default abstract class HW3Level extends Scene {
                     this.player.tweens.play(PlayerTweens.REAPPEAR);      
                     this.levelTeleportArea.position.copy(new Vec2(1, 1).mult(this.tilemapScale));     
                     this.viewport.follow(this.player);
-                    this.isTeleporting = false;    
+                    this.isTeleporting = false;   
+                    Input.enableInput();
+ 
                 }
                 break;
             }
