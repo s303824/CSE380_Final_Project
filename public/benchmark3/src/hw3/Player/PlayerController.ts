@@ -17,6 +17,7 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 import Dead from "./PlayerStates/Dead";
 import Timer from "../../Wolfie2D/Timing/Timer";
+import Dying from "./PlayerStates/Dying";
 
 /**
  * Animation keys for the player spritesheet
@@ -46,6 +47,7 @@ export const PlayerStates = {
     RUN: "RUN",
 	JUMP: "JUMP",
     FALL: "FALL",
+    DYING: "DYING",
     DEAD: "DEAD",
 } as const
 
@@ -98,6 +100,7 @@ export default class PlayerController extends StateMachineAI {
 		this.addState(PlayerStates.RUN, new Run(this, this.owner));
         this.addState(PlayerStates.JUMP, new Jump(this, this.owner));
         this.addState(PlayerStates.FALL, new Fall(this, this.owner));
+        this.addState(PlayerStates.DYING, new Dying(this, this.owner));
         this.addState(PlayerStates.DEAD, new Dead(this, this.owner));
         
         // Start the player in the Idle state
@@ -127,7 +130,7 @@ export default class PlayerController extends StateMachineAI {
         }
 
         if(this.owner.collisionShape.overlaps(this.goose.collisionShape) && !this.isInvincible){
-            this.changeState(PlayerStates.DEAD);
+            this.changeState(PlayerStates.DYING);
         }
 
 	}

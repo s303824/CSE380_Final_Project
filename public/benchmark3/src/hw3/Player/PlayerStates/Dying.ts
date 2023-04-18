@@ -1,17 +1,18 @@
 import GameEvent from "../../../Wolfie2D/Events/GameEvent";
-import { HW3Events } from "../../HW3Events";
-import { PlayerAnimations, PlayerTweens } from "../PlayerController";
+import { PlayerTweens, PlayerStates, PlayerAnimations } from "../PlayerController";
 import PlayerState from "./PlayerState";
+import { GameEventType } from "../../../Wolfie2D/Events/GameEventType";
+import { HW3Events } from "../../HW3Events";
 
 /**
- * The Dead state for the player's FSM AI. 
+ * The Dying state for the player's FSM AI. 
  */
-export default class Dead extends PlayerState {
+export default class Dying extends PlayerState {
 
     // Trigger the player's death animation when we enter the dead state
     public onEnter(options: Record<string, any>): void {
-        this.owner.animation.playIfNotAlready(PlayerAnimations.DEAD, true);
-        this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
+        this.owner.animation.playIfNotAlready(PlayerAnimations.DYING, false, HW3Events.PLAYER_DEAD);
+        this.finished(PlayerStates.DEAD);
     }
 
     // Ignore all events from the rest of the game
