@@ -19,7 +19,7 @@ import Color from "../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 import PlayerController, { PlayerTweens } from "../Player/PlayerController";
 import PlayerWeapon from "../Player/PlayerWeapon";
-import GooseController from "../Goose/GooseController";
+
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
@@ -64,9 +64,6 @@ export default abstract class HW3Level extends Scene {
     private instructionLabel2: Label;
     private instructionLabel3: Label;
 
-    protected gooseSpriteKey: string;
-    protected goose: AnimatedSprite;
-    protected gooseSpawn: Vec2;
     /** The end of level stuff */
 
     protected levelEndPosition: Vec2;
@@ -134,8 +131,8 @@ export default abstract class HW3Level extends Scene {
 
         // Initialize the player 
         this.initializePlayer(this.playerSpriteKey);
-        this.initializeGoose(this.gooseSpriteKey);
-        this.player.addAI(PlayerController, { goose: this.goose,
+      
+        this.player.addAI(PlayerController, {
             tilemap: "Primary" 
         });
         // Initialize the viewport - this must come after the player has been initialized
@@ -215,6 +212,8 @@ export default abstract class HW3Level extends Scene {
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             }
+       
+
             case HW3Events.PLAYER_TELEPORT: {     
                 if(!this.isTeleporting){
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
@@ -225,7 +224,7 @@ export default abstract class HW3Level extends Scene {
                     
                     
                     // Because the code was written in a way that assumes we only have one enemy at a time i had to move the goose elsewhere
-                    this.goose.position.copy(new Vec2(1600, 216).mult(this.tilemapScale))
+                    
                 }
                 else{
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.panicAudioKey});
@@ -312,7 +311,7 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.HEALTH_CHANGE);
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
         this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
-
+      
     }
     /**
      * Adds in any necessary UI to the game
@@ -488,27 +487,7 @@ export default abstract class HW3Level extends Scene {
         
     }
 
-    protected initializeGoose(key: string): void {
-       
-        if (this.gooseSpawn === undefined) {
-            throw new Error("Player spawn must be set before initializing the player!");
-        }
-
-        // Add the player to the scene
-        this.goose = this.add.animatedSprite(this.gooseSpriteKey, HW3Layers.PRIMARY);
-        this.goose.scale.set(.75,.75);
-        this.goose.position.copy(this.gooseSpawn);
-        //let gooseCollider = new AABB(Vec2.ZERO, this.goose.sizeWithZoom);
-        //this.goose.setCollisionShape(gooseCollider);
-        
-        // Give the player physics and setup collision groups and triggers for the player
-       
-        this.goose.addPhysics(new AABB(this.goose.position.clone(), this.goose.boundary.getHalfSize().clone()));
-        this.goose.setGroup(HW3PhysicsGroups.GOOSE);
-
-        // Give the player it's AI
-    this.goose.addAI(GooseController, { player: this.player, tilemap: "Primary"});
-    }
+    
     /**
      * Initializes the viewport
      */

@@ -19,7 +19,10 @@ export default class Jump extends PlayerState {
 	public update(deltaT: number): void {
         // Update the direction the player is facing
         super.update(deltaT);
-
+        if(this.parent.isHit){
+            this.finished(PlayerStates.DEAD);
+            
+        }
         // If the player hit the ground, start idling
         if (this.owner.onGround) {
 			this.finished(PlayerStates.IDLE);

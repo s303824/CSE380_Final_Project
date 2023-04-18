@@ -10,12 +10,13 @@ import Run from "./PlayerStates/Run";
 import PlayerWeapon from "./PlayerWeapon";
 import Input from "../../Wolfie2D/Input/Input";
 
-import GooseController from "../Goose/GooseController";
+
 import { HW3Controls } from "../HW3Controls";
 import HW3AnimatedSprite from "../Nodes/HW3AnimatedSprite";
 import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 import Dead from "./PlayerStates/Dead";
+import GameEvent from "../../Wolfie2D/Events/GameEvent";
 
 /**
  * Animation keys for the player spritesheet
@@ -61,10 +62,10 @@ export default class PlayerController extends StateMachineAI {
 
     /** The players game node */
     protected owner: HW3AnimatedSprite;
-
+    public isHit: boolean = false;
     protected _velocity: Vec2;
 	protected _speed: number;
-
+    public isDying: boolean=false;
     protected tilemap: OrthogonalTilemap;
     // protected cannon: Sprite;
     protected weapon: PlayerWeapon;
@@ -88,6 +89,7 @@ export default class PlayerController extends StateMachineAI {
         this.addState(PlayerStates.JUMP, new Jump(this, this.owner));
         this.addState(PlayerStates.FALL, new Fall(this, this.owner));
         this.addState(PlayerStates.DEAD, new Dead(this, this.owner));
+        this.receiver.subscribe(HW3Events.PLAYER_GOOSE_HIT);
         
         // Start the player in the Idle state
         this.initialize(PlayerStates.IDLE);
@@ -105,17 +107,28 @@ export default class PlayerController extends StateMachineAI {
     /** 
      * Gets the direction of the mouse from the player's position as a Vec2
      */
-    public get faceDir(): Vec2 { return this.owner.position.dirTo(Input.getGlobalMousePosition()); }
-
+    public get faceDir(): Vec2 { 
+        return 
+    }
     public update(deltaT: number): void {
 		super.update(deltaT);
-        
-        if(this.owner.collisionShape.overlaps(this.goose.collisionShape)){
-            this.changeState(PlayerStates.DEAD)
+        while (this.receiver.hasNextEvent()) {
+            this.handleEvent(this.receiver.getNextEvent());
         }
-           
     
+        if(this.isDying){
+            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
+            this.isDying = false;
+        }
 	}
+    public handleEvent(event: GameEvent): void {
+        switch(event.type){
+            case(HW3Events.PLAYER_GOOSE_HIT):
+                this.isHit=true;
+                break;
+        }
+    }
+
 
     public get velocity(): Vec2 { return this._velocity; }
     public set velocity(velocity: Vec2) { this._velocity = velocity; }

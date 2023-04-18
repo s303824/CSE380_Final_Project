@@ -10,6 +10,8 @@ import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import { HW3Events } from "../HW3Events";
 import Color from "../../Wolfie2D/Utils/Color";
+import GooseController from "../Goose/GooseController";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Level2 from "./HW3Level2";
 
 /**
@@ -17,6 +19,10 @@ import Level2 from "./HW3Level2";
  */
 export default class Level1 extends HW3Level {
 
+    protected gooseSpriteKey: string;
+    protected goose: AnimatedSprite;
+    protected gooseSpawn: Vec2;
+    protected gooseSpawn2: Vec2;
     public static readonly PLAYER_SPAWN = new Vec2(256, 208);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
@@ -38,6 +44,7 @@ export default class Level1 extends HW3Level {
     public static readonly PANIC_AUDIO_PATH = "hw4_assets/sounds/panic.wav";
 
     public static readonly GOOSE_SPAWN = new Vec2(600, 216);
+    public static readonly GOOSE_SPAWN_2= new Vec2(750, 216);
     public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
     public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
 
@@ -62,6 +69,7 @@ export default class Level1 extends HW3Level {
         this.playerSpawn = Level1.PLAYER_SPAWN;
         this.gooseSpriteKey = Level1.GOOSE_SPRITE_KEY;
         this.gooseSpawn = Level1.GOOSE_SPAWN;
+        this.gooseSpawn2 = Level1.GOOSE_SPAWN_2;
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
@@ -82,6 +90,7 @@ export default class Level1 extends HW3Level {
         this.load.tilemap(this.tilemapKey, Level1.TILEMAP_PATH);
         // Load in the player's sprite
         this.load.spritesheet(this.playerSpriteKey, Level1.PLAYER_SPRITE_PATH);
+       
         this.load.spritesheet(this.gooseSpriteKey, Level1.GOOSE_SPRITE_PATH);
         // Audio and music
         //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
@@ -105,6 +114,8 @@ export default class Level1 extends HW3Level {
         // Set the next level to be Level2
         this.nextLevel = Level2;
         this.initializePlayerTeleport()
+        this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn);
+        this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn2);
     }
 
     protected initializePlayerTeleport(): void {
@@ -131,6 +142,28 @@ export default class Level1 extends HW3Level {
         super.initializeViewport();
         this.viewport.setBounds(0, 0, 120*16, 20*16);
 
+    }
+    protected initializeGoose(key: string, spawn: Vec2): void {
+       
+        if (spawn === undefined) {
+            throw new Error("Player spawn must be set before initializing the player!");
+        }
+
+        // Add the player to the scene
+        this.goose = this.add.animatedSprite(this.gooseSpriteKey, HW3Layers.PRIMARY);
+        this.goose.scale.set(.75,.75);
+        this.goose.position.copy(spawn);
+        //let gooseCollider = new AABB(Vec2.ZERO, this.goose.sizeWithZoom);
+        //this.goose.setCollisionShape(gooseCollider);
+        
+        // Give the player physics and setup collision groups and triggers for the player
+   
+        this.goose.addPhysics(new AABB(this.goose.position.clone(), this.goose.boundary.getHalfSize().clone()));
+        this.goose.setGroup(HW3PhysicsGroups.GOOSE);
+        this.goose.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
+
+        // Give the player it's AI
+    this.goose.addAI(GooseController, { player: this.player, tilemap: "Primary"});
     }
 
 }

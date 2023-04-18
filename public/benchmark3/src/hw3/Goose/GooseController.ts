@@ -112,7 +112,7 @@ export default class GooseController extends StateMachineAI {
         
         if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
             this.handlePlayerGooseCollision();
-            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
+   
         }
         
 	}
@@ -125,6 +125,7 @@ export default class GooseController extends StateMachineAI {
    
     protected handlePlayerGooseCollision(): void {
         this.changeState(GooseStates.ATTACK);
+        this.emitter.fireEvent(HW3Events.PLAYER_GOOSE_HIT);
        
     }
     public get velocity(): Vec2 { return this._velocity; }
