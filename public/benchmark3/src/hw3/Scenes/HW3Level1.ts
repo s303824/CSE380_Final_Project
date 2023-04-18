@@ -37,7 +37,7 @@ export default class Level1 extends HW3Level {
     public static readonly PANIC_AUDIO_KEY = "PANIC_AUDIO";
     public static readonly PANIC_AUDIO_PATH = "hw4_assets/sounds/panic.wav";
 
-    public static readonly GOOSE_SPAWN = new Vec2(600, 216);
+    public static readonly GOOSE_SPAWN = new Vec2(600, 222);
     public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
     public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
 
