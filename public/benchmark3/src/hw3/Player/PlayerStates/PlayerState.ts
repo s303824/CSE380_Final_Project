@@ -21,9 +21,6 @@ export default abstract class PlayerState extends State {
 		this.owner = owner;
         this.gravity = 300;
         this.playerHit = false;
-
-
-      
         
 	}
 

@@ -150,7 +150,8 @@ export default class PlayerController extends StateMachineAI {
     public handleEvent(event: GameEvent): void {
         switch(event.type){
             case(HW3Events.PLAYER_GOOSE_HIT):
-                this.isHit=true;
+                if(!this.isInvincible)
+                    this.isHit=true;
                 break;
         }
     }

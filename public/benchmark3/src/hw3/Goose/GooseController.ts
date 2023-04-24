@@ -45,8 +45,8 @@ export const GooseStates = {
  * The controller that controls the player.
  */
 export default class GooseController extends StateMachineAI {
-    public readonly MAX_SPEED: number = 75;
-    public readonly MIN_SPEED: number = 50;
+    public readonly MAX_SPEED: number = 100;
+    public readonly MIN_SPEED: number = 75;
 
     /** Health and max health for the player */
     /*
