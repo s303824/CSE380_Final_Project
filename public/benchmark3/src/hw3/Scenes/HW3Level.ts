@@ -241,14 +241,14 @@ export default abstract class HW3Level extends Scene {
                 break;
             }
             case HW3Events.SWITCH_LEVELS: {
-                if(event.data.get("level") == 1 )
+                /*if(event.data.get("level") == 1 )
                     this.sceneManager.changeToScene(Level1);
                 else if(event.data.get("level") == 2)
                     this.sceneManager.changeToScene(Level2);
                 else if(event.data.get("level") == 3)
                     this.sceneManager.changeToScene(Level3);
                 else if(event.data.get("level") == 4)
-                    this.sceneManager.changeToScene(Level4);
+                    this.sceneManager.changeToScene(Level4);*/
 
                 break;
             }
