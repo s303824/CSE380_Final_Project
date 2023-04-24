@@ -17,6 +17,8 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 import Dead from "./PlayerStates/Dead";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Timer from "../../Wolfie2D/Timing/Timer";
+import Dying from "./PlayerStates/Dying";
 
 /**
  * Animation keys for the player spritesheet
@@ -46,6 +48,7 @@ export const PlayerStates = {
     RUN: "RUN",
 	JUMP: "JUMP",
     FALL: "FALL",
+    DYING: "DYING",
     DEAD: "DEAD",
 } as const
 
@@ -70,6 +73,9 @@ export default class PlayerController extends StateMachineAI {
     // protected cannon: Sprite;
     protected weapon: PlayerWeapon;
     protected goose: HW3AnimatedSprite;
+
+    protected isInvincible: boolean;
+    protected invincibleTimer: Timer;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -82,12 +88,20 @@ export default class PlayerController extends StateMachineAI {
 
         this.health = 10
         this.maxHealth = 10;
+        this.isInvincible = false;
+        this.invincibleTimer = new Timer(10000, () => {
+            // After the timer ends, set isInvincible to false
+            console.log("Invincibility deactivated.")
+            this.isInvincible = false;
+        });
+        
         this.goose = options.goose;
         // Add the different states the player can be in to the PlayerController 
 		this.addState(PlayerStates.IDLE, new Idle(this, this.owner));
 		this.addState(PlayerStates.RUN, new Run(this, this.owner));
         this.addState(PlayerStates.JUMP, new Jump(this, this.owner));
         this.addState(PlayerStates.FALL, new Fall(this, this.owner));
+        this.addState(PlayerStates.DYING, new Dying(this, this.owner));
         this.addState(PlayerStates.DEAD, new Dead(this, this.owner));
         this.receiver.subscribe(HW3Events.PLAYER_GOOSE_HIT);
         
@@ -104,12 +118,7 @@ export default class PlayerController extends StateMachineAI {
 		direction.y = (Input.isJustPressed(HW3Controls.JUMP) ? -1 : 0);
 		return direction;
     }
-    /** 
-     * Gets the direction of the mouse from the player's position as a Vec2
-     */
-    public get faceDir(): Vec2 { 
-        return 
-    }
+    
     public update(deltaT: number): void {
 		super.update(deltaT);
         while (this.receiver.hasNextEvent()) {
@@ -120,12 +129,38 @@ export default class PlayerController extends StateMachineAI {
             this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
             this.isDying = false;
         }
+        
+        if(Input.isKeyJustPressed("i")){
+            console.log("Invincibility activated.")
+            this.handleInvincibility();
+        }
+        if(Input.isKeyJustPressed("1")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 1})
+        }
+        if(Input.isKeyJustPressed("2")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 2})
+        }
+        if(Input.isKeyJustPressed("3")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 3})
+        }
+        if(Input.isKeyJustPressed("4")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 4})
+        }
 	}
     public handleEvent(event: GameEvent): void {
         switch(event.type){
             case(HW3Events.PLAYER_GOOSE_HIT):
                 this.isHit=true;
                 break;
+        }
+    }
+
+
+    protected handleInvincibility(): void {
+        // If the timer hasn't run yet, start the end level animation
+        if (!this.invincibleTimer.hasRun() && this.invincibleTimer.isStopped()) {
+            this.invincibleTimer.start();
+            this.isInvincible = true;
         }
     }
 

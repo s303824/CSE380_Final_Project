@@ -111,8 +111,7 @@ export default class GooseController extends StateMachineAI {
         }
         
         if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
-            this.handlePlayerGooseCollision();
-   
+            this.handlePlayerGooseCollision();   
         }
         
 	}

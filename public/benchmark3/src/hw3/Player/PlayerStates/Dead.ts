@@ -9,9 +9,8 @@ import PlayerState from "./PlayerState";
 export default class Dead extends PlayerState {
 
     // Trigger the player's death animation when we enter the dead state
-    public onEnter(options: Record<string, any>): void {
-        
-        this.owner.animation.play(PlayerAnimations.DYING,false);
+    public onEnter(options: Record<string, any>): void {        
+        this.owner.animation.playIfNotAlready(PlayerAnimations.DEAD, true);
         console.log("DEAD");
         this.parent.isDying = true;
     }

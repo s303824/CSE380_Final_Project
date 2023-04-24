@@ -25,6 +25,10 @@ import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
 import MainMenu from "./MainMenu";
 import Particle from "../../Wolfie2D/Nodes/Graphics/Particle";
+import Level1 from "./HW3Level1";
+import Level2 from "./HW3Level2";
+import Level3 from "./HW3Level3";
+import Level4 from "./HW3Level4";
 
 /**
  * A const object for the layer names
@@ -216,15 +220,13 @@ export default abstract class HW3Level extends Scene {
 
             case HW3Events.PLAYER_TELEPORT: {     
                 if(!this.isTeleporting){
+                    Input.disableInput();
+
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
                     this.player.tweens.play(PlayerTweens.DISAPPEAR);           
                     this.player.position.copy(this.playerNewLocation);
                     this.viewport.follow(this.levelTeleportArea);
                     this.isTeleporting = true;  
-                    
-                    
-                    // Because the code was written in a way that assumes we only have one enemy at a time i had to move the goose elsewhere
-                    
                 }
                 else{
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.panicAudioKey});
@@ -232,8 +234,22 @@ export default abstract class HW3Level extends Scene {
                     this.player.tweens.play(PlayerTweens.REAPPEAR);      
                     this.levelTeleportArea.position.copy(new Vec2(1, 1).mult(this.tilemapScale));     
                     this.viewport.follow(this.player);
-                    this.isTeleporting = false;    
+                    this.isTeleporting = false;   
+                    Input.enableInput();
+ 
                 }
+                break;
+            }
+            case HW3Events.SWITCH_LEVELS: {
+                if(event.data.get("level") == 1 )
+                    this.sceneManager.changeToScene(Level1);
+                else if(event.data.get("level") == 2)
+                    this.sceneManager.changeToScene(Level2);
+                else if(event.data.get("level") == 3)
+                    this.sceneManager.changeToScene(Level3);
+                else if(event.data.get("level") == 4)
+                    this.sceneManager.changeToScene(Level4);
+
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.
