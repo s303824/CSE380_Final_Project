@@ -14,10 +14,10 @@
 		{
 			"name": "WALK",
 			"frames": [
-				{ "index": 4, "duration": 16 },
-				{ "index": 5, "duration": 16 },
-				{ "index": 6, "duration": 16 },
-				{ "index": 7, "duration": 16 }
+				{ "index": 4, "duration": 12 },
+				{ "index": 5, "duration": 12 },
+				{ "index": 6, "duration": 12 },
+				{ "index": 7, "duration": 12 }
 			]
 		}
 	]
