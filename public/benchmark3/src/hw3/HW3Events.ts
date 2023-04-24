@@ -26,6 +26,8 @@ export const HW3Events = {
     // The event sent when the player dies. Gets sent after the player's death animation
     PLAYER_DEAD: "PLAYER_DEAD",
 
-    PLAYER_TELEPORT: "PLAYER_TELEPORT"
+    PLAYER_TELEPORT: "PLAYER_TELEPORT",
+
+    SWITCH_LEVELS: "SWITCH_LEVELS"
     
 } as const;

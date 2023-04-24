@@ -25,6 +25,10 @@ import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
 import MainMenu from "./MainMenu";
 import Particle from "../../Wolfie2D/Nodes/Graphics/Particle";
+import Level1 from "./HW3Level1";
+import Level2 from "./HW3Level2";
+import Level3 from "./HW3Level3";
+import Level4 from "./HW3Level4";
 
 /**
  * A const object for the layer names
@@ -239,6 +243,18 @@ export default abstract class HW3Level extends Scene {
                     Input.enableInput();
  
                 }
+                break;
+            }
+            case HW3Events.SWITCH_LEVELS: {
+                if(event.data.get("level") == 1 )
+                    this.sceneManager.changeToScene(Level1);
+                else if(event.data.get("level") == 2)
+                    this.sceneManager.changeToScene(Level2);
+                else if(event.data.get("level") == 3)
+                    this.sceneManager.changeToScene(Level3);
+                else if(event.data.get("level") == 4)
+                    this.sceneManager.changeToScene(Level4);
+
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.

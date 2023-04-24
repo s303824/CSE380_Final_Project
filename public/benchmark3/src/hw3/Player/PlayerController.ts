@@ -128,6 +128,19 @@ export default class PlayerController extends StateMachineAI {
             console.log("Invincibility activated.")
             this.handleInvincibility();
         }
+        if(Input.isKeyJustPressed("1")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 1})
+        }
+        if(Input.isKeyJustPressed("2")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 2})
+        }
+        if(Input.isKeyJustPressed("3")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 3})
+        }
+        if(Input.isKeyJustPressed("4")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 4})
+        }
+
 
         if(this.owner.collisionShape.overlaps(this.goose.collisionShape) && !this.isInvincible){
             this.changeState(PlayerStates.DYING);
