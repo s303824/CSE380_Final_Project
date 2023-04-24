@@ -17,7 +17,10 @@ export default class Walk extends PlayerState {
 	update(deltaT: number): void {
         // Call the update method in the parent class - updates the direction the player is facing
         super.update(deltaT);
-
+        if(this.parent.isHit){
+            this.finished(PlayerStates.DEAD);
+            
+        }
         // Get the input direction from the player controller
 		let dir = this.parent.inputDir;
 

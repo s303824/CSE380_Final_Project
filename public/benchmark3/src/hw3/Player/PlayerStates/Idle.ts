@@ -2,8 +2,11 @@ import { PlayerStates, PlayerAnimations } from "../PlayerController";
 import PlayerState from "./PlayerState";
 import Input from "../../../Wolfie2D/Input/Input";
 import { HW3Controls } from "../../HW3Controls";
+import GameEvent from "../../../Wolfie2D/Events/GameEvent";
+import { HW3Events } from "../../HW3Events";
 
 export default class Idle extends PlayerState {
+
 
 	public onEnter(options: Record<string, any>): void {
         this.owner.animation.play(PlayerAnimations.IDLE);
@@ -14,12 +17,16 @@ export default class Idle extends PlayerState {
 
         this.parent.velocity.x = 0;
         this.parent.velocity.y = 0;
+        
 	}
 
 	public update(deltaT: number): void {
         // Adjust the direction the player is facing
 		super.update(deltaT);
-
+        if(this.parent.isHit){
+            this.finished(PlayerStates.DEAD);
+            
+        }
         // Get the direction of the player's movement
 		let dir = this.parent.inputDir;
 
@@ -40,9 +47,23 @@ export default class Idle extends PlayerState {
             // Move the player
             this.owner.move(this.parent.velocity.scaled(deltaT));
         }
-
+   
         // Otherwise, do nothing (keep idling)
 		
+	}
+    public handleInput(event: GameEvent): void {
+        switch(event.type) {
+            // Default - throw an error
+            case(HW3Events.PLAYER_GOOSE_HIT): {
+                this.playerHit = true;
+                console.log("player hit")
+                break;
+            }
+            default: {
+                throw new Error(`Unhandled event in PlayerState of type ${event.type}`);
+            }
+
+        }
 	}
 
 	public onExit(): Record<string, any> {
