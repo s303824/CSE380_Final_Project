@@ -220,10 +220,10 @@ export default class Level3 extends HW3Level {
 
     protected initializeUI(): void {
         super.initializeUI()
-        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
+        /*this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
         this.instructionLabel.size.set(300, 30);
         this.instructionLabel.fontSize = 24;
-        this.instructionLabel.font = "Courier";
+        this.instructionLabel.font = "Courier";*/
 
     }
 
