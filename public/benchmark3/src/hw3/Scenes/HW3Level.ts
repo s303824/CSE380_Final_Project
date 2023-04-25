@@ -100,6 +100,7 @@ export default abstract class HW3Level extends Scene {
     protected levelTeleportArea: Rect;
     protected isTeleporting: boolean;
     protected levelTeleportVelocity: Vec2;
+    protected nextTeleport: Vec2;
 
     protected inBoundsCheck: boolean;
 
@@ -163,7 +164,6 @@ export default abstract class HW3Level extends Scene {
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
         this.isTeleporting = false;
         this.inBoundsCheck = false;
-
     }
 
     /* Update method for the scene */
@@ -221,8 +221,7 @@ export default abstract class HW3Level extends Scene {
                 this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
                 this.sceneManager.changeToScene(MainMenu);
                 break;
-            }
-    
+            }    
             case HW3Events.PLAYER_TELEPORT: {     
                 if(!this.isTeleporting){
                     Input.disableInput();
@@ -259,8 +258,7 @@ export default abstract class HW3Level extends Scene {
     }
 
     /* Handlers for the different events the scene is subscribed to */
-    protected handleLevelSwitchEvent(event: GameEvent): void {
-    }
+    protected handleLevelSwitchEvent(event: GameEvent): void {}
     /**
      * Handle the event when the player enters the level end area.
      */
@@ -328,8 +326,6 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
         this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
         this.receiver.subscribe(HW3Events.SWITCH_LEVELS);
-
-
     }
     /**
      * Adds in any necessary UI to the game

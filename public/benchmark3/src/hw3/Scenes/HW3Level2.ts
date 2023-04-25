@@ -73,8 +73,13 @@ export default class Level2 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }            
+            }
             case 2: 
+            {
+                this.nextLevel = Level3
+                break
+            }            
+            /*case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -88,7 +93,7 @@ export default class Level2 extends HW3Level {
             {                
                 this.nextLevel = Level4
                 break
-            }
+            }*/
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }

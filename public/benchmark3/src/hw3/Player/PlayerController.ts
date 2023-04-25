@@ -76,6 +76,7 @@ export default class PlayerController extends StateMachineAI {
 
     protected isInvincible: boolean;
     protected invincibleTimer: Timer;
+    protected canCover: boolean;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -104,7 +105,9 @@ export default class PlayerController extends StateMachineAI {
         this.addState(PlayerStates.DYING, new Dying(this, this.owner));
         this.addState(PlayerStates.DEAD, new Dead(this, this.owner));
         this.receiver.subscribe(HW3Events.PLAYER_GOOSE_HIT);
-        
+        this.receiver.subscribe(HW3Events.ENABLE_COVER);
+        this.receiver.subscribe(HW3Events.DISABLE_COVER);
+
         // Start the player in the Idle state
         this.initialize(PlayerStates.IDLE);
     }
@@ -140,12 +143,26 @@ export default class PlayerController extends StateMachineAI {
         if(Input.isKeyJustPressed("2")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 2})
         }
+        /*
+        FIX
         if(Input.isKeyJustPressed("3")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 3})
         }
         if(Input.isKeyJustPressed("4")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 4})
+        }*/
+        if(this.canCover){
+            if(Input.isKeyJustPressed("e")){
+                this.isInvincible = !this.isInvincible;  
+                if(this.isInvincible)
+                    console.log("Hiding activated.")
+                else{
+                    console.log("Hiding deactivated.")
+
+                }
+            }
         }
+
 	}
     public handleEvent(event: GameEvent): void {
         switch(event.type){
@@ -153,6 +170,18 @@ export default class PlayerController extends StateMachineAI {
                 if(!this.isInvincible)
                     this.isHit=true;
                 break;
+            case HW3Events.ENABLE_COVER: {
+                this.canCover = true;
+                console.log("You can hide")
+                break;
+            }
+            case HW3Events.DISABLE_COVER: {
+                this.canCover = false;
+                console.log("You can no longer hide")
+
+                break;
+            }
+    
         }
     }
 
@@ -181,6 +210,5 @@ export default class PlayerController extends StateMachineAI {
         // When the health changes, fire an event up to the scene.
         this.emitter.fireEvent(HW3Events.HEALTH_CHANGE, {curhp: this.health, maxhp: this.maxHealth});
         // If the health hit 0, change the state of the player
-     
     }
 }

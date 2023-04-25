@@ -128,8 +128,13 @@ export default class Level1 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }            
+            }
             case 2: 
+            {
+                this.nextLevel = Level3
+                break
+            }            
+            /*case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -143,21 +148,23 @@ export default class Level1 extends HW3Level {
             {                
                 this.nextLevel = Level4
                 break
-            }
+            }*/
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }
     }
 
+    // FIX
     public startScene(): void {
         super.startScene();
         // Set the next level to be Level2
-        this.nextLevel = Level2;
+        //  this.nextLevel = Level2;
+        this.nextLevel = Level3;
+
         this.initializePlayerTeleport()
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn);
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn2);
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn3);
-        this.receiver.subscribe(HW3Events.SWITCH_LEVELS);
 
     }
 

@@ -1,6 +1,6 @@
 {
 	"name": "Lab_scientist",
-	"spriteSheetImage": "Lab_scientist",
+	"spriteSheetImage": "Lab_scientist.png",
 	"spriteWidth": 64,
 	"spriteHeight": 64,
 	"columns": 4,
