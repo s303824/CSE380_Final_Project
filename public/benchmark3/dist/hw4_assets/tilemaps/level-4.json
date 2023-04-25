@@ -289,7 +289,7 @@
     "tileheight":16,
     "margin": 0,
     "spacing": 0,
-    "name":"tilemap_packed",
+    "name":"tilemap_packed.png",
     "imagewidth":592,
     "imageheight":448,
     "tilecount":1036,
