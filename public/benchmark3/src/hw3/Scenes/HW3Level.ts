@@ -64,9 +64,6 @@ export default abstract class HW3Level extends Scene {
     private healthLabel: Label;
 	private healthBar: Label;
 	private healthBarBg: Label;
-    private instructionLabel: Label;
-    private instructionLabel2: Label;
-    private instructionLabel3: Label;
 
     /** The end of level stuff */
 
@@ -103,6 +100,8 @@ export default abstract class HW3Level extends Scene {
     protected levelTeleportArea: Rect;
     protected isTeleporting: boolean;
     protected levelTeleportVelocity: Vec2;
+
+    protected inBoundsCheck: boolean;
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -163,6 +162,7 @@ export default abstract class HW3Level extends Scene {
         // Start playing the level music for the HW4 level
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
         this.isTeleporting = false;
+        this.inBoundsCheck = false;
 
     }
 
@@ -183,6 +183,10 @@ export default abstract class HW3Level extends Scene {
             this.levelTeleportArea.move(this.levelTeleportVelocity.scaled(deltaT));
             this.levelTeleportArea.finishMove();
         }
+        /*if(!this.viewport.includes(this.player) && this.inBoundsCheck){
+            console.log("OUT OF BOUNDS")
+            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
+        }*/
 
     }
     /**
@@ -198,11 +202,13 @@ export default abstract class HW3Level extends Scene {
             // When the level starts, reenable user input
             case HW3Events.LEVEL_START: {
                 Input.enableInput();
+                this.inBoundsCheck = true;
                 break;
             }
             // When the level ends, change the scene to the next level
             case HW3Events.LEVEL_END: {
                 this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
+                this.inBoundsCheck = false;
                 this.sceneManager.changeToScene(this.nextLevel);
                 break;
             }
@@ -216,12 +222,11 @@ export default abstract class HW3Level extends Scene {
                 this.sceneManager.changeToScene(MainMenu);
                 break;
             }
-       
-
+    
             case HW3Events.PLAYER_TELEPORT: {     
                 if(!this.isTeleporting){
                     Input.disableInput();
-
+                    this.inBoundsCheck = false;
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
                     this.player.tweens.play(PlayerTweens.DISAPPEAR);           
                     this.player.position.copy(this.playerNewLocation);
@@ -236,20 +241,14 @@ export default abstract class HW3Level extends Scene {
                     this.viewport.follow(this.player);
                     this.isTeleporting = false;   
                     Input.enableInput();
- 
+                    this.inBoundsCheck = true;
                 }
                 break;
             }
-            case HW3Events.SWITCH_LEVELS: {
-                /*if(event.data.get("level") == 1 )
-                    this.sceneManager.changeToScene(Level1);
-                else if(event.data.get("level") == 2)
-                    this.sceneManager.changeToScene(Level2);
-                else if(event.data.get("level") == 3)
-                    this.sceneManager.changeToScene(Level3);
-                else if(event.data.get("level") == 4)
-                    this.sceneManager.changeToScene(Level4);*/
 
+            case HW3Events.SWITCH_LEVELS:{
+                this.handleLevelSwitchEvent(event);
+                this.emitter.fireEvent(HW3Events.LEVEL_END)
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.
@@ -260,7 +259,8 @@ export default abstract class HW3Level extends Scene {
     }
 
     /* Handlers for the different events the scene is subscribed to */
-
+    protected handleLevelSwitchEvent(event: GameEvent): void {
+    }
     /**
      * Handle the event when the player enters the level end area.
      */
@@ -327,25 +327,14 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.HEALTH_CHANGE);
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
         this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
-      
+        this.receiver.subscribe(HW3Events.SWITCH_LEVELS);
+
+
     }
     /**
      * Adds in any necessary UI to the game
      */
     protected initializeUI(): void {
-        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD "});
-        this.instructionLabel.size.set(300, 30);
-        this.instructionLabel.fontSize = 24;
-        this.instructionLabel.font = "Courier";
-        this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Press Space to Jump "});
-        this.instructionLabel2.size.set(300, 30);
-        this.instructionLabel2.fontSize = 24;
-        this.instructionLabel2.font = "Courier";
-
-        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "Press E to Interact"});
-        this.instructionLabel3.size.set(300, 30);
-        this.instructionLabel3.fontSize = 24;
-        this.instructionLabel3.font = "Courier";
         // HP Label
 
 		this.healthLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(400, 20), text: "HP "});

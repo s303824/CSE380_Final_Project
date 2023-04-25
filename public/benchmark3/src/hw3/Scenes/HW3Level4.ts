@@ -7,6 +7,9 @@ import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
 import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Level1 from "./HW3Level1";
+import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Level2 from "./HW3Level2";
+import Level3 from "./HW3Level3";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -62,6 +65,32 @@ export default class Level4 extends HW3Level {
     protected initializeViewport(): void {
         super.initializeViewport();
         this.viewport.setBounds(0, 16, 16*16, 60*16);
+    }
+    protected handleLevelSwitchEvent(event: GameEvent): void {
+        switch(event.data.get("level")){
+            case 1: 
+            {                
+                this.nextLevel = Level1
+                break
+            }            
+            case 2: 
+            {
+                this.nextLevel = Level2
+                break
+            }
+            case 3: 
+            {                
+                this.nextLevel = Level3
+                break
+            }
+            case 4: 
+            {                
+                this.nextLevel = Level4
+                break
+            }
+            default:
+                throw new Error(`Unhandled event caught in scene with type ${event.type}`)
+        }
     }
 
 

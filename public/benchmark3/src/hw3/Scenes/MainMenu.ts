@@ -5,6 +5,7 @@ import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level1 from "./HW3Level1";
+import LevelSelect from "./LevelSelect";
 
 
 // Layers for the main menu scene
@@ -40,16 +41,25 @@ export default class MainMenu extends Scene {
 
         // When the play button is clicked, go to the next scene
         playBtn.onClick = () => {
+            this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: MainMenu.MUSIC_KEY});
             this.sceneManager.changeToScene(Level1);
         }
 
+        let levelBtn = <Button>this.add.uiElement(UIElementType.BUTTON, MenuLayers.MAIN, {position: new Vec2(size.x, size.y+100), text: "Level Select"});
+        levelBtn.backgroundColor = Color.TRANSPARENT;
+        levelBtn.borderColor = Color.WHITE;
+        levelBtn.borderRadius = 0;
+        levelBtn.setPadding(new Vec2(50, 10));
+        levelBtn.font = "PixelSimple";
+
+        // When the play button is clicked, go to the next scene
+        levelBtn.onClick = () => {
+            this.sceneManager.changeToScene(LevelSelect);
+        }
+
+
         // Scene has started, so start playing music
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: MainMenu.MUSIC_KEY, loop: true, holdReference: true});
-    }
-
-    public unloadScene(): void {
-        // The scene is being destroyed, so we can stop playing the song
-        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: MainMenu.MUSIC_KEY});
     }
 }
 

@@ -13,6 +13,11 @@ import Color from "../../Wolfie2D/Utils/Color";
 import GooseController from "../Goose/GooseController";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Level2 from "./HW3Level2";
+import Label from "../../Wolfie2D/Nodes/UIElements/Label";
+import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
+import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Level3 from "./HW3Level3";
+import Level4 from "./HW3Level4";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -23,6 +28,11 @@ export default class Level1 extends HW3Level {
     protected goose: AnimatedSprite;
     protected gooseSpawn: Vec2;
     protected gooseSpawn2: Vec2;
+    protected gooseSpawn3: Vec2;
+    private instructionLabel: Label;
+    private instructionLabel2: Label;
+    private instructionLabel3: Label;
+
     public static readonly PLAYER_SPAWN = new Vec2(256, 208);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
@@ -43,8 +53,10 @@ export default class Level1 extends HW3Level {
     public static readonly PANIC_AUDIO_KEY = "PANIC_AUDIO";
     public static readonly PANIC_AUDIO_PATH = "hw4_assets/sounds/panic.wav";
 
-    public static readonly GOOSE_SPAWN = new Vec2(600, 216);
-    public static readonly GOOSE_SPAWN_2= new Vec2(750, 216);
+    public static readonly GOOSE_SPAWN = new Vec2(600, 222);
+    public static readonly GOOSE_SPAWN_2= new Vec2(750, 222);
+    public static readonly GOOSE_SPAWN_3= new Vec2(1600, 222);
+
     public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
     public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
 
@@ -70,6 +82,8 @@ export default class Level1 extends HW3Level {
         this.gooseSpriteKey = Level1.GOOSE_SPRITE_KEY;
         this.gooseSpawn = Level1.GOOSE_SPAWN;
         this.gooseSpawn2 = Level1.GOOSE_SPAWN_2;
+        this.gooseSpawn3 = Level1.GOOSE_SPAWN_3;
+
         // Music and sound
         this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
@@ -104,9 +118,35 @@ export default class Level1 extends HW3Level {
      */
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
-        this.load.keepSpritesheet(this.gooseSpriteKey);
         this.load.keepAudio(this.levelMusicKey);
         this.load.keepAudio(this.jumpAudioKey);
+    }
+
+    protected handleLevelSwitchEvent(event: GameEvent): void {
+        switch(event.data.get("level")){
+            case 1: 
+            {                
+                this.nextLevel = Level1
+                break
+            }            
+            case 2: 
+            {
+                this.nextLevel = Level2
+                break
+            }
+            case 3: 
+            {                
+                this.nextLevel = Level3
+                break
+            }
+            case 4: 
+            {                
+                this.nextLevel = Level4
+                break
+            }
+            default:
+                throw new Error(`Unhandled event caught in scene with type ${event.type}`)
+        }
     }
 
     public startScene(): void {
@@ -116,6 +156,9 @@ export default class Level1 extends HW3Level {
         this.initializePlayerTeleport()
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn);
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn2);
+        this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn3);
+        this.receiver.subscribe(HW3Events.SWITCH_LEVELS);
+
     }
 
     protected initializePlayerTeleport(): void {
@@ -164,6 +207,23 @@ export default class Level1 extends HW3Level {
 
         // Give the player it's AI
     this.goose.addAI(GooseController, { player: this.player, tilemap: "Primary"});
+    }
+    protected initializeUI(): void {
+        super.initializeUI();
+        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD "});
+        this.instructionLabel.size.set(300, 30);
+        this.instructionLabel.fontSize = 24;
+        this.instructionLabel.font = "Courier";
+        this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Press Space to Jump "});
+        this.instructionLabel2.size.set(300, 30);
+        this.instructionLabel2.fontSize = 24;
+        this.instructionLabel2.font = "Courier";
+
+        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "Press E to Interact"});
+        this.instructionLabel3.size.set(300, 30);
+        this.instructionLabel3.fontSize = 24;
+        this.instructionLabel3.font = "Courier";
+
     }
 
 }
