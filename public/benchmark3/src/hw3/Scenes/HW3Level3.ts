@@ -65,8 +65,8 @@ export default class Level3 extends HW3Level {
 
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
-    public static readonly HUMAN_SPAWN = new Vec2(400, 300);
-    public static readonly HUMAN_SPAWN_2= new Vec2(500, 300);
+    public static readonly HUMAN_SPAWN = new Vec2(400, 800);
+    public static readonly HUMAN_SPAWN_2= new Vec2(500, 800);
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
