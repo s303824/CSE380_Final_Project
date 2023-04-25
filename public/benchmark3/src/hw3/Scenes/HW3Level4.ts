@@ -20,7 +20,6 @@ export default class Level4 extends HW3Level {
     public static readonly TILEMAP_KEY = "LEVEL2";
     public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-4.json";
     public static readonly TILEMAP_SCALE = new Vec2(2, 2);
-    public static readonly DESTRUCTIBLE_LAYER_KEY = "Destructable";
     public static readonly WALLS_LAYER_KEY = "Main";
 
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
@@ -28,9 +27,6 @@ export default class Level4 extends HW3Level {
 
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
-
-    public static readonly TILE_DESTROYED_KEY = "TILE_DESTROYED";
-    public static readonly TILE_DESTROYED_PATH = "hw4_assets/sounds/switch.wav";
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
@@ -63,6 +59,11 @@ export default class Level4 extends HW3Level {
         // Load in the tilemap
         this.load.tilemap(this.tilemapKey, Level4.TILEMAP_PATH);
     }
+    protected initializeViewport(): void {
+        super.initializeViewport();
+        this.viewport.setBounds(0, 16, 16*16, 60*16);
+    }
+
 
     public startScene(): void {
         super.startScene();
