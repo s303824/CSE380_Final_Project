@@ -90,7 +90,7 @@ export default class Level3 extends HW3Level {
 
 
         // Music and sound
-        this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
+        this.levelMusicKey = Level3.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
@@ -106,6 +106,7 @@ export default class Level3 extends HW3Level {
         // Load in the tilemap
         this.load.tilemap(this.tilemapKey, Level3.TILEMAP_PATH);
         this.load.spritesheet(this.humanSpriteKey, Level3.HUMAN_SPRITE_PATH);
+        this.load.audio(this.levelMusicKey, Level3.LEVEL_MUSIC_PATH);
 
     }
     protected initializeViewport(): void {
@@ -147,7 +148,9 @@ export default class Level3 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
-        this.nextLevel = Level4;
+        //this.nextLevel = Level4;
+        this.nextLevel = MainMenu;
+
 
         this.levelTeleportPosition = new Vec2(928, 144).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)

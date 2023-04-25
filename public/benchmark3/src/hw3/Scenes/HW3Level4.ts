@@ -52,7 +52,7 @@ export default class Level4 extends HW3Level {
         this.playerSpawn = Level4.PLAYER_SPAWN;
 
         // Music and sound
-        this.levelMusicKey = Level1.LEVEL_MUSIC_KEY
+        this.levelMusicKey = Level4.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
@@ -66,6 +66,8 @@ export default class Level4 extends HW3Level {
     public loadScene(): void {
         // Load in the tilemap
         this.load.tilemap(this.tilemapKey, Level4.TILEMAP_PATH);
+        this.load.audio(this.levelMusicKey, Level4.LEVEL_MUSIC_PATH);
+
     }
     protected initializeViewport(): void {
         super.initializeViewport();

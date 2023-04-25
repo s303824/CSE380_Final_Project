@@ -107,7 +107,7 @@ export default class Level1 extends HW3Level {
        
         this.load.spritesheet(this.gooseSpriteKey, Level1.GOOSE_SPRITE_PATH);
         // Audio and music
-        //this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
+        this.load.audio(this.levelMusicKey, Level1.LEVEL_MUSIC_PATH);
         this.load.audio(this.jumpAudioKey, Level1.JUMP_AUDIO_PATH);
         this.load.audio(this.panicAudioKey, Level1.PANIC_AUDIO_PATH);
 
