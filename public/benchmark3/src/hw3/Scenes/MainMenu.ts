@@ -45,6 +45,8 @@ export default class MainMenu extends Scene {
             this.sceneManager.changeToScene(Level1);
         }
 
+        // FIX
+        /*
         let levelBtn = <Button>this.add.uiElement(UIElementType.BUTTON, MenuLayers.MAIN, {position: new Vec2(size.x, size.y+100), text: "Level Select"});
         levelBtn.backgroundColor = Color.TRANSPARENT;
         levelBtn.borderColor = Color.WHITE;
@@ -55,7 +57,7 @@ export default class MainMenu extends Scene {
         // When the play button is clicked, go to the next scene
         levelBtn.onClick = () => {
             this.sceneManager.changeToScene(LevelSelect);
-        }
+        }*/
 
 
         // Scene has started, so start playing music

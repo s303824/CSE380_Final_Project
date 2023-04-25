@@ -55,6 +55,7 @@ export default class LevelSelect extends Scene {
 
         // When the play button is clicked, go to the next scene
         secondBtn.onClick = () => {
+            this.sceneManager.changeToScene(Level1);
             this.sceneManager.changeToScene(Level2);
         }
 
@@ -67,6 +68,7 @@ export default class LevelSelect extends Scene {
 
         // When the play button is clicked, go to the next scene
         thirdBtn.onClick = () => {
+            this.sceneManager.changeToScene(Level1);
             this.sceneManager.changeToScene(Level3);
         }
 
@@ -79,6 +81,7 @@ export default class LevelSelect extends Scene {
 
         // When the play button is clicked, go to the next scene
         fourthBtn.onClick = () => {
+            this.sceneManager.changeToScene(Level1);
             this.sceneManager.changeToScene(Level4);
         }
 
