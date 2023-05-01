@@ -1,0 +1,24 @@
+{
+	"name": "Lab_scientist",
+	"spriteSheetImage": "Lab_scientist.png",
+	"spriteWidth": 64,
+	"spriteHeight": 64,
+	"columns": 4,
+	"rows": 3,
+	"durationType": "time",
+	"animations": [
+		{
+			"name": "IDLE",
+			"frames": [{ "index": 0, "duration": 540 }]
+		},
+		{
+			"name": "WALK",
+			"frames": [
+				{ "index": 4, "duration": 12 },
+				{ "index": 5, "duration": 12 },
+				{ "index": 6, "duration": 12 },
+				{ "index": 7, "duration": 12 }
+			]
+		}
+	]
+}
