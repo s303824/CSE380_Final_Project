@@ -18,17 +18,11 @@ import Timer from "../../Wolfie2D/Timing/Timer";
 import Color from "../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 import PlayerController, { PlayerTweens } from "../Player/PlayerController";
-import PlayerWeapon from "../Player/PlayerWeapon";
 
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
 import MainMenu from "./MainMenu";
-import Particle from "../../Wolfie2D/Nodes/Graphics/Particle";
-import Level1 from "./HW3Level1";
-import Level2 from "./HW3Level2";
-import Level3 from "./HW3Level3";
-import Level4 from "./HW3Level4";
 
 /**
  * A const object for the layer names
@@ -52,8 +46,6 @@ export default abstract class HW3Level extends Scene {
     public add: HW3FactoryManager;
 
 
-    /** The particle system used for the player's weapon */
-    protected playerWeaponSystem: PlayerWeapon
     /** The key for the player's animated sprite */
     protected playerSpriteKey: string;
     /** The animated sprite that is the player */
@@ -129,9 +121,6 @@ export default abstract class HW3Level extends Scene {
 
         // Initialize the tilemaps
         this.initializeTilemap();
-
-        // Initialize the sprite and particle system for the players weapon 
-        this.initializeWeaponSystem();
 
         // Initialize the player 
         this.initializePlayer(this.playerSpriteKey);
@@ -408,20 +397,10 @@ export default abstract class HW3Level extends Scene {
         });
     }
     /**
-     * Initializes the particles system used by the player's weapon.
-     */
-    protected initializeWeaponSystem(): void {
-        this.playerWeaponSystem = new PlayerWeapon(50, Vec2.ZERO, 1000, 3, 0, 50);
-        this.playerWeaponSystem.initializePool(this, HW3Layers.PRIMARY);
-    }
-    /**
      * Initializes the player, setting the player's initial position to the given position.
      * @param position the player's spawn position
      */
     protected initializePlayer(key: string): void {
-        if (this.playerWeaponSystem === undefined) {
-            throw new Error("Player weapon system must be initialized before initializing the player!");
-        }
         if (this.playerSpawn === undefined) {
             throw new Error("Player spawn must be set before initializing the player!");
         }

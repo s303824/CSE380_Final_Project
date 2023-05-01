@@ -69,4 +69,4 @@ node_modules/
 # Ignore previous benchmarks
 public/benchmark1
 public/benchmark2
-public/benchmark3/dist/hw4_assets/spritesheets/.DS_Store
+public/benchmark3

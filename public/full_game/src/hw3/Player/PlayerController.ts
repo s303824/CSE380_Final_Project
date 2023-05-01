@@ -7,7 +7,6 @@ import Idle from "./PlayerStates/Idle";
 import Jump from "./PlayerStates/Jump";
 import Run from "./PlayerStates/Run";
 
-import PlayerWeapon from "./PlayerWeapon";
 import Input from "../../Wolfie2D/Input/Input";
 
 
@@ -71,7 +70,6 @@ export default class PlayerController extends StateMachineAI {
     public isDying: boolean=false;
     protected tilemap: OrthogonalTilemap;
     // protected cannon: Sprite;
-    protected weapon: PlayerWeapon;
     protected goose: HW3AnimatedSprite;
 
     protected isInvincible: boolean;
@@ -80,8 +78,6 @@ export default class PlayerController extends StateMachineAI {
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
-
-        this.weapon = options.weaponSystem;
 
         this.tilemap = this.owner.getScene().getTilemap(options.tilemap) as OrthogonalTilemap;
         this.speed = 400;
