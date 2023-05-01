@@ -5,6 +5,7 @@ import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level1 from "./HW3Level1";
+import Cutscene1 from "./HW3LevelCutscene1";
 import LevelSelect from "./LevelSelect";
 
 
@@ -42,7 +43,7 @@ export default class MainMenu extends Scene {
         // When the play button is clicked, go to the next scene
         playBtn.onClick = () => {
             this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: MainMenu.MUSIC_KEY});
-            this.sceneManager.changeToScene(Level1);
+            this.sceneManager.changeToScene(Cutscene1);
         }
 
         // FIX

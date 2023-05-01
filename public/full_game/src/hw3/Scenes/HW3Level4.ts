@@ -109,6 +109,7 @@ export default class Level4 extends HW3Level {
     public startScene(): void {
         super.startScene();
         this.nextLevel = MainMenu;
+        this.currentLevel = Level4;
         this.levelTeleportPosition = new Vec2(1840, 320).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
         this.playerNewLocation = new Vec2(1840, 864).mult(this.tilemapScale)

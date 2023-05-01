@@ -1,0 +1,49 @@
+{
+	"name": "Cutscene1",
+	"spriteSheetImage": "cutscene1-Sheet.png",
+	"spriteWidth": 1200,
+	"spriteHeight": 800,
+	"columns": 28,
+	"rows": 1,
+	"durationType": "time",
+	"animations": [
+		{
+			"name": "PLAY",
+			"frames": [
+				{ "index": 0, "duration": 6 },
+				{ "index": 1, "duration": 6 },
+				{ "index": 2, "duration": 6 },
+				{ "index": 3, "duration": 6 },
+				{ "index": 4, "duration": 6 },
+				{ "index": 5, "duration": 6 },
+				{ "index": 6, "duration": 6 },
+				{ "index": 7, "duration": 6 },
+				{ "index": 8, "duration": 6 },
+                { "index": 9, "duration": 6 },
+				{ "index": 10, "duration": 6 },
+				{ "index": 11, "duration": 6 },
+				{ "index": 12, "duration": 6 },
+				{ "index": 13, "duration": 6 },
+				{ "index": 14, "duration": 6 },
+				{ "index": 15, "duration": 6 },
+				{ "index": 16, "duration": 6 },
+				{ "index": 17, "duration": 6 },
+                { "index": 18, "duration": 6 },
+				{ "index": 19, "duration": 6 },
+				{ "index": 20, "duration": 6 },
+
+				{ "index": 21, "duration": 60 },
+				{ "index": 22, "duration": 60 },
+				{ "index": 23, "duration": 60 },
+				{ "index": 24, "duration": 60 },
+
+				{ "index": 25, "duration": 60 },
+				{ "index": 26, "duration": 60 },
+                { "index": 27, "duration": 60 },
+                { "index": 28, "duration": 60 }
+
+
+			]
+		}
+	]
+}

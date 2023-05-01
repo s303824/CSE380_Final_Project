@@ -67,6 +67,7 @@ export default class Level2 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
+        this.currentLevel = Level2;
         this.nextLevel = Level3;
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {

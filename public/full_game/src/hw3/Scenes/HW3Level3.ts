@@ -150,6 +150,7 @@ export default class Level3 extends HW3Level {
         super.startScene();
         //this.nextLevel = Level4;
         this.nextLevel = MainMenu;
+        this.currentLevel = Level3;
 
 
         this.levelTeleportPosition = new Vec2(928, 144).mult(this.tilemapScale)

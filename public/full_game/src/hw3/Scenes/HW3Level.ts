@@ -64,6 +64,8 @@ export default abstract class HW3Level extends Scene {
 
     protected levelEndArea: Rect;
     protected nextLevel: new (...args: any) => Scene;
+    protected currentLevel: new (...args: any) => Scene;
+
     protected levelEndTimer: Timer;
     protected levelEndLabel: Label;
 
@@ -95,7 +97,7 @@ export default abstract class HW3Level extends Scene {
     protected nextTeleport: Vec2;
 
     protected inBoundsCheck: boolean;
-
+    protected isCutscene: boolean;
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, {...options, physics: {
@@ -113,6 +115,7 @@ export default abstract class HW3Level extends Scene {
             ]
         }});
         this.add = new HW3FactoryManager(this, this.tilemaps);
+        this.isCutscene = false;
     }
 
     public startScene(): void {
@@ -135,7 +138,8 @@ export default abstract class HW3Level extends Scene {
         
 
         // Initialize the ends of the levels - must be initialized after the primary layer has been added
-        this.initializeLevelEnds();
+        if(!this.isCutscene)
+            this.initializeLevelEnds();
 
         this.levelTransitionTimer = new Timer(500);
         this.levelEndTimer = new Timer(3000, () => {
@@ -208,7 +212,7 @@ export default abstract class HW3Level extends Scene {
             }
             case HW3Events.PLAYER_DEAD: {
                 this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
-                this.sceneManager.changeToScene(MainMenu);
+                this.sceneManager.changeToScene(this.currentLevel);
                 break;
             }    
             case HW3Events.PLAYER_TELEPORT: {     
