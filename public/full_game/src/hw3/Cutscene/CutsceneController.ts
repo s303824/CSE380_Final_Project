@@ -7,7 +7,7 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import Timer from "../../Wolfie2D/Timing/Timer";
-import Play from "./CutsceneStates/PLAY";
+import Play from "./CutsceneStates/Play";
 
 /**
  * Animation keys for the cutscene spritesheet
