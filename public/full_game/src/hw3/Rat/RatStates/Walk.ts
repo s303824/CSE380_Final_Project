@@ -1,12 +1,12 @@
-import { HumanAnimations } from "../HumanController";
-import HumanState from "./HumanState";
+import { RatAnimations } from "../RatController";
+import RatState from "./RatState";
 
-export default class Walk extends HumanState {
+export default class Walk extends RatState {
 
 	onEnter(options: Record<string, any>): void {
 		
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(HumanAnimations.WALK, true);
+        this.owner.animation.playIfNotAlready(RatAnimations.WALK, true);
 	}
 
 	update(deltaT: number): void {

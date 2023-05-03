@@ -165,21 +165,21 @@ export default class Level3 extends HW3Level {
     protected initializeHuman(key: string, spawn: Vec2): void {
        
         if (spawn === undefined) {
-            throw new Error("Player spawn must be set before initializing the player!");
+            throw new Error("Human spawn must be set before initializing the human!");
         }
 
-        // Add the player to the scene
+        // Add the human enemy to the scene
         this.human = this.add.animatedSprite(this.humanSpriteKey, HW3Layers.PRIMARY);
         this.human.scale.set(1.0,1.0);
         this.human.position.copy(spawn);
         
-        // Give the player physics and setup collision groups and triggers for the player
+        // Give the human physics and setup collision groups and triggers for the player
    
         this.human.addPhysics(new AABB(this.human.position.clone(), this.human.boundary.getHalfSize().clone().sub(new Vec2(10,10))));
         this.human.setGroup(HW3PhysicsGroups.GOOSE);
         this.human.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
-        // Give the player it's AI
+        // Give the human it's AI
     this.human.addAI(HumanController, { player: this.player, tilemap: "Primary"});
     }
 

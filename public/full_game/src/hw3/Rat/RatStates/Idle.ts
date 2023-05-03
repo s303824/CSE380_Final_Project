@@ -1,10 +1,10 @@
-import { HumanStates, HumanAnimations } from "../HumanController";
-import HumanState from "./HumanState";
+import { RatStates, RatAnimations } from "../RatController";
+import RatState from "./RatState";
 
-export default class Idle extends HumanState {
+export default class Idle extends RatState {
 
 	public onEnter(options: Record<string, any>): void {
-        this.owner.animation.play(HumanAnimations.IDLE, true);
+        this.owner.animation.play(RatAnimations.IDLE, true);
 		this.parent.speed = this.parent.MIN_SPEED;
 
         this.parent.velocity.x = 0;
@@ -21,7 +21,7 @@ export default class Idle extends HumanState {
 
         // If the player is moving along the x-axis, transition to the walking state
 		if (Math.abs(dir.x)){
-			this.finished(HumanStates.WALK);
+			this.finished(RatStates.WALK);
 		} 
 
 		

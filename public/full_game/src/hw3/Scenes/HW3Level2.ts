@@ -1,6 +1,6 @@
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import HW3Level from "./HW3Level";
+import HW3Level, { HW3Layers } from "./HW3Level";
 import MainMenu from "./MainMenu";
 
 import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
@@ -10,6 +10,10 @@ import Level1 from "./HW3Level1";
 import Level3 from "./HW3Level3";
 import Level4 from "./HW3Level4";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import { HW3Events } from "../HW3Events";
+import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
+import RatController from "../Rat/RatController";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -32,6 +36,14 @@ export default class Level2 extends HW3Level {
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
+    protected ratSpriteKey: string;
+    protected rat: AnimatedSprite;
+    protected ratSpawn: Vec2;
+    protected ratSpawn2: Vec2;
+    public static readonly RAT_SPRITE_KEY = "RAT_SPRITE_KEY";
+    public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
+    public static readonly RAT_SPAWN = new Vec2(400, 800);
+    public static readonly RAT_SPAWN_2= new Vec2(500, 800);
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -50,6 +62,11 @@ export default class Level2 extends HW3Level {
         this.levelMusicKey = Level2.LEVEL_MUSIC_KEY
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
+        // enemies
+        this.ratSpriteKey = Level2.RAT_SPRITE_KEY;
+        this.ratSpawn = Level2.RAT_SPAWN;
+        this.ratSpawn2 = Level2.RAT_SPAWN_2;
+        
         // Level end size and position
         this.levelEndPosition = new Vec2(2500, 216).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
@@ -62,13 +79,17 @@ export default class Level2 extends HW3Level {
         // Load in the tilemap
         this.load.tilemap(this.tilemapKey, Level2.TILEMAP_PATH);
         this.load.audio(this.levelMusicKey, Level2.LEVEL_MUSIC_PATH);
-
+        this.load.spritesheet(this.ratSpriteKey, Level2.RAT_SPRITE_PATH);
     }
 
     public startScene(): void {
         super.startScene();
         this.currentLevel = Level2;
         this.nextLevel = Level3;
+
+        this.initializeRat(this.ratSpriteKey, this.ratSpawn);
+        this.initializeRat(this.ratSpriteKey, this.ratSpawn2);
+
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -100,6 +121,26 @@ export default class Level2 extends HW3Level {
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }
+    }
+    protected initializeRat(key: string, spawn: Vec2): void {
+       
+        if (spawn === undefined) {
+            throw new Error("Player spawn must be set before initializing the player!");
+        }
+
+        // Add the rat to the scene
+        this.rat = this.add.animatedSprite(this.ratSpriteKey, HW3Layers.PRIMARY);
+        this.rat.scale.set(1.0,1.0);
+        this.rat.position.copy(spawn);
+        
+        // Give the rat physics and setup collision groups and triggers for the player
+   
+        this.rat.addPhysics(new AABB(this.rat.position.clone(), this.rat.boundary.getHalfSize().clone().sub(new Vec2(10,10))));
+        this.rat.setGroup(HW3PhysicsGroups.GOOSE);
+        this.rat.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
+
+        // Give the rat it's AI
+    this.rat.addAI(RatController, { player: this.player, tilemap: "Primary"});
     }
 
 
