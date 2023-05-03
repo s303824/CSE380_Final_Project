@@ -16,8 +16,8 @@ import Level2 from "./HW3Level2";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
-import Level3 from "./HW3Level3";
-import Level4 from "./HW3Level4";
+import Level3 from "./HW3Level4";
+import Level4 from "./HW3Level5";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -129,9 +129,9 @@ export default class Level1 extends HW3Level {
                 this.nextLevel = Level1
                 break
             }
-            case 2: 
+            case 4: 
             {
-                this.nextLevel = Level3
+                this.nextLevel = Level4
                 break
             }            
             /*case 2: 
@@ -144,10 +144,16 @@ export default class Level1 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
-            case 4: 
+            case 5: 
             {                
-                this.nextLevel = Level4
+                this.nextLevel = Level5
                 break
+            }
+            case 6:
+            {
+                this.nextLevel = Level6
+                break
+
             }*/
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)

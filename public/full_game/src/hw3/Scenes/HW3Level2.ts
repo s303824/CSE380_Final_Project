@@ -7,8 +7,8 @@ import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
 import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Level1 from "./HW3Level1";
-import Level3 from "./HW3Level3";
-import Level4 from "./HW3Level4";
+import Level3 from "./HW3Level4";
+import Level4 from "./HW3Level5";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import { HW3Events } from "../HW3Events";
@@ -98,9 +98,9 @@ export default class Level2 extends HW3Level {
                 this.nextLevel = Level1
                 break
             }
-            case 2: 
+            case 4: 
             {
-                this.nextLevel = Level3
+                this.nextLevel = Level4
                 break
             }            
             /*case 2: 
@@ -113,15 +113,22 @@ export default class Level2 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
-            case 4: 
+            case 5: 
             {                
-                this.nextLevel = Level4
+                this.nextLevel = Level5
                 break
+            }
+            case 6:
+            {
+                this.nextLevel = Level6
+                break
+
             }*/
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }
     }
+
     protected initializeRat(key: string, spawn: Vec2): void {
        
         if (spawn === undefined) {

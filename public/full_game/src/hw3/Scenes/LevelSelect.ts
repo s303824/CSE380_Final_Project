@@ -6,8 +6,8 @@ import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level1 from "./HW3Level1";
 import Level2 from "./HW3Level2";
-import Level3 from "./HW3Level3";
-import Level4 from "./HW3Level4";
+import Level3 from "./HW3Level4";
+import Level4 from "./HW3Level5";
 
 
 // Layers for the main menu scene
