@@ -9,13 +9,14 @@ import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Level1 from "./HW3Level1";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import Level2 from "./HW3Level2";
-import Level3 from "./HW3Level4";
+import Level3 from "./HW3Level3";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level4 from "./HW3Level4";
+import Level5 from "./HW3Level5";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -80,13 +81,8 @@ export default class Level6 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }
-            case 4: 
-            {
-                this.nextLevel = Level4
-                break
-            }            
-            /*case 2: 
+            }           
+            case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -96,6 +92,11 @@ export default class Level6 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
+            case 4: 
+            {
+                this.nextLevel = Level4
+                break
+            } 
             case 5: 
             {                
                 this.nextLevel = Level5
@@ -106,7 +107,7 @@ export default class Level6 extends HW3Level {
                 this.nextLevel = Level6
                 break
 
-            }*/
+            }
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }

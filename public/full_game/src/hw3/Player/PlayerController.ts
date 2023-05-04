@@ -139,14 +139,19 @@ export default class PlayerController extends StateMachineAI {
         if(Input.isKeyJustPressed("2")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 2})
         }
-        /*
-        FIX
         if(Input.isKeyJustPressed("3")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 3})
         }
         if(Input.isKeyJustPressed("4")){
             this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 4})
-        }*/
+        }
+        if(Input.isKeyJustPressed("5")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 5})
+        }
+        if(Input.isKeyJustPressed("6")){
+            this.emitter.fireEvent(HW3Events.SWITCH_LEVELS, {level: 6})
+        }
+
         if(this.canCover){
             if(Input.isKeyJustPressed("e")){
                 this.isInvincible = !this.isInvincible;  
