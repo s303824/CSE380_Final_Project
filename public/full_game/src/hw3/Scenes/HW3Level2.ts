@@ -138,7 +138,7 @@ export default class Level2 extends HW3Level {
 
             }
             default:
-                throw new Error(`Unhandled event caught in scene with type ${event.type}`)
+                throw new Error(`Unhandled level switch event caught in scene with value ${event.data.get("level")}`)
         }
     }
 
