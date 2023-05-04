@@ -110,7 +110,8 @@ export default class Level2 extends HW3Level {
             {
                 this.nextLevel = Level4
                 break
-            }            
+            }   
+               
             /*case 2: 
             {
                 this.nextLevel = Level2
@@ -161,8 +162,6 @@ export default class Level2 extends HW3Level {
 
     protected initializeViewport(): void {
         super.initializeViewport();
-   
-
         this.viewport.setBounds(0, 0, 160*16, 40*16);
     }
     protected initializeGreenSludge(): void {
