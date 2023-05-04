@@ -41,7 +41,7 @@ export default class Cutscene1 extends HW3Level {
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
     public static readonly LEVEL_MUSIC_PATH = "hw4_assets/music/level1.mp3";
 
-    public static readonly CUTSCENE_SPAWN = new Vec2(600, 200);
+    public static readonly CUTSCENE_SPAWN = new Vec2(600, 400);
     public static readonly CUTSCENE_SPRITE_KEY = "CUTSCENE_SPRITE_KEY";
     public static readonly CUTSCENE_SPRITE_PATH = "hw4_assets/spritesheets/cutscene1.json";
     protected cutsceneSpriteKey: string;
@@ -96,38 +96,6 @@ export default class Cutscene1 extends HW3Level {
         this.isCutscene = false;
     }
 
-    protected handleLevelSwitchEvent(event: GameEvent): void {
-        switch(event.data.get("level")){
-            case 1: 
-            {                
-                this.nextLevel = Level1
-                break
-            }
-            case 2: 
-            {
-                this.nextLevel = Level3
-                break
-            }            
-            /*case 2: 
-            {
-                this.nextLevel = Level2
-                break
-            }
-            case 3: 
-            {                
-                this.nextLevel = Level3
-                break
-            }
-            case 4: 
-            {                
-                this.nextLevel = Level4
-                break
-            }*/
-            default:
-                throw new Error(`Unhandled event caught in scene with type ${event.type}`)
-        }
-    }
-
     // FIX
     public startScene(): void {
         super.startScene();
@@ -144,7 +112,7 @@ export default class Cutscene1 extends HW3Level {
 
         // Add the player to the scene
         this.cutscene = this.add.animatedSprite(this.cutsceneSpriteKey, HW3Layers.PRIMARY);
-        this.cutscene.scale.set(.5,.5);
+        //this.cutscene.scale.set(1,1);
         this.cutscene.position.copy(spawn);
    
         // Give the player it's AI
@@ -159,11 +127,15 @@ export default class Cutscene1 extends HW3Level {
      */
     protected initializeViewport(): void {
         super.initializeViewport();
-        this.viewport.setBounds(0, 0, 120*16, 20*16);
+        this.viewport.follow(this.cutscene);
+        this.viewport.setZoomLevel(1);
+        this.viewport.setBounds(0, 0, 1200, 800);
+
 
     }
     protected initializeUI(): void {
         super.initializeUI();
+        this.levelEndLabel.visible = false
     }
 
 }
