@@ -21,6 +21,7 @@ import Level4 from "./HW3Level5";
 import Level1 from "./HW3Level1";
 import CutsceneController from "../Cutscene/CutsceneController";
 import Level5 from "./HW3Level5";
+import Input from "../../Wolfie2D/Input/Input";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -48,6 +49,8 @@ export default class Cutscene1 extends HW3Level {
     protected cutsceneSpriteKey: string;
     protected cutscene: AnimatedSprite;
     protected cutsceneSpawn: Vec2;
+
+    private instructionLabel: Label;
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -98,11 +101,9 @@ export default class Cutscene1 extends HW3Level {
     }
 
 
-    // FIX
     public startScene(): void {
         super.startScene();
         // Set the next level to be Level2
-        //  this.nextLevel = Level2;
         this.nextLevel = Level1;
         this.initializeCutscene(this.cutsceneSpriteKey, this.cutsceneSpawn);
     }
@@ -121,6 +122,13 @@ export default class Cutscene1 extends HW3Level {
     this.cutscene.addAI(CutsceneController);
     }
 
+    public updateScene(deltaT: number): void {
+        super.updateScene(deltaT)
+        if(Input.isKeyJustPressed("escape")){
+            this.emitter.fireEvent(HW3Events.LEVEL_END)
+        }
+
+    }
     /**
      * I had to override this method to adjust the viewport for the first level. I screwed up 
      * when I was making the tilemap for the first level is what it boils down to.
@@ -138,6 +146,12 @@ export default class Cutscene1 extends HW3Level {
     protected initializeUI(): void {
         super.initializeUI();
         this.levelEndLabel.visible = false
+
+        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(600, 700), text: "ESC to skip"});
+        this.instructionLabel.size.set(300, 30);
+        this.instructionLabel.fontSize = 24;
+        this.instructionLabel.font = "Courier";
+
     }
 
 }
