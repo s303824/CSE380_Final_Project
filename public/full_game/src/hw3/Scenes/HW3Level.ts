@@ -239,8 +239,10 @@ export default abstract class HW3Level extends Scene {
             }
 
             case HW3Events.SWITCH_LEVELS:{
-                this.handleLevelSwitchEvent(event);
-                this.emitter.fireEvent(HW3Events.LEVEL_END)
+                if(!this.isCutscene){
+                    this.handleLevelSwitchEvent(event);
+                    this.emitter.fireEvent(HW3Events.LEVEL_END)    
+                }
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.
