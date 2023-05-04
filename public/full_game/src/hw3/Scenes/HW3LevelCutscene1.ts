@@ -20,6 +20,7 @@ import Level3 from "./HW3Level4";
 import Level4 from "./HW3Level5";
 import Level1 from "./HW3Level1";
 import CutsceneController from "../Cutscene/CutsceneController";
+import Level5 from "./HW3Level5";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -95,6 +96,7 @@ export default class Cutscene1 extends HW3Level {
         this.load.keepAudio(this.jumpAudioKey);
         this.isCutscene = false;
     }
+
 
     // FIX
     public startScene(): void {
