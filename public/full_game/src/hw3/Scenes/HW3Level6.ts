@@ -73,7 +73,8 @@ export default class Level6 extends HW3Level {
     }
     protected initializeViewport(): void {
         super.initializeViewport();
-        this.viewport.setBounds(0, 16, 16*16*2, 60*16*2);
+        this.viewport.setBounds(0, 0, 120*16, 20*16);
+
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -115,7 +116,7 @@ export default class Level6 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
-        this.nextLevel = Level6;
+        this.nextLevel = MainMenu;
         this.currentLevel = Level6;
         this.levelTeleportPosition = new Vec2(1840, 320).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)

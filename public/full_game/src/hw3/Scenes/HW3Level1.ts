@@ -166,8 +166,7 @@ export default class Level1 extends HW3Level {
     public startScene(): void {
         super.startScene();
         // Set the next level to be Level2
-        //  this.nextLevel = Level2;
-        this.nextLevel = Level3;
+        this.nextLevel = Level2;
         this.currentLevel = Level1;
         this.initializePlayerTeleport()
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn);
