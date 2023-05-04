@@ -14,6 +14,9 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import RatController from "../Rat/RatController";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
+import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
+import Color from "../../Wolfie2D/Utils/Color";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -44,6 +47,11 @@ export default class Level2 extends HW3Level {
     public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
     public static readonly RAT_SPAWN = new Vec2(400, 800);
     public static readonly RAT_SPAWN_2= new Vec2(500, 800);
+    protected levelTeleportPosition: Vec2;
+    protected levelTeleportHalfSize: Vec2;
+
+    protected levelTeleportArea: Rect;
+
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -86,7 +94,7 @@ export default class Level2 extends HW3Level {
         super.startScene();
         this.currentLevel = Level2;
         this.nextLevel = Level3;
-
+        this.initializeGreenSludge();
         this.initializeRat(this.ratSpriteKey, this.ratSpawn);
         this.initializeRat(this.ratSpriteKey, this.ratSpawn2);
 
@@ -153,10 +161,24 @@ export default class Level2 extends HW3Level {
 
     protected initializeViewport(): void {
         super.initializeViewport();
-        this.viewport.follow(this.player);
+   
 
-        this.viewport.setBounds(16, 0, 160*16, 20*16);
+        this.viewport.setBounds(0, 0, 160*16, 40*16);
     }
+    protected initializeGreenSludge(): void {
+        if (!this.layers.has(HW3Layers.PRIMARY)) {
+            throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
+        }
+        
+        this.levelTeleportPosition = new Vec2(255, 285).mult(this.tilemapScale)
+        this.levelTeleportHalfSize = new Vec2(160, 20).mult(this.tilemapScale)
+        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
+        this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
+        this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_DEAD, null);
+        this.levelTeleportArea.color = new Color(255, 99, 71, 0);
+        
+    }
+
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
         this.load.keepAudio(this.levelMusicKey);

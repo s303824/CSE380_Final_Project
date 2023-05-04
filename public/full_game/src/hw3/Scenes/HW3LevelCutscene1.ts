@@ -105,7 +105,7 @@ export default class Cutscene1 extends HW3Level {
             }
             case 2: 
             {
-                this.nextLevel = Level3
+                this.nextLevel = Level2
                 break
             }            
             /*case 2: 
