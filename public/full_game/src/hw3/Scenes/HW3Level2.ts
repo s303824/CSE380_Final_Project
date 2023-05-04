@@ -49,8 +49,8 @@ export default class Level2 extends HW3Level {
     protected ratSpawn2: Vec2;
     public static readonly RAT_SPRITE_KEY = "RAT_SPRITE_KEY";
     public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
-    public static readonly RAT_SPAWN = new Vec2(400, 800);
-    public static readonly RAT_SPAWN_2= new Vec2(500, 800);
+    public static readonly RAT_SPAWN = new Vec2(800, 240);
+    public static readonly RAT_SPAWN_2= new Vec2(1000, 240);
     protected levelTeleportPosition: Vec2;
     protected levelTeleportHalfSize: Vec2;
 
@@ -80,7 +80,7 @@ export default class Level2 extends HW3Level {
         this.ratSpawn2 = Level2.RAT_SPAWN_2;
         
         // Level end size and position
-        this.levelEndPosition = new Vec2(2500, 216).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(1266, 224).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
 
     }
