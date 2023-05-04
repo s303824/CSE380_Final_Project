@@ -19,6 +19,8 @@ import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import HumanController from "../Human/HumanController";
 import Level5 from "./HW3Level5";
+import Level6 from "./HW3Level6";
+import Level3 from "./HW3Level3";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -120,13 +122,8 @@ export default class Level4 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }
-            case 4: 
-            {
-                this.nextLevel = Level4
-                break
-            }            
-            /*case 2: 
+            }           
+            case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -136,6 +133,11 @@ export default class Level4 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
+            case 4: 
+            {
+                this.nextLevel = Level4
+                break
+            } 
             case 5: 
             {                
                 this.nextLevel = Level5
@@ -146,7 +148,7 @@ export default class Level4 extends HW3Level {
                 this.nextLevel = Level6
                 break
 
-            }*/
+            }
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }
@@ -155,9 +157,8 @@ export default class Level4 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
-        //this.nextLevel = Level5;
         this.currentLevel = Level4;
-        this.nextLevel = MainMenu;
+        this.nextLevel = Level5;
 
 
         this.levelTeleportPosition = new Vec2(928, 144).mult(this.tilemapScale)

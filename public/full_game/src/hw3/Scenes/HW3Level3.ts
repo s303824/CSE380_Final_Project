@@ -7,19 +7,22 @@ import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import RenderingManager from "../../Wolfie2D/Rendering/RenderingManager";
 import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Level1 from "./HW3Level1";
-import Level4 from "./HW3Level5";
+import Level4 from "./HW3Level4";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import RatController from "../Rat/RatController";
+import Level5 from "./HW3Level5";
+import Level6 from "./HW3Level6";
+import Level2 from "./HW3Level2";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
  */
 export default class Level3 extends HW3Level {
 
-    public static readonly PLAYER_SPAWN = new Vec2(40, 224);
+    public static readonly PLAYER_SPAWN = new Vec2(32, 1104);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
 
@@ -96,13 +99,8 @@ export default class Level3 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }
-            case 4: 
-            {
-                this.nextLevel = Level4
-                break
-            }            
-            /*case 2: 
+            }           
+            case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -112,6 +110,11 @@ export default class Level3 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
+            case 4: 
+            {
+                this.nextLevel = Level4
+                break
+            } 
             case 5: 
             {                
                 this.nextLevel = Level5
@@ -122,7 +125,7 @@ export default class Level3 extends HW3Level {
                 this.nextLevel = Level6
                 break
 
-            }*/
+            }
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }

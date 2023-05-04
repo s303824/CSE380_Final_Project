@@ -9,13 +9,14 @@ import SceneManager from "../../Wolfie2D/Scene/SceneManager";
 import Level1 from "./HW3Level1";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import Level2 from "./HW3Level2";
-import Level3 from "./HW3Level4";
+import Level3 from "./HW3Level3";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level4 from "./HW3Level4";
+import Level5 from "./HW3Level5";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -72,7 +73,8 @@ export default class Level6 extends HW3Level {
     }
     protected initializeViewport(): void {
         super.initializeViewport();
-        this.viewport.setBounds(0, 16, 16*16*2, 60*16*2);
+        this.viewport.setBounds(0, 0, 120*16, 20*16);
+
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -80,13 +82,8 @@ export default class Level6 extends HW3Level {
             {                
                 this.nextLevel = Level1
                 break
-            }
-            case 4: 
-            {
-                this.nextLevel = Level4
-                break
-            }            
-            /*case 2: 
+            }           
+            case 2: 
             {
                 this.nextLevel = Level2
                 break
@@ -96,6 +93,11 @@ export default class Level6 extends HW3Level {
                 this.nextLevel = Level3
                 break
             }
+            case 4: 
+            {
+                this.nextLevel = Level4
+                break
+            } 
             case 5: 
             {                
                 this.nextLevel = Level5
@@ -106,7 +108,7 @@ export default class Level6 extends HW3Level {
                 this.nextLevel = Level6
                 break
 
-            }*/
+            }
             default:
                 throw new Error(`Unhandled event caught in scene with type ${event.type}`)
         }
@@ -114,7 +116,7 @@ export default class Level6 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
-        this.nextLevel = Level6;
+        this.nextLevel = MainMenu;
         this.currentLevel = Level6;
         this.levelTeleportPosition = new Vec2(1840, 320).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
