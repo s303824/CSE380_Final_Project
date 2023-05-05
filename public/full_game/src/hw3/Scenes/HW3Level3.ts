@@ -22,7 +22,7 @@ import Level2 from "./HW3Level2";
  */
 export default class Level3 extends HW3Level {
 
-    public static readonly PLAYER_SPAWN = new Vec2(32, 1104);
+    public static readonly PLAYER_SPAWN = new Vec2(250, 300);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
 
@@ -156,8 +156,7 @@ export default class Level3 extends HW3Level {
     protected initializeViewport(): void {
         super.initializeViewport();
         this.viewport.follow(this.player);
-
-        this.viewport.setBounds(16, 0, 160*16, 20*16);
+        this.viewport.setBounds(16, 0, 160*16, 40*16);
     }
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
