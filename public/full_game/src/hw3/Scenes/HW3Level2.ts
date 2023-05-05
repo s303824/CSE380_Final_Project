@@ -80,7 +80,7 @@ export default class Level2 extends HW3Level {
         this.ratSpawn2 = Level2.RAT_SPAWN_2;
         
         // Level end size and position
-        this.levelEndPosition = new Vec2(1266, 224).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(1266, 200).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
 
     }

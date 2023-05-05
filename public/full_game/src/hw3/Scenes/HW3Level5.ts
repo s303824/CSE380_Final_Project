@@ -29,7 +29,7 @@ export default class Level5 extends HW3Level {
 
     public static readonly TILEMAP_KEY = "LEVEL4";
     public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-5.json";
-    public static readonly TILEMAP_SCALE = new Vec2(2, 2);
+    public static readonly TILEMAP_SCALE = new Vec2(1, 1);
     public static readonly WALLS_LAYER_KEY = "Main";
 
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
@@ -38,7 +38,6 @@ export default class Level5 extends HW3Level {
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
-    public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -58,8 +57,8 @@ export default class Level5 extends HW3Level {
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
-        this.levelEndPosition = new Vec2(32, 864).mult(this.tilemapScale);
-        this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(32, 832).mult(this.tilemapScale);
+        this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
 
     }
     /**
@@ -73,7 +72,7 @@ export default class Level5 extends HW3Level {
     }
     protected initializeViewport(): void {
         super.initializeViewport();
-        this.viewport.setBounds(0, 16, 16*16*2, 60*16*2);
+        this.viewport.setBounds(0, 16, 120*16, 60*16*4);
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -117,9 +116,9 @@ export default class Level5 extends HW3Level {
         super.startScene();
         this.nextLevel = Level6;
         this.currentLevel = Level5;
-        this.levelTeleportPosition = new Vec2(1840, 320).mult(this.tilemapScale)
+        this.levelTeleportPosition = new Vec2(1856, 328).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
-        this.playerNewLocation = new Vec2(1840, 864).mult(this.tilemapScale)
+        this.playerNewLocation = new Vec2(1856, 864).mult(this.tilemapScale)
 
         this.initializePlayerTeleport();
     }
@@ -131,7 +130,7 @@ export default class Level5 extends HW3Level {
         this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
-        this.levelTeleportArea.color = new Color(255, 0, 255, 1.0);
+        this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
         
     }
 

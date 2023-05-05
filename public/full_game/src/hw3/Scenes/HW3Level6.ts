@@ -23,13 +23,13 @@ import Level5 from "./HW3Level5";
  */
 export default class Level6 extends HW3Level {
 
-    public static readonly PLAYER_SPAWN = new Vec2(48, 320);
+    public static readonly PLAYER_SPAWN = new Vec2(48, 208);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
 
     public static readonly TILEMAP_KEY = "LEVEL4";
     public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-6.json";
-    public static readonly TILEMAP_SCALE = new Vec2(2, 2);
+    public static readonly TILEMAP_SCALE = new Vec2(1, 1);
     public static readonly WALLS_LAYER_KEY = "Main";
 
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
@@ -38,7 +38,6 @@ export default class Level6 extends HW3Level {
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
-    public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -58,8 +57,8 @@ export default class Level6 extends HW3Level {
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
-        this.levelEndPosition = new Vec2(32, 864).mult(this.tilemapScale);
-        this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(750, 208).mult(this.tilemapScale);
+        this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
 
     }
     /**

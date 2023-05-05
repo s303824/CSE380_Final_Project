@@ -27,13 +27,13 @@ import Level3 from "./HW3Level3";
  */
 export default class Level4 extends HW3Level {
 
-    public static readonly PLAYER_SPAWN = new Vec2(48, 176);
+    public static readonly PLAYER_SPAWN = new Vec2(48, 146);
     public static readonly PLAYER_SPRITE_KEY = "PLAYER_SPRITE_KEY";
     public static readonly PLAYER_SPRITE_PATH = "hw4_assets/spritesheets/Seabass.json";
 
     public static readonly TILEMAP_KEY = "LEVEL3";
     public static readonly TILEMAP_PATH = "hw4_assets/tilemaps/level-4.json";
-    public static readonly TILEMAP_SCALE = new Vec2(2, 2);
+    public static readonly TILEMAP_SCALE = new Vec2(1, 1);
     public static readonly WALLS_LAYER_KEY = "Main";
 
     public static readonly LEVEL_MUSIC_KEY = "LEVEL_MUSIC";
