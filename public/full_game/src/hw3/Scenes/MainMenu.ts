@@ -64,6 +64,7 @@ export default class MainMenu extends Scene {
         playBtn.borderColor = Color.WHITE;
         playBtn.borderRadius = 0;
         playBtn.setPadding(new Vec2(50, 10));
+        playBtn.fontSize = 50;
         playBtn.font = "PixelSimple";
 
         // When the play button is clicked, go to the next scene
