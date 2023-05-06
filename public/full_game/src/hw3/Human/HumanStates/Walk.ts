@@ -1,7 +1,17 @@
-import { HumanAnimations } from "../HumanController";
+import Rect from "../../../Wolfie2D/Nodes/Graphics/Rect";
+import HW3AnimatedSprite from "../../Nodes/HW3AnimatedSprite";
+import HumanController, { HumanAnimations } from "../HumanController";
 import HumanState from "./HumanState";
 
 export default class Walk extends HumanState {
+	protected levelEndArea: Rect;
+	protected player: HW3AnimatedSprite;
+	public constructor(parent: HumanController, owner: HW3AnimatedSprite, player:HW3AnimatedSprite, levelEndArea: Rect){
+		super(parent, owner)
+		this.levelEndArea = levelEndArea;
+		this.player = player;
+	}
+
 
 	onEnter(options: Record<string, any>): void {
 		
@@ -29,8 +39,8 @@ export default class Walk extends HumanState {
 		
 		// If we're walking left, flip the sprite
 		this.owner.invertX = this.parent.velocity.x < 0;
-
-		this.owner.move(this.parent.velocity.scaled(deltaT));
+        if(!this.player.collisionShape.overlaps(this.levelEndArea.collisionShape))
+			this.owner.move(this.parent.velocity.scaled(deltaT));
 		
 	}
 

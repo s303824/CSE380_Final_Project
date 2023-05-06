@@ -13,6 +13,8 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 
 import Timer from "../../Wolfie2D/Timing/Timer";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 
 /**
  * Animation keys for the rat spritesheet
@@ -56,7 +58,7 @@ export default class RatController extends StateMachineAI {
     public playerVec: Vec2;
     // protected cannon: Sprite;
     protected walkFlag: boolean;
-
+    protected levelEndArea: Rect;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -67,12 +69,14 @@ export default class RatController extends StateMachineAI {
         this.speed = this.MIN_SPEED;
         this.velocity = Vec2.ZERO;
         this.player = options.player;
-        this.playerVec = this.player.position;
+        this.playerVec = this.player.position;        
+        this.levelEndArea = options.levelEndArea;
+
         this.walkFlag = false;
 
         // Add the different states the rat can be in to the RatController 
 		this.addState(RatStates.IDLE, new Idle(this, this.owner));
-        this.addState(RatStates.WALK, new Walk(this, this.owner));
+        this.addState(RatStates.WALK, new Walk(this, this.owner, this.player, this.levelEndArea));
 
         this.initialize(RatStates.IDLE);
     }

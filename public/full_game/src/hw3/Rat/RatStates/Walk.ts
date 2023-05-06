@@ -1,7 +1,17 @@
-import { RatAnimations } from "../RatController";
+import Rect from "../../../Wolfie2D/Nodes/Graphics/Rect";
+import HW3AnimatedSprite from "../../Nodes/HW3AnimatedSprite";
+import RatController, { RatAnimations } from "../RatController";
 import RatState from "./RatState";
 
 export default class Walk extends RatState {
+	protected levelEndArea: Rect;
+	protected player: HW3AnimatedSprite;
+
+	public constructor(parent: RatController, owner: HW3AnimatedSprite, player:HW3AnimatedSprite, levelEndArea: Rect){
+		super(parent, owner)
+		this.levelEndArea = levelEndArea;
+		this.player = player;
+	}
 
 	onEnter(options: Record<string, any>): void {
 		
@@ -30,7 +40,8 @@ export default class Walk extends RatState {
 		// If we're walking left, flip the sprite
 		this.owner.invertX = this.parent.velocity.x < 0;
 
-		this.owner.move(this.parent.velocity.scaled(deltaT));
+        if(!this.player.collisionShape.overlaps(this.levelEndArea.collisionShape))
+			this.owner.move(this.parent.velocity.scaled(deltaT));
 		
 	}
 

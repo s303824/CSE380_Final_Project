@@ -14,6 +14,7 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 
 import Timer from "../../Wolfie2D/Timing/Timer";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 
 /**
  * Animation keys for the player spritesheet
@@ -61,6 +62,7 @@ export default class HumanController extends StateMachineAI {
     public playerVec: Vec2;
     // protected cannon: Sprite;
     protected walkFlag: boolean;
+    protected levelEndArea: Rect;
 
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
@@ -72,12 +74,13 @@ export default class HumanController extends StateMachineAI {
         this.speed = this.MIN_SPEED;
         this.velocity = Vec2.ZERO;
         this.player = options.player;
+        this.levelEndArea = options.levelEndArea;
         this.playerVec = this.player.position;
         this.walkFlag = false;
 
         // Add the different states the player can be in to the PlayerController 
 		this.addState(HumanStates.IDLE, new Idle(this, this.owner));
-        this.addState(HumanStates.WALK, new Walk(this, this.owner));
+        this.addState(HumanStates.WALK, new Walk(this, this.owner, this.player, this.levelEndArea));
 
         this.initialize(HumanStates.IDLE);
     }

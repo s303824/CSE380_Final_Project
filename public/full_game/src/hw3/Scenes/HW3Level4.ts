@@ -192,7 +192,7 @@ export default class Level4 extends HW3Level {
         this.human.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
         // Give the human it's AI
-    this.human.addAI(HumanController, { player: this.player, tilemap: "Primary"});
+    this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
     }
 
     protected initializePlayerTeleport(): void {

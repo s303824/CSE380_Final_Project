@@ -1,11 +1,21 @@
-import { GooseStates, GooseAnimations } from "../GooseController";
+import GooseController, { GooseStates, GooseAnimations } from "../GooseController";
 import Input from "../../../Wolfie2D/Input/Input";
 import { HW3Controls } from "../../HW3Controls";
 import GooseState from "./GooseState";
 import Timer from "../../../Wolfie2D/Timing/Timer";
 import Vec2 from "../../../Wolfie2D/DataTypes/Vec2";
+import HW3AnimatedSprite from "../../Nodes/HW3AnimatedSprite";
+import Rect from "../../../Wolfie2D/Nodes/Graphics/Rect";
 
 export default class Walk extends GooseState {
+	protected levelEndArea: Rect;
+	protected player: HW3AnimatedSprite;
+
+	public constructor(parent: GooseController, owner: HW3AnimatedSprite, player:HW3AnimatedSprite, levelEndArea: Rect){
+		super(parent, owner)
+		this.levelEndArea = levelEndArea;
+		this.player = player;
+	}
 
 	onEnter(options: Record<string, any>): void {
 		
@@ -34,7 +44,8 @@ export default class Walk extends GooseState {
 		// If we're walking left, flip the sprite
 		this.owner.invertX = this.parent.velocity.x > 0;
 
-		this.owner.move(this.parent.velocity.scaled(deltaT));
+        if(!this.player.collisionShape.overlaps(this.levelEndArea.collisionShape))
+			this.owner.move(this.parent.velocity.scaled(deltaT));
 		
 	}
 

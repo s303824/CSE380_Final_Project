@@ -15,7 +15,7 @@ export default class Idle extends RatState {
         // Adjust the direction the player is facing
 		super.update(deltaT);
 		this.parent.velocity.y += this.gravity*deltaT; 
-
+		
         // Get the direction of the player's movement
 		let dir = this.parent.inputDir;
 

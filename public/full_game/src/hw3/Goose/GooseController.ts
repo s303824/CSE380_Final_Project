@@ -15,6 +15,7 @@ import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 
 import Timer from "../../Wolfie2D/Timing/Timer";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 
 /**
  * Animation keys for the player spritesheet
@@ -65,24 +66,23 @@ export default class GooseController extends StateMachineAI {
     public playerVec: Vec2;
     // protected cannon: Sprite;
     protected walkFlag: boolean;
-
+    protected levelEndArea: Rect;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
-
-
 
         this.tilemap = this.owner.getScene().getTilemap(options.tilemap) as OrthogonalTilemap;
         this.speed = this.MIN_SPEED;
         this.velocity = Vec2.ZERO;
         this.player = options.player;
         this.playerVec = this.player.position;
+        this.levelEndArea = options.levelEndArea;
         this.walkFlag = false;
 
         // Add the different states the player can be in to the PlayerController 
 		this.addState(GooseStates.IDLE, new Idle(this, this.owner));
 		this.addState(GooseStates.ATTACK, new Attack(this, this.owner));
-        this.addState(GooseStates.WALK, new Walk(this, this.owner));
+        this.addState(GooseStates.WALK, new Walk(this, this.owner, this.player, this.levelEndArea));
 
         this.initialize(GooseStates.IDLE);
     }

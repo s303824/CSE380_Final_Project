@@ -4,6 +4,7 @@ import MathUtils from "../../../Wolfie2D/Utils/MathUtils";
 import HW3AnimatedSprite from "../../Nodes/HW3AnimatedSprite";
 import GooseController from "../GooseController";
 import PlayerController from "../../Player/PlayerController";
+import Rect from "../../../Wolfie2D/Nodes/Graphics/Rect";
 /**
  * An abstract state for the PlayerController 
  */
@@ -12,6 +13,7 @@ export default abstract class GooseState extends State {
     protected parent: GooseController;
 	protected owner: HW3AnimatedSprite;
     protected player: HW3AnimatedSprite;
+
 	protected gravity: number;
 
 	public constructor(parent: GooseController, owner: HW3AnimatedSprite){

@@ -148,7 +148,7 @@ export default class Level3 extends HW3Level {
         this.rat.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
         // Give the rat it's AI
-    this.rat.addAI(RatController, { player: this.player, tilemap: "Primary"});
+    this.rat.addAI(RatController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
     }
 
 
