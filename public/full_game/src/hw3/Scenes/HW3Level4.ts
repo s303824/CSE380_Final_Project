@@ -64,11 +64,14 @@ export default class Level4 extends HW3Level {
     protected human: AnimatedSprite;
     protected humanSpawn: Vec2;
     protected humanSpawn2: Vec2;
+    protected humanSpawn3: Vec2;
 
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
-    public static readonly HUMAN_SPAWN = new Vec2(400, 800);
-    public static readonly HUMAN_SPAWN_2= new Vec2(500, 800);
+    public static readonly HUMAN_SPAWN = new Vec2(400, 100);
+    public static readonly HUMAN_SPAWN_2= new Vec2(500, 368);
+    public static readonly HUMAN_SPAWN_3= new Vec2(400, 368);
+
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -89,6 +92,7 @@ export default class Level4 extends HW3Level {
         this.humanSpriteKey = Level4.HUMAN_SPRITE_KEY;
         this.humanSpawn = Level4.HUMAN_SPAWN;
         this.humanSpawn2 = Level4.HUMAN_SPAWN_2;
+        this.humanSpawn3 = Level4.HUMAN_SPAWN_3;
 
 
         // Music and sound
@@ -167,7 +171,9 @@ export default class Level4 extends HW3Level {
         this.initializePlayerTeleport()
         //this.initializePlayerCover()
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);
+        this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
+        this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
+
     }
 
     protected initializeHuman(key: string, spawn: Vec2): void {
@@ -178,7 +184,7 @@ export default class Level4 extends HW3Level {
 
         // Add the human enemy to the scene
         this.human = this.add.animatedSprite(this.humanSpriteKey, HW3Layers.PRIMARY);
-        this.human.scale.set(1.0,1.0);
+        this.human.scale.set(1.5,1.5);
         this.human.position.copy(spawn);
         
         // Give the human physics and setup collision groups and triggers for the player
@@ -229,10 +235,10 @@ export default class Level4 extends HW3Level {
 
     protected initializeUI(): void {
         super.initializeUI()
-        /*this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
+        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
         this.instructionLabel.size.set(300, 30);
         this.instructionLabel.fontSize = 24;
-        this.instructionLabel.font = "Courier";*/
+        this.instructionLabel.font = "Courier";
 
     }
 
