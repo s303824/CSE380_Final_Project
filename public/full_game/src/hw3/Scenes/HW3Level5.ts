@@ -18,6 +18,7 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Level4 from "./HW3Level4";
 import Level6 from "./HW3Level6";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import HumanController from "../Human/HumanController";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -38,12 +39,18 @@ export default class Level5 extends HW3Level {
 
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
-
+    
     protected humanSpriteKey: string;
     protected human: AnimatedSprite;
     protected humanSpawn: Vec2;
     protected humanSpawn2: Vec2;
     protected humanSpawn3: Vec2;
+
+    public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
+    public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
+    public static readonly HUMAN_SPAWN = new Vec2(400, 150);
+    public static readonly HUMAN_SPAWN_2= new Vec2(500, 150);
+    public static readonly HUMAN_SPAWN_3= new Vec2(500, 632);
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -64,8 +71,15 @@ export default class Level5 extends HW3Level {
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
-        this.levelEndPosition = new Vec2(32, 832).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(32, 880).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
+        
+        // enemies
+        this.humanSpriteKey = Level4.HUMAN_SPRITE_KEY;
+        this.humanSpawn = Level4.HUMAN_SPAWN;
+        this.humanSpawn2 = Level4.HUMAN_SPAWN_2;
+        this.humanSpawn3 = Level4.HUMAN_SPAWN_3;
+
 
     }
     /**
@@ -75,6 +89,7 @@ export default class Level5 extends HW3Level {
         // Load in the tilemap
         this.load.tilemap(this.tilemapKey, Level5.TILEMAP_PATH);
         this.load.audio(this.levelMusicKey, Level5.LEVEL_MUSIC_PATH);
+        this.load.spritesheet(this.humanSpriteKey, Level5.HUMAN_SPRITE_PATH);
 
     }
     protected initializeViewport(): void {
@@ -128,6 +143,11 @@ export default class Level5 extends HW3Level {
         this.playerNewLocation = new Vec2(1856, 864).mult(this.tilemapScale)
 
         this.initializePlayerTeleport();
+
+        this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
+        this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
+        this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
+
     }
     protected initializePlayerTeleport(): void {
         if (!this.layers.has(HW3Layers.PRIMARY)) {
@@ -144,5 +164,27 @@ export default class Level5 extends HW3Level {
         this.load.keepSpritesheet(this.playerSpriteKey);
         this.load.keepAudio(this.jumpAudioKey);
     }
+
+    protected initializeHuman(key: string, spawn: Vec2): void {
+       
+        if (spawn === undefined) {
+            throw new Error("Human spawn must be set before initializing the human!");
+        }
+
+        // Add the human enemy to the scene
+        this.human = this.add.animatedSprite(this.humanSpriteKey, HW3Layers.PRIMARY);
+        this.human.scale.set(1.5,1.5);
+        this.human.position.copy(spawn);
+        
+        // Give the human physics and setup collision groups and triggers for the player
+   
+        this.human.addPhysics(new AABB(this.human.position.clone(), this.human.boundary.getHalfSize().clone().sub(new Vec2(10,10))));
+        this.human.setGroup(HW3PhysicsGroups.GOOSE);
+        this.human.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
+
+        // Give the human it's AI
+    this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
+    }
+
 
 }
