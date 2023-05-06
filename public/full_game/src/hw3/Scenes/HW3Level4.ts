@@ -43,8 +43,6 @@ export default class Level4 extends HW3Level {
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
-    protected levelTeleportPosition: Vec2;
-    protected levelTeleportHalfSize: Vec2;
 
     protected door1: Rect;
     protected door2: Rect;
@@ -241,5 +239,11 @@ export default class Level4 extends HW3Level {
         this.instructionLabel.font = "Courier";
 
     }
+    public unloadScene(): void {
+        this.load.keepSpritesheet(this.playerSpriteKey);
+        this.load.keepSpritesheet(this.humanSpriteKey);
+        this.load.keepAudio(this.jumpAudioKey);
+    }
+
 
 }

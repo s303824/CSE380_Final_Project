@@ -120,7 +120,6 @@ export default class Level1 extends HW3Level {
      */
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
-        this.load.keepAudio(this.levelMusicKey);
         this.load.keepAudio(this.jumpAudioKey);
     }
 
@@ -220,7 +219,7 @@ export default class Level1 extends HW3Level {
         this.goose.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
         // Give the player it's AI
-    this.goose.addAI(GooseController, { player: this.player, tilemap: "Primary"});
+        this.goose.addAI(GooseController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
     }
     protected initializeUI(): void {
         super.initializeUI();

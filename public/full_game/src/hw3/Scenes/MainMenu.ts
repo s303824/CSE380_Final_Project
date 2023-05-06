@@ -112,9 +112,6 @@ export default class MainMenu extends Scene {
             this.walls = this.getTilemap(this.wallsLayerKey) as OrthogonalTilemap;
         }
 
-        protected initializeUI(): void{
-
-        }
     
 }
 

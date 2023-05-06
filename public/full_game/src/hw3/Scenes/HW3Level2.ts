@@ -184,7 +184,7 @@ export default class Level2 extends HW3Level {
 
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
-        this.load.keepAudio(this.levelMusicKey);
+        this.load.keepSpritesheet(this.ratSpriteKey);
         this.load.keepAudio(this.jumpAudioKey);
     }
 

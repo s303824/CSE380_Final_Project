@@ -17,6 +17,7 @@ import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level4 from "./HW3Level4";
 import Level6 from "./HW3Level6";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -37,6 +38,12 @@ export default class Level5 extends HW3Level {
 
     public static readonly JUMP_AUDIO_KEY = "PLAYER_JUMP";
     public static readonly JUMP_AUDIO_PATH = "hw4_assets/sounds/jump.wav";
+
+    protected humanSpriteKey: string;
+    protected human: AnimatedSprite;
+    protected humanSpawn: Vec2;
+    protected humanSpawn2: Vec2;
+    protected humanSpawn3: Vec2;
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -132,6 +139,10 @@ export default class Level5 extends HW3Level {
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
         this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
         
+    }
+    public unloadScene(): void {
+        this.load.keepSpritesheet(this.playerSpriteKey);
+        this.load.keepAudio(this.jumpAudioKey);
     }
 
 }
