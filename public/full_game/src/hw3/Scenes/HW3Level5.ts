@@ -48,9 +48,9 @@ export default class Level5 extends HW3Level {
 
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
-    public static readonly HUMAN_SPAWN = new Vec2(400, 150);
-    public static readonly HUMAN_SPAWN_2= new Vec2(500, 150);
-    public static readonly HUMAN_SPAWN_3= new Vec2(500, 632);
+    public static readonly HUMAN_SPAWN = new Vec2(400, 340);
+    public static readonly HUMAN_SPAWN_2= new Vec2(500, 340);
+    public static readonly HUMAN_SPAWN_3= new Vec2(500, 834);
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -75,10 +75,10 @@ export default class Level5 extends HW3Level {
         this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
         
         // enemies
-        this.humanSpriteKey = Level4.HUMAN_SPRITE_KEY;
-        this.humanSpawn = Level4.HUMAN_SPAWN;
-        this.humanSpawn2 = Level4.HUMAN_SPAWN_2;
-        this.humanSpawn3 = Level4.HUMAN_SPAWN_3;
+        this.humanSpriteKey = Level5.HUMAN_SPRITE_KEY;
+        this.humanSpawn = Level5.HUMAN_SPAWN;
+        this.humanSpawn2 = Level5.HUMAN_SPAWN_2;
+        this.humanSpawn3 = Level5.HUMAN_SPAWN_3;
 
 
     }
