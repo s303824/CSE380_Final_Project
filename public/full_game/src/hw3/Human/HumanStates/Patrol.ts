@@ -34,10 +34,10 @@ export default class Patrol extends HumanState {
         // Call the update method in the parent class - updates the direction the player is facing
         super.update(deltaT);
 
-		console.log(this.owner.position.x)
+		//console.log(this.owner.position.x)
 		let playerVec = this.parent.playerVec;
 
-		if(!this.parent.getAwareness()&&(Math.abs(this.owner.position.x - playerVec.x) < 100) &&(Math.abs(this.owner.position.y - playerVec.y) < 100)){
+		if(!this.parent.getAwareness()&&(Math.abs(this.owner.position.x - playerVec.x) < 200) &&(Math.abs(this.owner.position.y - playerVec.y) < 200)){
             console.log("FISH SPOTTED");
             this.finished(HumanStates.CHASE);
         }
