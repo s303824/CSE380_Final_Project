@@ -46,10 +46,7 @@ export default class Level4 extends HW3Level {
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
     protected door: Rect;
-    protected doorPosition_1: Vec2;
-    protected doorPosition_2: Vec2;
-    protected doorPosition_3: Vec2;
-    protected doorPosition_4: Vec2;
+    protected doorLocations: [number,number][]
 
     protected instructionLabel: Label;
 
@@ -95,6 +92,8 @@ export default class Level4 extends HW3Level {
         this.levelEndPosition = new Vec2(32, 400).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
         this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
+
+        this.doorLocations = [[152, 112],[344, 112],[648, 112],[840, 112],[152, 368],[344, 368],[648, 368],[840, 368]]
 
     }
     /**
@@ -161,12 +160,12 @@ export default class Level4 extends HW3Level {
         this.playerNewLocation = new Vec2(928, 400).mult(this.tilemapScale)
         this.initializePlayerTeleport()
 
-        this.doorPosition_1 = new Vec2(160, 144).mult(this.tilemapScale)
-        this.doorPosition_2 = new Vec2(336, 144).mult(this.tilemapScale)
-        this.doorPosition_3 = new Vec2(640, 144).mult(this.tilemapScale)
-        this.doorPosition_4 = new Vec2(832, 144).mult(this.tilemapScale)
 
-        this.initializePlayerCover(this.doorPosition_1)
+        // initialize all the places to hide
+        for(let i = 0; i < this.doorLocations.length; i++){
+            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale))
+        }
+
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
@@ -209,7 +208,7 @@ export default class Level4 extends HW3Level {
         this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size:  this.levelTeleportHalfSize});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door.color = new Color(255, 0, 255, 0.0);
+        this.door.color = new Color(255, 0, 255, 0.25);
     }
 
 
