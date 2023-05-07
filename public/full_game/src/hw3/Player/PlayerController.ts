@@ -182,7 +182,7 @@ export default class PlayerController extends StateMachineAI {
                 break;
             case HW3Events.ENABLE_COVER: {
                 this.canCover = true;
-                console.log("You can hide")
+                //console.log("You can hide")
                 this.coverCheckTimer.start();
                 break;
             }

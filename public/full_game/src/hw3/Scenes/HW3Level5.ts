@@ -207,7 +207,7 @@ export default class Level5 extends HW3Level {
         this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size: size});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door.color = new Color(255, 0, 255, 0.25);
+        this.door.color = new Color(0, 0, 0, 0.3);
     }
 
 
