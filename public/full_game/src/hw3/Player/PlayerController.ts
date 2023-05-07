@@ -74,6 +74,8 @@ export default class PlayerController extends StateMachineAI {
 
     protected isInvincible: boolean;
     protected invincibleTimer: Timer;
+
+    protected coverCheckTimer: Timer;
     protected canCover: boolean;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
@@ -92,6 +94,11 @@ export default class PlayerController extends StateMachineAI {
             this.isInvincible = false;
         });
         
+        this.coverCheckTimer = new Timer(250, () => {
+            this.emitter.fireEvent(HW3Events.DISABLE_COVER)
+        });
+
+
         this.goose = options.goose;
         // Add the different states the player can be in to the PlayerController 
 		this.addState(PlayerStates.IDLE, new Idle(this, this.owner));
@@ -157,10 +164,8 @@ export default class PlayerController extends StateMachineAI {
                 this.isInvincible = !this.isInvincible;  
                 if(this.isInvincible)
                     console.log("Hiding activated.")
-                else{
+                else
                     console.log("Hiding deactivated.")
-
-                }
             }
         }
 
@@ -174,10 +179,12 @@ export default class PlayerController extends StateMachineAI {
             case HW3Events.ENABLE_COVER: {
                 this.canCover = true;
                 console.log("You can hide")
+                this.coverCheckTimer.start();
                 break;
             }
             case HW3Events.DISABLE_COVER: {
                 this.canCover = false;
+                this.isInvincible = false;  
                 console.log("You can no longer hide")
 
                 break;

@@ -21,6 +21,7 @@ import HumanController from "../Human/HumanController";
 import Level5 from "./HW3Level5";
 import Level6 from "./HW3Level6";
 import Level3 from "./HW3Level3";
+import Timer from "../../Wolfie2D/Timing/Timer";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -44,18 +45,12 @@ export default class Level4 extends HW3Level {
 
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
-    protected door1: Rect;
-    protected door2: Rect;
-    protected door3: Rect;
-    protected door4: Rect;
-    protected door5: Rect;
-    protected door6: Rect;
-    protected door7: Rect;
-    protected door8: Rect;
-    protected door9: Rect;
-    protected door10: Rect;
-    protected door11: Rect;
-    protected door12: Rect;
+    protected door: Rect;
+    protected doorPosition_1: Vec2;
+    protected doorPosition_2: Vec2;
+    protected doorPosition_3: Vec2;
+    protected doorPosition_4: Vec2;
+
     protected instructionLabel: Label;
 
     protected humanSpriteKey: string;
@@ -84,7 +79,6 @@ export default class Level4 extends HW3Level {
         this.playerSpriteKey = Level1.PLAYER_SPRITE_KEY;
         // Set the player's spawn
         this.playerSpawn = Level4.PLAYER_SPAWN;
-
 
         // enemies
         this.humanSpriteKey = Level4.HUMAN_SPRITE_KEY;
@@ -162,20 +156,24 @@ export default class Level4 extends HW3Level {
         this.currentLevel = Level4;
         this.nextLevel = Level5;
 
-
         this.levelTeleportPosition = new Vec2(928, 144).mult(this.tilemapScale)
         this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
         this.playerNewLocation = new Vec2(928, 400).mult(this.tilemapScale)
         this.initializePlayerTeleport()
-        //this.initializePlayerCover()
+
+        this.doorPosition_1 = new Vec2(160, 144).mult(this.tilemapScale)
+        this.doorPosition_2 = new Vec2(336, 144).mult(this.tilemapScale)
+        this.doorPosition_3 = new Vec2(640, 144).mult(this.tilemapScale)
+        this.doorPosition_4 = new Vec2(832, 144).mult(this.tilemapScale)
+
+        this.initializePlayerCover(this.doorPosition_1)
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
 
     }
 
-    protected initializeHuman(key: string, spawn: Vec2): void {
-       
+    protected initializeHuman(key: string, spawn: Vec2): void {   
         if (spawn === undefined) {
             throw new Error("Human spawn must be set before initializing the human!");
         }
@@ -192,7 +190,7 @@ export default class Level4 extends HW3Level {
         this.human.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
         // Give the human it's AI
-    this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
+        this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
     }
 
     protected initializePlayerTeleport(): void {
@@ -207,35 +205,20 @@ export default class Level4 extends HW3Level {
         
     }
 
-    protected initializePlayerCover(): void {
-        this.door1 = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(160, 144).mult(this.tilemapScale), size:  this.levelTeleportHalfSize});
-        this.door1.addPhysics(undefined, undefined, false, true);
-        this.door1.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door1.color = new Color(255, 0, 255, 0.0);
-
-
-        this.door2 = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(336, 144).mult(this.tilemapScale), size:  this.levelTeleportHalfSize});
-        this.door2.addPhysics(undefined, undefined, false, true);
-        this.door2.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door2.color = new Color(255, 0, 255, 0.0);
-
-        this.door3 = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(640, 144).mult(this.tilemapScale), size:  this.levelTeleportHalfSize});
-        this.door3.addPhysics(undefined, undefined, false, true);
-        this.door3.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door3.color = new Color(255, 0, 255, 0.0);
-
-        this.door4 = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(832, 144).mult(this.tilemapScale), size:  this.levelTeleportHalfSize});
-        this.door4.addPhysics(undefined, undefined, false, true);
-        this.door4.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door4.color = new Color(255, 0, 255, 0.0);
-
+    protected initializePlayerCover(position: Vec2): void {
+        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size:  this.levelTeleportHalfSize});
+        this.door.addPhysics(undefined, undefined, false, true);
+        this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
+        this.door.color = new Color(255, 0, 255, 0.0);
     }
+
 
     protected initializeUI(): void {
         super.initializeUI()
         this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
         this.instructionLabel.size.set(300, 30);
         this.instructionLabel.fontSize = 24;
+        this.instructionLabel.textColor = new Color(255, 255, 255, 1.0)
         this.instructionLabel.font = "Courier";
 
     }
@@ -244,6 +227,4 @@ export default class Level4 extends HW3Level {
         this.load.keepSpritesheet(this.humanSpriteKey);
         this.load.keepAudio(this.jumpAudioKey);
     }
-
-
 }
