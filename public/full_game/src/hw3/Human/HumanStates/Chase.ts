@@ -16,7 +16,7 @@ export default class Chase extends HumanState {
 	onEnter(options: Record<string, any>): void {
 		
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(HumanAnimations.WALK, true);
+        //this.owner.animation.playIfNotAlready(HumanAnimations.WALK, true);
 	}
 
 	update(deltaT: number): void {

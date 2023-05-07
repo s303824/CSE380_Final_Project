@@ -24,9 +24,9 @@ export default class Patrol extends HumanState {
 
 
 	onEnter(options: Record<string, any>): void {
-		
+		this.origin = this.parent.velocity.x;
 		this.parent.speed = this.parent.MIN_SPEED;
-        this.owner.animation.playIfNotAlready(HumanAnimations.WALK, true);
+        this.owner.animation.play(HumanAnimations.WALK, true);
 
 	}
 
@@ -70,7 +70,7 @@ export default class Patrol extends HumanState {
 	}
 
 	onExit(): Record<string, any> {
-		this.owner.animation.stop();
+		//this.owner.animation.stop();
 		return {};
 	}
 }
