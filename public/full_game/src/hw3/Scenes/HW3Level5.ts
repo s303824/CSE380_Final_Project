@@ -46,6 +46,11 @@ export default class Level5 extends HW3Level {
     protected humanSpawn2: Vec2;
     protected humanSpawn3: Vec2;
 
+
+    protected door: Rect;
+    protected doorLocations: [number,number][]
+    protected otherCoverLocations: [number,number][]
+
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
     public static readonly HUMAN_SPAWN = new Vec2(400, 340);
@@ -80,6 +85,11 @@ export default class Level5 extends HW3Level {
         this.humanSpawn2 = Level5.HUMAN_SPAWN_2;
         this.humanSpawn3 = Level5.HUMAN_SPAWN_3;
 
+        this.doorLocations = [
+                                [72, 336],[152, 336],[312, 336],[680, 336],[872, 336],[952, 336], [1128, 336],[1208, 336],[1640, 336],[1720, 336], 
+                                [1720,864], [1640,864], [1128, 864],[1208, 864],[952, 864],[648, 864], [72, 864],[152, 864],[312, 864]
+                            ]
+        this.otherCoverLocations = [[496, 344], [1440, 344], [1440, 872], [800, 872], [496, 872]]
 
     }
     /**
@@ -144,6 +154,15 @@ export default class Level5 extends HW3Level {
 
         this.initializePlayerTeleport();
 
+        // initialize all the places to hide
+        for(let i = 0; i < this.doorLocations.length; i++){ // door location
+            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale), this.levelTeleportHalfSize)
+        }
+        
+        for(let i = 0; i < this.otherCoverLocations.length; i++){ // other locations
+            this.initializePlayerCover(new Vec2(this.otherCoverLocations[i][0], this.otherCoverLocations[i][1]).mult(this.tilemapScale), new Vec2(160, 80))
+        }
+
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
@@ -165,8 +184,7 @@ export default class Level5 extends HW3Level {
         this.load.keepAudio(this.jumpAudioKey);
     }
 
-    protected initializeHuman(key: string, spawn: Vec2): void {
-       
+    protected initializeHuman(key: string, spawn: Vec2): void {  
         if (spawn === undefined) {
             throw new Error("Human spawn must be set before initializing the human!");
         }
@@ -183,7 +201,13 @@ export default class Level5 extends HW3Level {
         this.human.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
         // Give the human it's AI
-    this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
+        this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
+    }
+    protected initializePlayerCover(position: Vec2, size: Vec2): void {
+        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size: size});
+        this.door.addPhysics(undefined, undefined, false, true);
+        this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
+        this.door.color = new Color(255, 0, 255, 0.25);
     }
 
 
