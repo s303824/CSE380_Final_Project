@@ -2,19 +2,14 @@ import StateMachineAI from "../../Wolfie2D/AI/StateMachineAI";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
-import Idle from "./HumanStates/Idle";
-import Walk from "./HumanStates/Walk";
-
-import PlayerController from "../Player/PlayerController";
-import Input from "../../Wolfie2D/Input/Input";
-
-import { HW3Controls } from "../HW3Controls";
 import HW3AnimatedSprite from "../Nodes/HW3AnimatedSprite";
 import MathUtils from "../../Wolfie2D/Utils/MathUtils";
 import { HW3Events } from "../HW3Events";
 
 import Timer from "../../Wolfie2D/Timing/Timer";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
+import Chase from "./HumanStates/Chase";
+import Patrol from "./HumanStates/Patrol";
 
 /**
  * Animation keys for the player spritesheet
@@ -32,8 +27,8 @@ export const HumanAnimations = {
  * Keys for the states the PlayerController can be in.
  */
 export const HumanStates = {
-    IDLE: "IDLE",
-    WALK: "WALK"
+    PATROL: "PATROL",
+    CHASE: "CHASE"
  
 
 } as const
@@ -64,6 +59,8 @@ export default class HumanController extends StateMachineAI {
     protected walkFlag: boolean;
     protected levelEndArea: Rect;
 
+    protected isFishHiding: boolean;
+
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -79,10 +76,13 @@ export default class HumanController extends StateMachineAI {
         this.walkFlag = false;
 
         // Add the different states the player can be in to the PlayerController 
-		this.addState(HumanStates.IDLE, new Idle(this, this.owner));
-        this.addState(HumanStates.WALK, new Walk(this, this.owner, this.player, this.levelEndArea));
+        this.addState(HumanStates.PATROL, new Patrol(this, this.owner, this.player, this.levelEndArea, 200));
+        this.addState(HumanStates.CHASE, new Chase(this, this.owner, this.player, this.levelEndArea));
 
-        this.initialize(HumanStates.IDLE);
+        this.receiver.subscribe(HW3Events.IN_HIDING);
+        this.receiver.subscribe(HW3Events.NOT_HIDING);
+
+        this.initialize(HumanStates.PATROL);
     }
 
     /** 
@@ -99,13 +99,8 @@ export default class HumanController extends StateMachineAI {
 
     public update(deltaT: number): void {
 		super.update(deltaT);
-       
-        if((Math.abs(this.owner.position.x - this.playerVec.x) < 100) &&(Math.abs(this.owner.position.y - this.playerVec.y) < 100)){
-            
-            this.handleGooseWalk();
-        }else{
-            this.changeState(HumanStates.IDLE);
-            this.walkFlag = false;
+        while (this.receiver.hasNextEvent()) {
+            this.handleEvent(this.receiver.getNextEvent());
         }
         
         if(this.owner.collisionShape.overlaps(this.player.collisionShape)){
@@ -113,12 +108,25 @@ export default class HumanController extends StateMachineAI {
         }
         
 	}
-    protected handleGooseWalk(): void {
+    protected handleChase(): void {
         if(this.walkFlag == false){
-        this.changeState(HumanStates.WALK);
+        this.changeState(HumanStates.CHASE);
         this.walkFlag = true;
         }
     }
+
+    public handleEvent(event: GameEvent): void {
+        switch(event.type){
+            case(HW3Events.IN_HIDING):
+                this.isFishHiding = true;
+                break;
+            case HW3Events.NOT_HIDING: {
+                this.isFishHiding = false
+                break;
+            }    
+        }
+    }
+
    
     protected handlePlayerGooseCollision(): void {
         this.emitter.fireEvent(HW3Events.PLAYER_GOOSE_HIT);
@@ -129,5 +137,6 @@ export default class HumanController extends StateMachineAI {
 
     public get speed(): number { return this._speed; }
     public set speed(speed: number) { this._speed = speed; }
-  
+
+    public getAwareness():boolean {return this.isFishHiding}
 }

@@ -33,7 +33,11 @@ export const HW3Events = {
 
     ENABLE_COVER: "ENABLE_COVER",
 
-    DISABLE_COVER: "DISABLE_COVER"
+    DISABLE_COVER: "DISABLE_COVER",
+
+    IN_HIDING: "IN_HIDING",
+
+    NOT_HIDING: "NOT_HIDING"
 
     
 } as const;
