@@ -224,16 +224,16 @@ export default class Level1 extends HW3Level {
     }
     protected initializeUI(): void {
         super.initializeUI();
-        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD "});
+        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "Move with WASD"});
         this.instructionLabel.size.set(300, 30);
         this.instructionLabel.fontSize = 24;
         this.instructionLabel.font = "Courier";
-        this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Press Space to Jump "});
+        this.instructionLabel2 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 175), text: "Space to Jump"});
         this.instructionLabel2.size.set(300, 30);
         this.instructionLabel2.fontSize = 24;
         this.instructionLabel2.font = "Courier";
 
-        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "Press E to Interact"});
+        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "E to Interact"});
         this.instructionLabel3.size.set(300, 30);
         this.instructionLabel3.fontSize = 24;
         this.instructionLabel3.font = "Courier";
