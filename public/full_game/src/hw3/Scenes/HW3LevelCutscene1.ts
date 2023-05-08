@@ -151,6 +151,8 @@ export default class Cutscene1 extends HW3Level {
         this.instructionLabel.size.set(300, 30);
         this.instructionLabel.fontSize = 24;
         this.instructionLabel.font = "Courier";
+        this.instructionLabel.textColor = new Color(255, 255, 255, 1.0)
+
 
     }
 
