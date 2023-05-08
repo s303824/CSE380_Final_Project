@@ -90,10 +90,10 @@ export default class Level4 extends HW3Level {
         this.jumpAudioKey = Level1.JUMP_AUDIO_KEY;
 
         // Level end size and position
-        this.levelEndPosition = new Vec2(32, 400).mult(this.tilemapScale);
-        this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
+        this.levelEndPosition = new Vec2(498, 656).mult(this.tilemapScale);
+        this.levelEndHalfSize = new Vec2(96, 32).mult(this.tilemapScale);
 
-        this.teleporterLocations = [[928, 144, 928, 400]]
+        this.teleporterLocations = [[936, 112, 936, 368], [56, 368, 56, 656]]
 
         this.doorLocations = [[152, 112],[344, 112],[648, 112],[840, 112],[152, 368],[344, 368],[648, 368],[840, 368]]
         this.endLevelBanner = "Escaped From The Dorms"
@@ -203,7 +203,7 @@ export default class Level4 extends HW3Level {
         this.levelTeleportArea = <Teleport>this.add.graphic(GraphicType.TELEPORT, HW3Layers.PRIMARY, { position: position, size: size, newLocation: newLocation});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
-        this.levelTeleportArea.color = new Color(255, 0, 255, .0);
+        this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
     }
 
     protected initializePlayerCover(position: Vec2): void {
