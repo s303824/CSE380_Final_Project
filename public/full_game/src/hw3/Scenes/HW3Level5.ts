@@ -90,6 +90,7 @@ export default class Level5 extends HW3Level {
                                 [1720,864], [1640,864], [1128, 864],[1208, 864],[952, 864],[648, 864], [72, 864],[152, 864],[312, 864]
                             ]
         this.otherCoverLocations = [[496, 344], [1440, 344], [1440, 872], [800, 872], [496, 872]]
+        this.endLevelBanner = "Escaped From Research Laboratory"
 
     }
     /**

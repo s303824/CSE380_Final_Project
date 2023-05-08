@@ -71,6 +71,7 @@ export default class Level3 extends HW3Level {
         // Level end size and position
         this.levelEndPosition = new Vec2(96, 160).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
+        this.endLevelBanner = "Escaped From The Secret SBU Tunnels"
 
     }
     /**

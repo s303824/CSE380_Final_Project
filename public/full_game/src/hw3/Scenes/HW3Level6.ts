@@ -59,6 +59,8 @@ export default class Level6 extends HW3Level {
         // Level end size and position
         this.levelEndPosition = new Vec2(750, 208).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
+        this.endLevelBanner = "Welcome To The Ashley Schiff Preserve"
+
 
     }
     /**

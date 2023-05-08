@@ -8,8 +8,8 @@
     ],
     "redirects": [
       {
-        "source": "/",
-        "destination": "/full_game/index.html",
+        "source": "/testing",
+        "destination": "/full_game/dist/index.html",
         "type": 301
       },
       {

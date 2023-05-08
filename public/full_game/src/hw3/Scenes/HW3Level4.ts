@@ -94,6 +94,7 @@ export default class Level4 extends HW3Level {
         this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
 
         this.doorLocations = [[152, 112],[344, 112],[648, 112],[840, 112],[152, 368],[344, 368],[648, 368],[840, 368]]
+        this.endLevelBanner = "Escaped From The Dorms"
 
     }
     /**

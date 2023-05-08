@@ -96,6 +96,7 @@ export default class Level1 extends HW3Level {
         this.levelEndPosition = new Vec2(1856, 216).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
         this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
+        this.endLevelBanner = "Escaped From Roth Pond"
     }
 
     /**

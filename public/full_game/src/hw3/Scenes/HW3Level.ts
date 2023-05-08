@@ -99,6 +99,8 @@ export default abstract class HW3Level extends Scene {
     protected inBoundsCheck: boolean;
     protected isCutscene: boolean;
 
+    protected endLevelBanner: string;
+
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, {...options, physics: {
             groupNames: [
@@ -116,6 +118,7 @@ export default abstract class HW3Level extends Scene {
         }});
         this.add = new HW3FactoryManager(this, this.tilemaps);
         this.isCutscene = false;
+        this.endLevelBanner = "Level Complete"
     }
 
     public startScene(): void {
@@ -348,7 +351,7 @@ export default abstract class HW3Level extends Scene {
         this.healthBarBg.visible = false
 
         // End of level label (start off screen)
-        this.levelEndLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, { position: new Vec2(-300, 100), text: "Level Complete" });
+        this.levelEndLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, { position: new Vec2(-300, 100), text: this.endLevelBanner });
         this.levelEndLabel.size.set(1200, 60);
         this.levelEndLabel.borderRadius = 0;
         this.levelEndLabel.backgroundColor = new Color(34, 32, 52);
