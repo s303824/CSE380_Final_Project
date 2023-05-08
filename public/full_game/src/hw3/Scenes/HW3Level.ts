@@ -203,9 +203,13 @@ export default abstract class HW3Level extends Scene {
             }
             // When the level ends, change the scene to the next level
             case HW3Events.LEVEL_END: {
+                console.log("LEVEL END");
                 this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.levelMusicKey});
                 this.inBoundsCheck = false;
                 this.sceneManager.changeToScene(this.nextLevel);
+                if(this.nextLevel == MainMenu){
+                window.location.reload();
+                }
                 break;
             }
            
