@@ -22,6 +22,7 @@ import Level5 from "./HW3Level5";
 import Level6 from "./HW3Level6";
 import Level3 from "./HW3Level3";
 import Timer from "../../Wolfie2D/Timing/Timer";
+import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -91,7 +92,8 @@ export default class Level4 extends HW3Level {
         // Level end size and position
         this.levelEndPosition = new Vec2(32, 400).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
-        this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
+
+        this.teleporterLocations = [[928, 144, 928, 400]]
 
         this.doorLocations = [[152, 112],[344, 112],[648, 112],[840, 112],[152, 368],[344, 368],[648, 368],[840, 368]]
         this.endLevelBanner = "Escaped From The Dorms"
@@ -156,11 +158,11 @@ export default class Level4 extends HW3Level {
         this.currentLevel = Level4;
         this.nextLevel = Level5;
 
-        this.levelTeleportPosition = new Vec2(928, 144).mult(this.tilemapScale)
-        this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
-        this.playerNewLocation = new Vec2(928, 400).mult(this.tilemapScale)
-        this.initializePlayerTeleport()
-
+        for(let i = 0; i < this.teleporterLocations.length; i++){ // teleporter locations
+            this.initializePlayerTeleport(new Vec2(this.teleporterLocations[i][0], this.teleporterLocations[i][1]).mult(this.tilemapScale), 
+                                            new Vec2(48, 96).mult(this.tilemapScale), 
+                                            new Vec2(this.teleporterLocations[i][2], this.teleporterLocations[i][3]).mult(this.tilemapScale))
+        }
 
         // initialize all the places to hide
         for(let i = 0; i < this.doorLocations.length; i++){
@@ -193,20 +195,19 @@ export default class Level4 extends HW3Level {
         this.human.addAI(HumanController, { player: this.player, levelEndArea: this.levelEndArea, tilemap: "Primary"});
     }
 
-    protected initializePlayerTeleport(): void {
+    protected initializePlayerTeleport(position: Vec2, size: Vec2, newLocation: Vec2): void {
         if (!this.layers.has(HW3Layers.PRIMARY)) {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
         
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
+        this.levelTeleportArea = <Teleport>this.add.graphic(GraphicType.TELEPORT, HW3Layers.PRIMARY, { position: position, size: size, newLocation: newLocation});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
-        this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
-        
+        this.levelTeleportArea.color = new Color(255, 0, 255, .0);
     }
 
     protected initializePlayerCover(position: Vec2): void {
-        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size:  this.levelTeleportHalfSize});
+        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size:  new Vec2(48, 96).mult(this.tilemapScale)});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
         this.door.color = new Color(0, 0, 0, 0.3);

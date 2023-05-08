@@ -15,6 +15,7 @@ import Rect from "../../Nodes/Graphics/Rect";
 import ResourceManager from "../../ResourceManager/ResourceManager";
 import Line from "../../Nodes/Graphics/Line";
 import Particle from "../../Nodes/Graphics/Particle";
+import Teleport from "../../Nodes/Graphics/Teleport";
 
 // @ignorePage
 
@@ -147,6 +148,9 @@ export default class CanvasNodeFactory {
 			case GraphicType.PARTICLE:
 				instance = this.buildParticle(options);
 				break;				
+			case GraphicType.TELEPORT:
+				instance = this.buildTeleport(options);
+				break;	
 			default:
 				throw `GraphicType '${type}' does not exist, or is registered incorrectly.`
 		}
@@ -225,6 +229,14 @@ export default class CanvasNodeFactory {
 		this.checkIfPropExists("Rect", options, "size", Vec2, "Vec2");
 
 		return new Rect(options.position, options.size);
+	}
+
+	buildTeleport(options?: Record<string, any>): Rect {
+		this.checkIfPropExists("Teleport", options, "position", Vec2, "Vec2");
+		this.checkIfPropExists("Teleport", options, "size", Vec2, "Vec2");
+		this.checkIfPropExists("Teleport", options, "newLocation", Vec2, "Vec2");
+
+		return new Teleport(options.position, options.size, options.newLocation);
 	}
 
 	/* ---------- ERROR HANDLING ---------- */

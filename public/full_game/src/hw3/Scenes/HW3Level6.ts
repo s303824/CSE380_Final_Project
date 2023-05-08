@@ -119,22 +119,6 @@ export default class Level6 extends HW3Level {
         super.startScene();
         this.nextLevel = MainMenu;
         this.currentLevel = Level6;
-        this.levelTeleportPosition = new Vec2(1840, 320).mult(this.tilemapScale)
-        this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
-        this.playerNewLocation = new Vec2(1840, 864).mult(this.tilemapScale)
-
-        this.initializePlayerTeleport();
-    }
-    protected initializePlayerTeleport(): void {
-        if (!this.layers.has(HW3Layers.PRIMARY)) {
-            throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
-        }
-        
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
-        this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
-        this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
-        this.levelTeleportArea.color = new Color(255, 0, 255, 1.0);
-        
     }
 
 }

@@ -23,6 +23,7 @@ import { HW3Events } from "../HW3Events";
 import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import HW3FactoryManager from "../Factory/HW3FactoryManager";
 import MainMenu from "./MainMenu";
+import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
 
 /**
  * A const object for the layer names
@@ -88,14 +89,9 @@ export default abstract class HW3Level extends Scene {
     protected panicAudioKey: string;
 
     /** Teleporting player */
-    protected playerNewLocation: Vec2;
-    protected levelTeleportPosition: Vec2;
-    protected levelTeleportHalfSize: Vec2;
-    protected levelTeleportArea: Rect;
-    protected isTeleporting: boolean;
-    protected levelTeleportVelocity: Vec2;
-    protected nextTeleport: Vec2;
-
+    protected levelTeleportArea: Teleport;
+    protected teleporterLocations: [number, number, number, number][];
+    
     protected inBoundsCheck: boolean;
     protected isCutscene: boolean;
 
@@ -158,7 +154,6 @@ export default abstract class HW3Level extends Scene {
 
         // Start playing the level music for the HW4 level
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.levelMusicKey, loop: true, holdReference: true});
-        this.isTeleporting = false;
         this.inBoundsCheck = false;
     }
 
@@ -169,21 +164,6 @@ export default abstract class HW3Level extends Scene {
         while (this.receiver.hasNextEvent()) {
             this.handleEvent(this.receiver.getNextEvent());
         }
-
-        if(this.isTeleporting){
-            this.levelTeleportVelocity = this.levelTeleportPosition.dirTo(this.playerNewLocation);
-
-            this.levelTeleportVelocity.x *= 75;
-            this.levelTeleportVelocity.y *= 75;
-
-            this.levelTeleportArea.move(this.levelTeleportVelocity.scaled(deltaT));
-            this.levelTeleportArea.finishMove();
-        }
-        /*if(!this.viewport.includes(this.player) && this.inBoundsCheck){
-            console.log("OUT OF BOUNDS")
-            this.emitter.fireEvent(HW3Events.PLAYER_DEAD);
-        }*/
-
     }
     /**
      * Handle game events. 
@@ -222,23 +202,28 @@ export default abstract class HW3Level extends Scene {
                 this.sceneManager.changeToScene(this.currentLevel);
                 break;
             }    
-            case HW3Events.PLAYER_TELEPORT: {     
-                if(!this.isTeleporting){
+            case HW3Events.PLAYER_TELEPORT: {  
+                let teleport = <Teleport>this.sceneGraph.getNode(event.data.get("other"))
+                if(!teleport.isTeleporting){
+                    console.log("Teleporter position " + teleport.position)
+                    console.log("Teleporter exit " + teleport.newLocation)
+                    console.log("Teleporter boolean " + teleport.isTeleporting)
+
                     Input.disableInput();
                     this.inBoundsCheck = false;
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
                     this.player.tweens.play(PlayerTweens.DISAPPEAR);           
-                    this.player.position.copy(this.playerNewLocation);
-                    this.viewport.follow(this.levelTeleportArea);
-                    this.isTeleporting = true;  
+                    this.player.position.copy(teleport.newLocation);
+                    this.viewport.follow(teleport);
+                    teleport.isTeleporting = true;  
                 }
                 else{
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: this.panicAudioKey});
                     console.log("Teleport Complete")
                     this.player.tweens.play(PlayerTweens.REAPPEAR);      
-                    this.levelTeleportArea.position.copy(new Vec2(1, 1).mult(this.tilemapScale));     
+                    teleport.position.copy(new Vec2(1, 1).mult(this.tilemapScale));     
                     this.viewport.follow(this.player);
-                    this.isTeleporting = false;   
+                    teleport.isTeleporting = false;   
                     Input.enableInput();
                     this.inBoundsCheck = true;
                 }

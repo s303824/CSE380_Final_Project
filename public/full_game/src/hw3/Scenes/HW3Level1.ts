@@ -20,6 +20,7 @@ import Level3 from "./HW3Level3";
 import Level4 from "./HW3Level4";
 import Level5 from "./HW3Level5";
 import Level6 from "./HW3Level6";
+import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -62,11 +63,6 @@ export default class Level1 extends HW3Level {
     public static readonly GOOSE_SPRITE_KEY = "GOOSE_SPRITE_KEY";
     public static readonly GOOSE_SPRITE_PATH = "hw4_assets/spritesheets/Goose.json";
 
-    protected levelTeleportPosition: Vec2;
-    protected levelTeleportHalfSize: Vec2;
-
-    protected levelTeleportArea: Rect;
-
     public static readonly LEVEL_END = new AABB(new Vec2(224, 232), new Vec2(24, 16));
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -95,7 +91,8 @@ export default class Level1 extends HW3Level {
         // Level end size and position
         this.levelEndPosition = new Vec2(1856, 216).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(32, 32).mult(this.tilemapScale);
-        this.playerNewLocation = new Vec2(1312,224).mult(this.tilemapScale);
+
+        this.teleporterLocations = [[736, 128, 1312,224]]
         this.endLevelBanner = "Escaped From Roth Pond"
     }
 
@@ -168,25 +165,28 @@ export default class Level1 extends HW3Level {
         // Set the next level to be Level2
         this.nextLevel = Level2;
         this.currentLevel = Level1;
-        this.initializePlayerTeleport()
+
+
+        for(let i = 0; i < this.teleporterLocations.length; i++){ // teleporter locations
+            this.initializePlayerTeleport(new Vec2(this.teleporterLocations[i][0], this.teleporterLocations[i][1]).mult(this.tilemapScale), 
+                                            new Vec2(96, 32).mult(this.tilemapScale), 
+                                            new Vec2(this.teleporterLocations[i][2], this.teleporterLocations[i][3]).mult(this.tilemapScale))
+        }
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn);
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn2);
         this.initializeGoose(this.gooseSpriteKey, this.gooseSpawn3);
-
     }
 
-    protected initializePlayerTeleport(): void {
+    protected initializePlayerTeleport(position: Vec2, size: Vec2, newLocation: Vec2): void {
         if (!this.layers.has(HW3Layers.PRIMARY)) {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
         
-        this.levelTeleportPosition = new Vec2(736, 128).mult(this.tilemapScale)
-        this.levelTeleportHalfSize = new Vec2(96, 32).mult(this.tilemapScale)
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
+        console.log("Teleporter connecting "+ position+" and "+ newLocation)
+        this.levelTeleportArea = <Teleport>this.add.graphic(GraphicType.TELEPORT, HW3Layers.PRIMARY, { position: position, size: size, newLocation: newLocation});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
         this.levelTeleportArea.color = new Color(255, 0, 255, .0);
-        
     }
 
     /**

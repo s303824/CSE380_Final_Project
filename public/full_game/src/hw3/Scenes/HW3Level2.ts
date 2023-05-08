@@ -51,10 +51,8 @@ export default class Level2 extends HW3Level {
     public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
     public static readonly RAT_SPAWN = new Vec2(800, 240);
     public static readonly RAT_SPAWN_2= new Vec2(1000, 240);
-    protected levelTeleportPosition: Vec2;
-    protected levelTeleportHalfSize: Vec2;
 
-    protected levelTeleportArea: Rect;
+    protected greenSludge: Rect;
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -173,13 +171,10 @@ export default class Level2 extends HW3Level {
         if (!this.layers.has(HW3Layers.PRIMARY)) {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
-        
-        this.levelTeleportPosition = new Vec2(255, 285).mult(this.tilemapScale)
-        this.levelTeleportHalfSize = new Vec2(160, 20).mult(this.tilemapScale)
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
-        this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
-        this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_DEAD, null);
-        this.levelTeleportArea.color = new Color(255, 99, 71, 0);
+        this.greenSludge = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: new Vec2(255, 285).mult(this.tilemapScale), size:  new Vec2(160, 20).mult(this.tilemapScale)});
+        this.greenSludge.addPhysics(undefined, undefined, false, true);
+        this.greenSludge.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_DEAD, null);
+        this.greenSludge.color = new Color(255, 99, 71, 0);
         
     }
 

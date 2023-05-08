@@ -19,6 +19,7 @@ import Level4 from "./HW3Level4";
 import Level6 from "./HW3Level6";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import HumanController from "../Human/HumanController";
+import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -85,6 +86,8 @@ export default class Level5 extends HW3Level {
         this.humanSpawn2 = Level5.HUMAN_SPAWN_2;
         this.humanSpawn3 = Level5.HUMAN_SPAWN_3;
 
+        this.teleporterLocations = [[1856, 328, 1856, 864]]
+
         this.doorLocations = [
                                 [72, 336],[152, 336],[312, 336],[680, 336],[872, 336],[952, 336], [1128, 336],[1208, 336],[1640, 336],[1720, 336], 
                                 [1720,864], [1640,864], [1128, 864],[1208, 864],[952, 864],[648, 864], [72, 864],[152, 864],[312, 864]
@@ -149,15 +152,16 @@ export default class Level5 extends HW3Level {
         super.startScene();
         this.nextLevel = Level6;
         this.currentLevel = Level5;
-        this.levelTeleportPosition = new Vec2(1856, 328).mult(this.tilemapScale)
-        this.levelTeleportHalfSize = new Vec2(48, 96).mult(this.tilemapScale)
-        this.playerNewLocation = new Vec2(1856, 864).mult(this.tilemapScale)
 
-        this.initializePlayerTeleport();
+        for(let i = 0; i < this.teleporterLocations.length; i++){ // teleporter locations
+            this.initializePlayerTeleport(new Vec2(this.teleporterLocations[i][0], this.teleporterLocations[i][1]).mult(this.tilemapScale), 
+                                            new Vec2(48, 96).mult(this.tilemapScale), 
+                                            new Vec2(this.teleporterLocations[i][2], this.teleporterLocations[i][3]).mult(this.tilemapScale))
+        }
 
         // initialize all the places to hide
         for(let i = 0; i < this.doorLocations.length; i++){ // door location
-            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale), this.levelTeleportHalfSize)
+            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale), new Vec2(48, 96).mult(this.tilemapScale))
         }
         
         for(let i = 0; i < this.otherCoverLocations.length; i++){ // other locations
@@ -169,17 +173,17 @@ export default class Level5 extends HW3Level {
         this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
 
     }
-    protected initializePlayerTeleport(): void {
+    protected initializePlayerTeleport(position: Vec2, size: Vec2, newLocation: Vec2): void {
         if (!this.layers.has(HW3Layers.PRIMARY)) {
             throw new Error("Can't initialize the level ends until the primary layer has been added to the scene!");
         }
         
-        this.levelTeleportArea = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: this.levelTeleportPosition, size:  this.levelTeleportHalfSize});
+        this.levelTeleportArea = <Teleport>this.add.graphic(GraphicType.TELEPORT, HW3Layers.PRIMARY, { position: position, size: size, newLocation: newLocation});
         this.levelTeleportArea.addPhysics(undefined, undefined, false, true);
         this.levelTeleportArea.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_TELEPORT, null);
-        this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
-        
+        this.levelTeleportArea.color = new Color(255, 0, 255, .0);
     }
+
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
         this.load.keepAudio(this.jumpAudioKey);
