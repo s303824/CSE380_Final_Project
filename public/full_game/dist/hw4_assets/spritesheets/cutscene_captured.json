@@ -1,0 +1,60 @@
+{
+	"name": "CapturedCutscene",
+	"spriteSheetImage": "cutscene_captured-Sheet.png",
+	"spriteWidth": 1200,
+	"spriteHeight": 800,
+	"columns": 38,
+	"rows": 1,
+	"durationType": "time",
+	"animations": [
+		{
+			"name": "PLAY",
+			"frames": [
+				{ "index": 0, "duration": 30 },
+				{ "index": 1, "duration": 30 },
+				{ "index": 2, "duration": 30 },
+				{ "index": 3, "duration": 30 },
+				{ "index": 4, "duration": 30 },
+				{ "index": 5, "duration": 30 },
+				{ "index": 6, "duration": 6 },
+				{ "index": 7, "duration": 6 },
+				{ "index": 8, "duration": 6 },
+                { "index": 9, "duration": 6 },
+				{ "index": 10, "duration": 6 },
+				{ "index": 11, "duration": 30 },
+				{ "index": 12, "duration": 6 },
+				{ "index": 13, "duration": 6 },
+				{ "index": 14, "duration": 6 },
+				{ "index": 15, "duration": 6 },
+				{ "index": 16, "duration": 30 },
+				{ "index": 17, "duration": 6 },
+                { "index": 18, "duration": 6 },
+				{ "index": 19, "duration": 6 },
+				{ "index": 20, "duration": 6 },
+
+				{ "index": 21, "duration": 30 },
+				{ "index": 22, "duration": 30 },
+				{ "index": 23, "duration": 6 },
+				{ "index": 24, "duration": 6 },
+
+				{ "index": 25, "duration": 6 },
+				{ "index": 26, "duration": 6 },
+                { "index": 27, "duration": 6 },
+                { "index": 28, "duration": 6 },
+				{ "index": 29, "duration": 6 },
+				{ "index": 30, "duration": 6 },
+
+				{ "index": 31, "duration": 6 },
+				{ "index": 32, "duration": 6 },
+                { "index": 33, "duration": 6 },
+                { "index": 34, "duration": 6 },				
+				{ "index": 35, "duration": 6 },
+                { "index": 36, "duration": 6 },
+                { "index": 37, "duration": 6 }
+
+
+
+			]
+		}
+	]
+}

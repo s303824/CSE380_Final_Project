@@ -23,6 +23,7 @@ import Level6 from "./HW3Level6";
 import Level3 from "./HW3Level3";
 import Timer from "../../Wolfie2D/Timing/Timer";
 import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
+import CapturedCutscene from "./HW3LevelCapturedCutscene";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -156,7 +157,7 @@ export default class Level4 extends HW3Level {
     public startScene(): void {
         super.startScene();
         this.currentLevel = Level4;
-        this.nextLevel = Level5;
+        this.nextLevel = CapturedCutscene;
 
         for(let i = 0; i < this.teleporterLocations.length; i++){ // teleporter locations
             this.initializePlayerTeleport(new Vec2(this.teleporterLocations[i][0], this.teleporterLocations[i][1]).mult(this.tilemapScale), 
