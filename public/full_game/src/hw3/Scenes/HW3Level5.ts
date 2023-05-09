@@ -43,10 +43,7 @@ export default class Level5 extends HW3Level {
     
     protected humanSpriteKey: string;
     protected human: AnimatedSprite;
-    protected humanSpawn: Vec2;
-    protected humanSpawn2: Vec2;
-    protected humanSpawn3: Vec2;
-
+    protected humanLocations: [number,number][]
 
     protected door: Rect;
     protected doorLocations: [number,number][]
@@ -54,9 +51,6 @@ export default class Level5 extends HW3Level {
 
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
-    public static readonly HUMAN_SPAWN = new Vec2(400, 340);
-    public static readonly HUMAN_SPAWN_2= new Vec2(500, 340);
-    public static readonly HUMAN_SPAWN_3= new Vec2(500, 834);
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -82,9 +76,8 @@ export default class Level5 extends HW3Level {
         
         // enemies
         this.humanSpriteKey = Level5.HUMAN_SPRITE_KEY;
-        this.humanSpawn = Level5.HUMAN_SPAWN;
-        this.humanSpawn2 = Level5.HUMAN_SPAWN_2;
-        this.humanSpawn3 = Level5.HUMAN_SPAWN_3;
+        this.humanLocations = [[400, 340], [600, 340], [1312, 340], [1536, 340], 
+                                [400, 834], [600, 834], [1312, 834], [1536, 834]]
 
         this.teleporterLocations = [[1856, 328, 1856, 864]]
 
@@ -92,7 +85,7 @@ export default class Level5 extends HW3Level {
                                 [72, 336],[152, 336],[312, 336],[680, 336],[872, 336],[952, 336], [1128, 336],[1208, 336],[1640, 336],[1720, 336], 
                                 [1720,864], [1640,864], [1128, 864],[1208, 864],[952, 864],[648, 864], [72, 864],[152, 864],[312, 864]
                             ]
-        this.otherCoverLocations = [[496, 344], [1440, 344], [1440, 872], [800, 872], [496, 872]]
+        this.otherCoverLocations = [[496, 320], [1440, 320], [1440, 864], [800, 864], [496, 864]]
         this.endLevelBanner = "Escaped From Research Laboratory"
 
     }
@@ -165,12 +158,13 @@ export default class Level5 extends HW3Level {
         }
         
         for(let i = 0; i < this.otherCoverLocations.length; i++){ // other locations
-            this.initializePlayerCover(new Vec2(this.otherCoverLocations[i][0], this.otherCoverLocations[i][1]).mult(this.tilemapScale), new Vec2(160, 80))
+            this.initializePlayerCover(new Vec2(this.otherCoverLocations[i][0], this.otherCoverLocations[i][1]).mult(this.tilemapScale), new Vec2(160, 128))
         }
 
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
+        // initialize all the humans
+        for(let i = 0; i < this.humanLocations.length; i++){
+            this.initializeHuman(new Vec2(this.humanLocations[i][0], this.humanLocations[i][1]).mult(this.tilemapScale))
+        }
 
     }
     protected initializePlayerTeleport(position: Vec2, size: Vec2, newLocation: Vec2): void {
@@ -189,7 +183,7 @@ export default class Level5 extends HW3Level {
         this.load.keepAudio(this.jumpAudioKey);
     }
 
-    protected initializeHuman(key: string, spawn: Vec2): void {  
+    protected initializeHuman(spawn: Vec2): void {   
         if (spawn === undefined) {
             throw new Error("Human spawn must be set before initializing the human!");
         }
@@ -212,7 +206,7 @@ export default class Level5 extends HW3Level {
         this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size: size});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door.color = new Color(0, 0, 0, 0.3);
+        this.door.color = new Color(99,102,106, 0.4);
     }
 
 

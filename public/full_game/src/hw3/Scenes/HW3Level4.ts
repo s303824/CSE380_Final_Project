@@ -49,21 +49,17 @@ export default class Level4 extends HW3Level {
 
     protected door: Rect;
     protected doorLocations: [number,number][]
+    protected otherCoverLocations: [number,number][]
 
     protected instructionLabel: Label;
 
     protected humanSpriteKey: string;
     protected human: AnimatedSprite;
-    protected humanSpawn: Vec2;
-    protected humanSpawn2: Vec2;
-    protected humanSpawn3: Vec2;
+    protected humanLocations: [number,number][]
+
 
     public static readonly HUMAN_SPRITE_KEY = "HUMAN_SPRITE_KEY";
     public static readonly HUMAN_SPRITE_PATH = "hw4_assets/spritesheets/Lab_scientist.json";
-    public static readonly HUMAN_SPAWN = new Vec2(400, 100);
-    public static readonly HUMAN_SPAWN_2= new Vec2(500, 368);
-    public static readonly HUMAN_SPAWN_3= new Vec2(400, 368);
-
 
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
@@ -81,10 +77,7 @@ export default class Level4 extends HW3Level {
 
         // enemies
         this.humanSpriteKey = Level4.HUMAN_SPRITE_KEY;
-        this.humanSpawn = Level4.HUMAN_SPAWN;
-        this.humanSpawn2 = Level4.HUMAN_SPAWN_2;
-        this.humanSpawn3 = Level4.HUMAN_SPAWN_3;
-
+        this.humanLocations = [[400, 100], [700, 100], [500, 368], [400, 368]]
 
         // Music and sound
         this.levelMusicKey = Level4.LEVEL_MUSIC_KEY
@@ -97,6 +90,9 @@ export default class Level4 extends HW3Level {
         this.teleporterLocations = [[936, 112, 936, 368], [56, 368, 56, 656]]
 
         this.doorLocations = [[152, 112],[344, 112],[648, 112],[840, 112],[152, 368],[344, 368],[648, 368],[840, 368]]
+
+        this.otherCoverLocations = [[496, 112], [496, 368]]
+
         this.endLevelBanner = "Escaped From The Dorms"
 
     }
@@ -165,18 +161,24 @@ export default class Level4 extends HW3Level {
                                             new Vec2(this.teleporterLocations[i][2], this.teleporterLocations[i][3]).mult(this.tilemapScale))
         }
 
-        // initialize all the places to hide
+        // initialize all the doorways to take cover in
         for(let i = 0; i < this.doorLocations.length; i++){
-            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale))
+            this.initializePlayerCover(new Vec2(this.doorLocations[i][0], this.doorLocations[i][1]).mult(this.tilemapScale), new Vec2(48, 96).mult(this.tilemapScale))
         }
 
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn);
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn2);        
-        this.initializeHuman(this.humanSpriteKey, this.humanSpawn3);
+        // initialize all the other place to take cover in
+        for(let i = 0; i < this.otherCoverLocations.length; i++){
+            this.initializePlayerCover(new Vec2(this.otherCoverLocations[i][0], this.otherCoverLocations[i][1]).mult(this.tilemapScale), new Vec2(96, 96).mult(this.tilemapScale))
+        }
+        
 
+        // initialize all the humans
+        for(let i = 0; i < this.humanLocations.length; i++){
+            this.initializeHuman(new Vec2(this.humanLocations[i][0], this.humanLocations[i][1]).mult(this.tilemapScale))
+        }
     }
 
-    protected initializeHuman(key: string, spawn: Vec2): void {   
+    protected initializeHuman(spawn: Vec2): void {   
         if (spawn === undefined) {
             throw new Error("Human spawn must be set before initializing the human!");
         }
@@ -207,11 +209,11 @@ export default class Level4 extends HW3Level {
         this.levelTeleportArea.color = new Color(255, 0, 255, 0.0);
     }
 
-    protected initializePlayerCover(position: Vec2): void {
-        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size:  new Vec2(48, 96).mult(this.tilemapScale)});
+    protected initializePlayerCover(position: Vec2, size: Vec2): void {
+        this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size: size});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door.color = new Color(0, 0, 0, 0.3);
+        this.door.color = new Color(99,102,106, 0.4);
     }
 
 
