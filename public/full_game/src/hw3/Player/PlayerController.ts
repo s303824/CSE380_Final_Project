@@ -77,6 +77,7 @@ export default class PlayerController extends StateMachineAI {
 
     protected coverCheckTimer: Timer;
     protected canCover: boolean;
+    protected isHidden: boolean;
     
     public initializeAI(owner: HW3AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -88,6 +89,7 @@ export default class PlayerController extends StateMachineAI {
         this.health = 10
         this.maxHealth = 10;
         this.isInvincible = false;
+        this.isHidden = false;
         this.invincibleTimer = new Timer(10000, () => {
             // After the timer ends, set isInvincible to false
             console.log("Invincibility deactivated.")
@@ -161,8 +163,8 @@ export default class PlayerController extends StateMachineAI {
 
         if(this.canCover){
             if(Input.isKeyJustPressed("e")){
-                this.isInvincible = !this.isInvincible;  
-                if(this.isInvincible){                    
+                this.isHidden = !this.isHidden;  
+                if(this.isHidden){                    
                     console.log("Hiding activated.");
                     this.emitter.fireEvent(HW3Events.HIDE_INTERACTION_TEXT)
                     this.emitter.fireEvent(HW3Events.IN_HIDING)
@@ -178,19 +180,19 @@ export default class PlayerController extends StateMachineAI {
     public handleEvent(event: GameEvent): void {
         switch(event.type){
             case(HW3Events.PLAYER_GOOSE_HIT):
-                if(!this.isInvincible)
+                if(!this.isInvincible && !this.isHidden)
                     this.isHit=true;
                 break;
             case HW3Events.ENABLE_COVER: {
                 this.canCover = true;
-                if(!this.isInvincible)
+                if(!this.isHidden)
                     this.emitter.fireEvent(HW3Events.SHOW_INTERACTION_TEXT)
                 this.coverCheckTimer.start();
                 break;
             }
             case HW3Events.DISABLE_COVER: {
                 this.canCover = false;
-                this.isInvincible = false;  
+                this.isHidden = false;  
                 this.emitter.fireEvent(HW3Events.NOT_HIDING)
                 this.emitter.fireEvent(HW3Events.HIDE_INTERACTION_TEXT)
                 console.log("Hiding deactivated.")
