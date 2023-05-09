@@ -21,6 +21,7 @@ import Level4 from "./HW3Level4";
 import Level5 from "./HW3Level5";
 import Level6 from "./HW3Level6";
 import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
+import SewerCutscene from "./HW3LevelSewerCutscene";
 
 /**
  * The first level for HW4 - should be the one with the grass and the clouds.
@@ -163,7 +164,7 @@ export default class Level1 extends HW3Level {
     public startScene(): void {
         super.startScene();
         // Set the next level to be Level2
-        this.nextLevel = Level2;
+        this.nextLevel = SewerCutscene;
         this.currentLevel = Level1;
 
 
