@@ -24,7 +24,7 @@ export default class Idle extends PlayerState {
         // Adjust the direction the player is facing
 		super.update(deltaT);
         if(this.parent.isHit){
-            this.finished(PlayerStates.DEAD);
+            this.finished(PlayerStates.DYING);
             
         }
         // Get the direction of the player's movement
