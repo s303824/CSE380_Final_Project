@@ -47,11 +47,14 @@ export default class Level2 extends HW3Level {
     protected rat: AnimatedSprite;
     protected ratSpawn: Vec2;
     protected ratSpawn2: Vec2;
+    protected ratSpawn3: Vec2;    
+    protected ratSpawn4: Vec2;
     public static readonly RAT_SPRITE_KEY = "RAT_SPRITE_KEY";
     public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
-    public static readonly RAT_SPAWN = new Vec2(800, 240);
-    public static readonly RAT_SPAWN_2= new Vec2(1000, 240);
-
+    public static readonly RAT_SPAWN = new Vec2(250, 505);
+    public static readonly RAT_SPAWN_2= new Vec2(950, 500);
+    public static readonly RAT_SPAWN_3= new Vec2(1275, 505);
+    public static readonly RAT_SPAWN_4= new Vec2(1750, 505);
     protected greenSludge: Rect;
 
 
@@ -76,6 +79,8 @@ export default class Level2 extends HW3Level {
         this.ratSpriteKey = Level2.RAT_SPRITE_KEY;
         this.ratSpawn = Level2.RAT_SPAWN;
         this.ratSpawn2 = Level2.RAT_SPAWN_2;
+        this.ratSpawn3 = Level2.RAT_SPAWN_3;
+        this.ratSpawn4 = Level2.RAT_SPAWN_4;
         
         // Level end size and position
         this.levelEndPosition = new Vec2(1266, 232).mult(this.tilemapScale);
@@ -100,7 +105,8 @@ export default class Level2 extends HW3Level {
         this.initializeGreenSludge();
         this.initializeRat(this.ratSpriteKey, this.ratSpawn);
         this.initializeRat(this.ratSpriteKey, this.ratSpawn2);
-
+        this.initializeRat(this.ratSpriteKey, this.ratSpawn3);
+        this.initializeRat(this.ratSpriteKey, this.ratSpawn4);
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -154,7 +160,7 @@ export default class Level2 extends HW3Level {
         
         // Give the rat physics and setup collision groups and triggers for the player
    
-        this.rat.addPhysics(new AABB(this.rat.position.clone(), this.rat.boundary.getHalfSize().clone().sub(new Vec2(10,10))));
+        this.rat.addPhysics(new AABB(this.rat.position.clone(), this.rat.boundary.getHalfSize().clone().sub(new Vec2(10,25))));
         this.rat.setGroup(HW3PhysicsGroups.GOOSE);
         this.rat.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 

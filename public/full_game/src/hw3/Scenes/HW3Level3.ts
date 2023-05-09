@@ -41,10 +41,12 @@ export default class Level3 extends HW3Level {
     protected rat: AnimatedSprite;
     protected ratSpawn: Vec2;
     protected ratSpawn2: Vec2;
+    protected ratSpawn3: Vec2;
     public static readonly RAT_SPRITE_KEY = "RAT_SPRITE_KEY";
     public static readonly RAT_SPRITE_PATH = "hw4_assets/spritesheets/Sewer_rat.json";
-    public static readonly RAT_SPAWN = new Vec2(420, 800);
-    public static readonly RAT_SPAWN_2= new Vec2(520, 800);
+    public static readonly RAT_SPAWN = new Vec2(635, 440);
+    public static readonly RAT_SPAWN_2= new Vec2(615, 805);
+    public static readonly RAT_SPAWN_3= new Vec2(615, 270);
 
     public constructor(viewport: Viewport, sceneManager: SceneManager, renderingManager: RenderingManager, options: Record<string, any>) {
         super(viewport, sceneManager, renderingManager, options);
@@ -67,7 +69,7 @@ export default class Level3 extends HW3Level {
         this.ratSpriteKey = Level3.RAT_SPRITE_KEY;
         this.ratSpawn = Level3.RAT_SPAWN;
         this.ratSpawn2 = Level3.RAT_SPAWN_2;
-        
+        this.ratSpawn3 = Level3.RAT_SPAWN_3;
         // Level end size and position
         this.levelEndPosition = new Vec2(96, 160).mult(this.tilemapScale);
         this.levelEndHalfSize = new Vec2(64, 64).mult(this.tilemapScale);
@@ -91,7 +93,7 @@ export default class Level3 extends HW3Level {
 
         this.initializeRat(this.ratSpriteKey, this.ratSpawn);
         this.initializeRat(this.ratSpriteKey, this.ratSpawn2);
-
+        this.initializeRat(this.ratSpriteKey, this.ratSpawn3);
     }
     protected handleLevelSwitchEvent(event: GameEvent): void {
         switch(event.data.get("level")){
@@ -144,7 +146,7 @@ export default class Level3 extends HW3Level {
         
         // Give the rat physics and setup collision groups and triggers for the player
    
-        this.rat.addPhysics(new AABB(this.rat.position.clone(), this.rat.boundary.getHalfSize().clone().sub(new Vec2(10,10))));
+        this.rat.addPhysics(new AABB(this.rat.position.clone(), this.rat.boundary.getHalfSize().clone().sub(new Vec2(10,25))));
         this.rat.setGroup(HW3PhysicsGroups.GOOSE);
         this.rat.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.PLAYER_GOOSE_HIT, null);
 
@@ -157,6 +159,7 @@ export default class Level3 extends HW3Level {
         super.initializeViewport();
         this.viewport.follow(this.player);
         this.viewport.setBounds(16, 0, 160*16, 400*16);
+        this.viewport.setZoomLevel(4.5);
     }
     public unloadScene(): void {
         this.load.keepSpritesheet(this.playerSpriteKey);
