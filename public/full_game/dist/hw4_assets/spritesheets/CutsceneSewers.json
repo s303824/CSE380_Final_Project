@@ -3,7 +3,7 @@
 	"spriteSheetImage": "cutscene_to_sewers-Sheet.png",
 	"spriteWidth": 1200,
 	"spriteHeight": 800,
-	"columns": 38,
+	"columns": 28,
 	"rows": 1,
 	"durationType": "time",
 	"animations": [

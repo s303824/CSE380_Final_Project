@@ -17,6 +17,7 @@ import { HW3PhysicsGroups } from "../HW3PhysicsGroups";
 import Color from "../../Wolfie2D/Utils/Color";
 import Level4 from "./HW3Level4";
 import Level5 from "./HW3Level5";
+import EndingCutscene from "./HW3LevelEndingCutscene";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -117,7 +118,7 @@ export default class Level6 extends HW3Level {
 
     public startScene(): void {
         super.startScene();
-        this.nextLevel = MainMenu;
+        this.nextLevel = EndingCutscene;
         this.currentLevel = Level6;
     }
 
