@@ -70,6 +70,8 @@ export default abstract class HW3Level extends Scene {
     protected levelEndTimer: Timer;
     protected levelEndLabel: Label;
 
+    protected interactionLabel: Label;
+
     // Level end transition timer and graphic
     protected levelTransitionTimer: Timer;
     protected levelTransitionScreen: Rect;
@@ -205,10 +207,6 @@ export default abstract class HW3Level extends Scene {
             case HW3Events.PLAYER_TELEPORT: {  
                 let teleport = <Teleport>this.sceneGraph.getNode(event.data.get("other"))
                 if(!teleport.isTeleporting){
-                    console.log("Teleporter position " + teleport.position)
-                    console.log("Teleporter exit " + teleport.newLocation)
-                    console.log("Teleporter boolean " + teleport.isTeleporting)
-
                     Input.disableInput();
                     this.inBoundsCheck = false;
                     this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: this.getPanicAudioKey(), loop: false, holdReference: false});
@@ -229,12 +227,19 @@ export default abstract class HW3Level extends Scene {
                 }
                 break;
             }
-
             case HW3Events.SWITCH_LEVELS:{
                 if(!this.isCutscene){
                     this.handleLevelSwitchEvent(event);
                     this.emitter.fireEvent(HW3Events.LEVEL_END)    
                 }
+                break;
+            }
+            case HW3Events.SHOW_INTERACTION_TEXT:{
+                this.interactionLabel.textColor = new Color(255, 255, 255, 1.0);
+                break;
+            }
+            case HW3Events.HIDE_INTERACTION_TEXT:{
+                this.interactionLabel.textColor = new Color(255, 255, 255, 0.0);
                 break;
             }
             // Default: Throw an error! No unhandled events allowed.
@@ -314,6 +319,8 @@ export default abstract class HW3Level extends Scene {
         this.receiver.subscribe(HW3Events.PLAYER_DEAD);
         this.receiver.subscribe(HW3Events.PLAYER_TELEPORT);
         this.receiver.subscribe(HW3Events.SWITCH_LEVELS);
+        this.receiver.subscribe(HW3Events.SHOW_INTERACTION_TEXT);
+        this.receiver.subscribe(HW3Events.HIDE_INTERACTION_TEXT);
     }
     /**
      * Adds in any necessary UI to the game

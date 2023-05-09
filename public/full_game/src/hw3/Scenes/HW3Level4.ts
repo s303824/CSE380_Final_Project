@@ -219,11 +219,11 @@ export default class Level4 extends HW3Level {
 
     protected initializeUI(): void {
         super.initializeUI()
-        this.instructionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide at Doorway"});
-        this.instructionLabel.size.set(300, 30);
-        this.instructionLabel.fontSize = 24;
-        this.instructionLabel.textColor = new Color(255, 255, 255, 1.0)
-        this.instructionLabel.font = "Courier";
+        this.interactionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide"});
+        this.interactionLabel.size.set(300, 30);
+        this.interactionLabel.fontSize = 24;
+        this.interactionLabel.textColor = new Color(255, 255, 255, 0.0)
+        this.interactionLabel.font = "Courier";
 
     }
     public unloadScene(): void {

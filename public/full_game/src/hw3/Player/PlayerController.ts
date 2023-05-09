@@ -164,6 +164,7 @@ export default class PlayerController extends StateMachineAI {
                 this.isInvincible = !this.isInvincible;  
                 if(this.isInvincible){                    
                     console.log("Hiding activated.");
+                    this.emitter.fireEvent(HW3Events.HIDE_INTERACTION_TEXT)
                     this.emitter.fireEvent(HW3Events.IN_HIDING)
                 }                
                 else{
@@ -182,7 +183,8 @@ export default class PlayerController extends StateMachineAI {
                 break;
             case HW3Events.ENABLE_COVER: {
                 this.canCover = true;
-                //console.log("You can hide")
+                if(!this.coverCheckTimer.hasRun()||!this.isInvincible)
+                    this.emitter.fireEvent(HW3Events.SHOW_INTERACTION_TEXT)
                 this.coverCheckTimer.start();
                 break;
             }
@@ -190,6 +192,7 @@ export default class PlayerController extends StateMachineAI {
                 this.canCover = false;
                 this.isInvincible = false;  
                 this.emitter.fireEvent(HW3Events.NOT_HIDING)
+                this.emitter.fireEvent(HW3Events.HIDE_INTERACTION_TEXT)
                 console.log("Hiding deactivated.")
                 break;
             }

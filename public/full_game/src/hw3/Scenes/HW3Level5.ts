@@ -20,6 +20,8 @@ import Level6 from "./HW3Level6";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import HumanController from "../Human/HumanController";
 import Teleport from "../../Wolfie2D/Nodes/Graphics/Teleport";
+import Label from "../../Wolfie2D/Nodes/UIElements/Label";
+import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 
 /**
  * The second level for HW4. It should be the goose dungeon / cave.
@@ -209,5 +211,14 @@ export default class Level5 extends HW3Level {
         this.door.color = new Color(99,102,106, 0.4);
     }
 
+    protected initializeUI(): void {
+        super.initializeUI()
+        this.interactionLabel = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 170), text: "E to Hide"});
+        this.interactionLabel.size.set(300, 30);
+        this.interactionLabel.fontSize = 24;
+        this.interactionLabel.textColor = new Color(255, 255, 255, 0.0)
+        this.interactionLabel.font = "Courier";
+
+    }
 
 }
