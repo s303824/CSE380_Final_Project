@@ -183,7 +183,7 @@ export default class PlayerController extends StateMachineAI {
                 break;
             case HW3Events.ENABLE_COVER: {
                 this.canCover = true;
-                if(!this.coverCheckTimer.hasRun()||!this.isInvincible)
+                if(!this.isInvincible)
                     this.emitter.fireEvent(HW3Events.SHOW_INTERACTION_TEXT)
                 this.coverCheckTimer.start();
                 break;

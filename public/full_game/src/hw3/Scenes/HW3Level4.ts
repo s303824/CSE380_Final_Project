@@ -213,7 +213,7 @@ export default class Level4 extends HW3Level {
         this.door = <Rect>this.add.graphic(GraphicType.RECT, HW3Layers.PRIMARY, { position: position, size: size});
         this.door.addPhysics(undefined, undefined, false, true);
         this.door.setTrigger(HW3PhysicsGroups.PLAYER, HW3Events.ENABLE_COVER, HW3Events.DISABLE_COVER);
-        this.door.color = new Color(99,102,106, 0.4);
+        this.door.color = new Color(0, 0, 0, 0.0);
     }
 
 
