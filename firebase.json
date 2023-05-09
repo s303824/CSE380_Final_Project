@@ -8,6 +8,11 @@
     ],
     "redirects": [
       {
+        "source": "*",        
+        "destination": "/full_game/dist/index.html",
+        "type": 301
+      },
+      {
         "source": "/testing",
         "destination": "/full_game/dist/index.html",
         "type": 301
