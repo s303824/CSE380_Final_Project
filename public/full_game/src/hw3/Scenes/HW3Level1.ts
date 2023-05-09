@@ -234,11 +234,6 @@ export default class Level1 extends HW3Level {
         this.instructionLabel2.fontSize = 24;
         this.instructionLabel2.font = "Courier";
 
-        this.instructionLabel3 = <Label>this.add.uiElement(UIElementType.LABEL, HW3Layers.UI, {position: new Vec2(150, 180), text: "E to Interact"});
-        this.instructionLabel3.size.set(300, 30);
-        this.instructionLabel3.fontSize = 24;
-        this.instructionLabel3.font = "Courier";
-
     }
 
 }
