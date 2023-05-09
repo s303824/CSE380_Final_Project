@@ -9,49 +9,74 @@
 	"animations": [
 		{
 			"name": "IDLE",
-			"frames": [{ "index": 0, "duration": 540 }]
+			"frames": [{ "index": 0, "duration": 10 }]
 		},
 		{
 			"name": "WALK_LEFT",
 			"frames": [
+				{ "index": 0, "duration": 5 },
 				{ "index": 1, "duration": 5 },
 				{ "index": 2, "duration": 5 },
-				{ "index": 0, "duration": 5 },
 				{ "index": 3, "duration": 5 },
 				{ "index": 4, "duration": 5 },
 				{ "index": 5, "duration": 5 },
-				{ "index": 6, "duration": 5 }
+				{ "index": 6, "duration": 5 },
+				{ "index": 7, "duration": 5 },
+				{ "index": 8, "duration": 5 },
+				{ "index": 9, "duration": 5 },
+				{ "index": 10, "duration": 5 },
+				{ "index": 11, "duration": 5 }
 			]
 		},
 		{
 			"name": "WALK",
 			"frames": [
+				{ "index": 0, "duration": 5 },
+				{ "index": 1, "duration": 5 },
+				{ "index": 2, "duration": 5 },
+				{ "index": 3, "duration": 5 },
+				{ "index": 4, "duration": 5 },
+				{ "index": 5, "duration": 5 },
+				{ "index": 6, "duration": 5 },
 				{ "index": 7, "duration": 5 },
 				{ "index": 8, "duration": 5 },
 				{ "index": 9, "duration": 5 },
+				{ "index": 2, "duration": 5 },
 				{ "index": 10, "duration": 5 },
-				{ "index": 11, "duration": 5 },
-				{ "index": 12, "duration": 5 },
-				{ "index": 13, "duration": 5 }
+				{ "index": 11, "duration": 5 }
 			]
 		},
 		{
 			"name": "JUMP",
-			"frames": [{ "index": 0, "duration": 32 }]
+			"frames": [
+				{ "index": 12, "duration": 15 },
+				{ "index": 13, "duration": 25 },
+				{ "index": 14, "duration": 25 },
+				{ "index": 15, "duration": 25 },
+				{ "index": 16, "duration": 25 },
+				{ "index": 17, "duration": 25 },
+				{ "index": 18, "duration": 25 },
+				{ "index": 19, "duration": 25 },
+				{ "index": 20, "duration": 20 }
+			]
 		},
 		{
 			"name": "DYING",
 			"frames": [
-				{ "index": 14, "duration": 10 },
-				{ "index": 15, "duration": 10 },
-				{ "index": 16, "duration": 10 },
-				{ "index": 17, "duration": 10 },
-				{ "index": 18, "duration": 10 }
+				{ "index": 24, "duration": 15 },
+				{ "index": 25, "duration": 15 },
+				{ "index": 26, "duration": 15 },
+				{ "index": 27, "duration": 15 },
+				{ "index": 28, "duration": 15 }
 			]
 		},
 		{
 			"name": "DEAD",
-			"frames": [{ "index": 21, "duration": 32 }]
+			"frames": [
+				{ "index": 36, "duration": 30 },
+				{ "index": 36, "duration": 30 },
+				{ "index": 36, "duration": 30 }
+			]
 		}
 	]
 }
